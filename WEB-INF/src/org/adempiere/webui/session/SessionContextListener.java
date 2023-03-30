@@ -256,7 +256,8 @@ public class SessionContextListener implements ExecutionInit,
     public synchronized static void setContextForSession(Execution execution) {
         Session session = execution.getDesktop().getSession();
         HttpSession httpSession = (HttpSession) session.getNativeSession();
-        ServerContext.setCurrentInstance(SessionManager.getSessionContext(httpSession.getId()));
-        Locales.setThreadLocal(Env.getLanguage(ServerContext.getCurrentInstance()).getLocale());
+        Properties context = SessionManager.getSessionContext(httpSession.getId());
+        ServerContext.setCurrentInstance(context);
+        Locales.setThreadLocal(Env.getLanguage(context).getLocale());
     }
 }

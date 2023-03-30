@@ -17,12 +17,7 @@
 
 package org.adempiere.webui.panel;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Button;
 import org.adempiere.webui.component.Datebox;
@@ -31,7 +26,7 @@ import org.adempiere.webui.component.Row;
 import org.adempiere.webui.component.Rows;
 import org.adempiere.webui.editor.WEditor;
 import org.adempiere.webui.editor.WTableDirEditor;
-import org.adempiere.exceptions.ValueChangeListener;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.minigrid.ColumnInfo;
 import org.compiere.minigrid.IDColumn;
 import org.compiere.model.MColumn;
@@ -47,6 +42,13 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Div;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Comparator;
+import java.util.Date;
+
 /**
 * Based on InfoAssignment written by Jorg Janke
 *  
@@ -61,7 +63,7 @@ import org.zkoss.zul.Div;
  * 	<li>https://adempiere.atlassian.net/browse/ADEMPIERE-72
 */
 
-public class InfoAssignmentPanel extends InfoPanel implements EventListener, ValueChangeListener
+public class InfoAssignmentPanel extends InfoPanel implements EventListener<org.zkoss.zk.ui.event.Event>, ValueChangeListener
 {
 	/**
 	 * 
@@ -199,8 +201,8 @@ public class InfoAssignmentPanel extends InfoPanel implements EventListener, Val
 		fieldResource.getComponent().setAttribute("zk_component_ID", "Lookup_Criteria_S_Resource_ID");
 
 		bNew.setImage("/images/dark/New16.png");
-		fieldFrom.setWidth("180px");
-		fieldTo.setWidth("180px");
+		ZKUpdateUtil.setWidth(fieldFrom, "180px");
+		ZKUpdateUtil.setWidth(fieldTo, "180px");
 		
 		fieldFrom.setAttribute("zk_component_ID", "Lookup_Criteria_fieldFrom");
 		fieldFrom.addEventListener(Events.ON_CHANGE, this);
@@ -411,4 +413,8 @@ public class InfoAssignmentPanel extends InfoPanel implements EventListener, Val
 		return;
 	}
 
+	@Override
+	public String getSortDirection(Comparator comparator) {
+		return "natural";
+	}
 }

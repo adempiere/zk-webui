@@ -18,10 +18,8 @@
  *****************************************************************************/
 package org.adempiere.webui.apps.form;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.logging.Level;
-
+import org.adempiere.exceptions.ValueChangeEvent;
+import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.apps.ProcessModalDialog;
 import org.adempiere.webui.component.Button;
 import org.adempiere.webui.component.Checkbox;
@@ -39,14 +37,13 @@ import org.adempiere.webui.component.WListbox;
 import org.adempiere.webui.editor.WDateEditor;
 import org.adempiere.webui.editor.WPAttributeEditor;
 import org.adempiere.webui.editor.WSearchEditor;
-import org.adempiere.exceptions.ValueChangeEvent;
-import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.event.WTableModelEvent;
 import org.adempiere.webui.event.WTableModelListener;
 import org.adempiere.webui.panel.ADForm;
 import org.adempiere.webui.panel.CustomForm;
 import org.adempiere.webui.panel.IFormController;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.apps.form.PaySelect;
 import org.compiere.model.MSysConfig;
@@ -62,12 +59,16 @@ import org.zkoss.zk.ui.SuspendNotAllowedException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
+import org.zkoss.zul.North;
 import org.zkoss.zul.Separator;
+import org.zkoss.zul.South;
 import org.zkoss.zul.Space;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.logging.Level;
 
 /**
  *  Create Manual Payments From (AP) Invoices or (AR) Credit Memos.
@@ -166,8 +167,8 @@ public class WPaySelect extends PaySelect
 		form.appendChild(mainPanel);
 		mainPanel.appendChild(mainLayout);
 		mainPanel.setStyle("width: 100%; height: 100%; padding: 0; margin: 0");
-		mainLayout.setHeight("100%");
-		mainLayout.setWidth("99%");
+		ZKUpdateUtil.setWidth(mainLayout, "99%");
+		ZKUpdateUtil.setHeight(mainLayout, "100%");
 		parameterPanel.appendChild(parameterLayout);
 		//
 		labelBankAccount.setText(Msg.translate(Env.getCtx(), "C_BankAccount_ID"));
@@ -176,7 +177,7 @@ public class WPaySelect extends PaySelect
 		fieldBankAccount.setAttribute("zk_component_prefix", "Lookup_");
 		fieldBankAccount.setAttribute("IsDynamic", "False");
 		fieldBankAccount.setAttribute("fieldName", "fieldBankAccount");
-		fieldBankAccount.setWidth("200px");		
+		ZKUpdateUtil.setWidth(fieldBankAccount, "200px");
 		//
 		labelBPartner.setText(Msg.translate(Env.getCtx(), "C_BPartner_ID"));
 		fieldBPartner.addValueChangeListener(this);
@@ -184,7 +185,7 @@ public class WPaySelect extends PaySelect
 		fieldBPartner.getComponent().setAttribute("zk_component_prefix", "Lookup_");
 		fieldBPartner.getComponent().setAttribute("IsDynamic", "False");
 		fieldBPartner.getComponent().setAttribute("fieldName", "fieldBPartner");
-		fieldBPartner.getComponent().setWidth("200px");
+		ZKUpdateUtil.setWidth(fieldBPartner.getComponent(), "200px");
 		//
 		bRefresh.addActionListener(this);
 		//
@@ -194,7 +195,7 @@ public class WPaySelect extends PaySelect
 		fieldPayDate.getComponent().setAttribute("zk_component_prefix", "Lookup_");
 		fieldPayDate.getComponent().setAttribute("IsDynamic", "False");
 		fieldPayDate.getComponent().setAttribute("fieldName", "fieldPayDate");
-		fieldPayDate.getComponent().setWidth("200px");
+		ZKUpdateUtil.setWidth(fieldPayDate.getComponent(), "200px");
 		//
 		labelPaymentRule.setText(Msg.translate(Env.getCtx(), "PaymentRule"));
 		fieldPaymentRule.addActionListener(this);
@@ -202,7 +203,7 @@ public class WPaySelect extends PaySelect
 		fieldPaymentRule.setAttribute("zk_component_prefix", "Lookup_");
 		fieldPaymentRule.setAttribute("IsDynamic", "False");
 		fieldPaymentRule.setAttribute("fieldName", "fieldPaymentRule");
-		fieldPaymentRule.setWidth("200px");
+		ZKUpdateUtil.setWidth(fieldPaymentRule, "200px");
 		//
 		labelDtype.setText(Msg.translate(Env.getCtx(), "C_DocType_ID"));
 		fieldDtype.addActionListener(this);
@@ -528,13 +529,11 @@ public class WPaySelect extends PaySelect
 		ProcessModalDialog processModalDialog = new ProcessModalDialog(this, m_WindowNo, procesId, X_C_PaySelection.Table_ID, m_ps.getC_PaySelection_ID(), false);
 		if (processModalDialog.isValidDialog()) {
 			try {
-				processModalDialog.setWidth("500px");
+				ZKUpdateUtil.setWidth(processModalDialog, "500px");
 				processModalDialog.setVisible(true);
 				processModalDialog.setPage(form.getPage());
 				processModalDialog.doModal();
 			} catch (SuspendNotAllowedException e) {
-				log.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			} catch (InterruptedException e) {
 				log.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 		}
@@ -550,7 +549,7 @@ public class WPaySelect extends PaySelect
 	{
 		if (m_isLock) return;
 		m_isLock = true;
-		Clients.showBusy(null, true);
+		Clients.showBusy(Msg.getMsg(Env.getCtx(), "Processing"));
 	}   //  lockUI
 
 	/**
@@ -562,7 +561,7 @@ public class WPaySelect extends PaySelect
 		if (!m_isLock) return;
 		m_isLock = false;
 		m_pi = pi;
-		Clients.showBusy(null, false);	
+		Clients.clearBusy();
 		
 		//TODO: The response returned is always Cancel
 //		if (!FDialog.ask(0, form, "VPaySelectPrint?", "(" + m_pi.getSummary() + ")"))

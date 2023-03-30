@@ -14,13 +14,12 @@
  *****************************************************************************/
 package org.adempiere.webui.window;
 
-import java.util.Vector;
-
 import org.adempiere.controller.DeleteSelectionController;
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.ConfirmPanel;
 import org.adempiere.webui.component.Listbox;
 import org.adempiere.webui.component.Window;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.GridTab;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
@@ -29,11 +28,13 @@ import org.zkoss.zhtml.Text;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
+import org.zkoss.zul.North;
+import org.zkoss.zul.South;
+
+import java.util.Vector;
 
 
 /**
@@ -65,8 +66,8 @@ public class WDeleteSelection extends DeleteSelectionController implements Event
 		container = new Window();
 		container.setTitle(Msg.getMsg(Env.getCtx(), "DeleteSelection"));
 		container.setAttribute("modal", Boolean.TRUE);
-		container.setWidth("500px");
-		container.setHeight("400px");
+		ZKUpdateUtil.setWidth(container, "500px");
+		ZKUpdateUtil.setHeight(container, "400px");
 		container.setBorder("normal");
 		container.setSizable(true);
 		container.setClosable(true);
@@ -94,8 +95,8 @@ public class WDeleteSelection extends DeleteSelectionController implements Event
 		
 		Borderlayout layout = new Borderlayout();
 		layout.setParent(container);
-		layout.setWidth("100%");
-		layout.setHeight("100%");
+		ZKUpdateUtil.setWidth(layout, "100%");
+		ZKUpdateUtil.setHeight(layout, "100%");
 		
 		North north = new North();
 		north.setParent(layout);
@@ -103,10 +104,10 @@ public class WDeleteSelection extends DeleteSelectionController implements Event
 		
 		Center center = new Center();
 		center.setParent(layout);
-		center.setFlex(true);
 		center.appendChild(listbox);
-		listbox.setWidth("100%");
-		listbox.setVflex(true);
+		ZKUpdateUtil.setVflex(listbox,true);
+		listbox.setSizedByContent(false);
+		ZKUpdateUtil.setWidth(listbox, "100%");
 		//
 		South south = new South();
 		south.setParent(layout);

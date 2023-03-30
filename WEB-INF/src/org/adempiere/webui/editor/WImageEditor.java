@@ -14,9 +14,8 @@
 package org.adempiere.webui.editor;
 
 
-import java.util.logging.Level;
-
 import org.adempiere.exceptions.ValueChangeEvent;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.WImageDialog;
 import org.compiere.model.GridField;
 import org.compiere.model.MImage;
@@ -26,6 +25,8 @@ import org.zkoss.image.AImage;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Image;
+
+import java.util.logging.Level;
 
 /**
  * This class is based on org.compiere.grid.ed.VImage written by Jorg Janke.
@@ -141,8 +142,8 @@ public class WImageEditor extends WEditor
 			}
 		}
 		getComponent().setContent(img);
-		getComponent().setWidth("100px");
-		getComponent().setHeight("100px");
+		ZKUpdateUtil.setWidth(getComponent(), "100px");
+		ZKUpdateUtil.setHeight(getComponent(), "100px");
     }
     
     @Override

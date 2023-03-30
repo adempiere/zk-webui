@@ -16,9 +16,6 @@
  *****************************************************************************/
 package org.adempiere.webui;
 
-import java.util.Properties;
-import java.util.logging.Level;
-
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Button;
 import org.adempiere.webui.component.Checkbox;
@@ -30,6 +27,7 @@ import org.adempiere.webui.component.Row;
 import org.adempiere.webui.component.Rows;
 import org.adempiere.webui.component.Textbox;
 import org.adempiere.webui.component.Window;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.model.GridField;
 import org.compiere.model.MRole;
@@ -47,6 +45,9 @@ import org.zkoss.zul.Separator;
 import org.zkoss.zul.Space;
 import org.zkoss.zul.Vbox;
 
+import java.util.Properties;
+import java.util.logging.Level;
+
 /**
  *  Maintain Value Preferences.
  *  To delete a preference, select a null value and save.
@@ -54,7 +55,7 @@ import org.zkoss.zul.Vbox;
  *  @author Jorg Janke
  *  @version  $Id: ValuePreference.java,v 1.2 2006/07/30 00:51:28 jjanke Exp $
  */
-public class ValuePreference extends Window implements EventListener
+public class ValuePreference extends Window implements EventListener<Event>
 {	
 	/**
 	 * 
@@ -207,8 +208,10 @@ public class ValuePreference extends Window implements EventListener
 		catch(Exception ex)
 		{
 			log.log(Level.SEVERE, "", ex);
-		} 
-		
+		}
+
+		ZKUpdateUtil.setWindowWidthX(this,680);
+		ZKUpdateUtil.setWindowHeightX(this,310);
 		this.setClosable(true);
 		AEnv.showCenterScreen(this);
 	}   //  ValuePreference
@@ -267,8 +270,8 @@ public class ValuePreference extends Window implements EventListener
 		fValue.setReadonly(true);
 		
 		Vbox box = new Vbox();
-		box.setWidth("100%");
-		box.setHeight("100%");
+		ZKUpdateUtil.setWidth(box, "100%");
+		ZKUpdateUtil.setHeight(box, "100%");
 		box.setParent(this);
 		box.appendChild(setPanel);
 		
@@ -282,7 +285,7 @@ public class ValuePreference extends Window implements EventListener
 		div.appendChild(lAttribute);
 		row.appendChild(div);
 		row.appendChild(fAttribute);
-		fAttribute.setWidth("100%");
+		ZKUpdateUtil.setWidth(fAttribute, "100%");
 		row.appendChild(lAttributeValue);
 		rows.appendChild(row);
 		
@@ -293,7 +296,7 @@ public class ValuePreference extends Window implements EventListener
 		div.appendChild(lValue);
 		row.appendChild(div);
 		row.appendChild(fValue);
-		fValue.setWidth("100%");
+		ZKUpdateUtil.setWidth(fValue, "100%");
 		row.appendChild(lValueValue);
 		rows.appendChild(row);
 		
@@ -317,7 +320,7 @@ public class ValuePreference extends Window implements EventListener
 		//
 		Separator separator = new Separator();
 		separator.setBar(true);
-		separator.setHeight("20px");
+		ZKUpdateUtil.setHeight(separator, "20px");
 		box.appendChild(separator);
 		box.appendChild(confirmPanel);
 		

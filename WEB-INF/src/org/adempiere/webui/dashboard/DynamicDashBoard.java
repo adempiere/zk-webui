@@ -1,12 +1,5 @@
 package org.adempiere.webui.dashboard;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.adempiere.model.I_AD_Browse;
 import org.adempiere.model.I_AD_Browse_Field;
 import org.adempiere.model.I_AD_View_Column;
@@ -43,6 +36,14 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Vbox;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+
 /**
  * 
  * @author Walking Tree <BR>
@@ -65,7 +66,7 @@ import org.zkoss.zul.Vbox;
  * 
  *         </li>
  */
-public class DynamicDashBoard extends DashboardPanel implements EventListener 
+public class DynamicDashBoard extends DashboardPanel implements EventListener<Event>
 {
 	private static final long serialVersionUID = 1L;
 	private static final CLogger logger = CLogger.getCLogger(DynamicDashBoard.class);
@@ -89,7 +90,7 @@ public class DynamicDashBoard extends DashboardPanel implements EventListener
 	Vbox vbox = new Vbox();
 	Boolean displayZoomCol = Boolean.FALSE ;
 
-	public DynamicDashBoard() {
+	public DynamicDashBoard()  {
 		super();
 		// initialize the context values
 		browseId = Env.getContextAsInt(ctx, "#AD_Browse_ID");
@@ -108,14 +109,24 @@ public class DynamicDashBoard extends DashboardPanel implements EventListener
 	private void createView() {
 		Columns columns = new Columns();
 		prepareSelectQuery();//prepares a select query. 
-
+		try {
 		int columnsSize = column.length;
 		for (int i1 = 0; i1 < columnsSize; i1++) {
 			if (column[i1] != null) {
-				column[i1].setSort("auto");
+
+					column[i1].setSort("auto");
+
+
 				columns.appendChild(column[i1]);
 			}
 
+		}
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		} catch (InstantiationException e) {
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
 		}
 		grid.appendChild(columns);
 		columns.setSizable(true);

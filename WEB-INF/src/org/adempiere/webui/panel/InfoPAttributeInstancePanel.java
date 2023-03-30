@@ -12,11 +12,6 @@
  *****************************************************************************/
 package org.adempiere.webui.panel;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.logging.Level;
-
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Checkbox;
 import org.adempiere.webui.component.ConfirmPanel;
@@ -24,6 +19,7 @@ import org.adempiere.webui.component.WListbox;
 import org.adempiere.webui.component.Window;
 import org.adempiere.webui.event.WTableModelEvent;
 import org.adempiere.webui.event.WTableModelListener;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.apps.search.PAttributeInstance;
 import org.compiere.minigrid.ColumnInfo;
 import org.compiere.minigrid.IDColumn;
@@ -34,11 +30,16 @@ import org.compiere.util.KeyNamePair;
 import org.compiere.util.Msg;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
+import org.zkoss.zul.North;
+import org.zkoss.zul.South;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.logging.Level;
 
 /**
  * Display Product Attribute Instance Info
@@ -142,12 +143,11 @@ public class InfoPAttributeInstancePanel extends Window implements EventListener
         this.setMaximizable(true);
 		//
         //  As a modal window, the panel can't extend past the parent
- 		this.setWidth("100%");
-		this.setHeight("100%");
+		ZKUpdateUtil.setWidth(this, "100%");
+		ZKUpdateUtil.setHeight(this, "100%");
 		this.setMaximized(true);
-		//
-        borderlayout.setWidth("100%");
-        borderlayout.setHeight("100%");
+		ZKUpdateUtil.setWidth(borderlayout, "100%");
+		ZKUpdateUtil.setHeight(borderlayout, "100%");
         borderlayout.setStyle("border: none; position: relative");
         this.appendChild(borderlayout);
         
@@ -160,7 +160,7 @@ public class InfoPAttributeInstancePanel extends Window implements EventListener
         
         Center center = new Center();
         center.setAutoscroll(true);
-        center.setFlex(true);
+		ZKUpdateUtil.setVflex(center, "flex");
 		borderlayout.appendChild(center);
 		center.appendChild(m_table);
 		

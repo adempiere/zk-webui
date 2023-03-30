@@ -17,19 +17,19 @@
 
 package org.adempiere.webui.component;
 
-import java.io.IOException;
-
 import org.adempiere.webui.apps.AEnv;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.util.CLogger;
 import org.zkforge.keylistener.Keylistener;
 import org.zkoss.zhtml.Text;
 import org.zkoss.zk.ui.event.Event;
-import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.KeyEvent;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Separator;
+
+import java.io.IOException;
 
 /**
 * Messagebox : Replaces ZK's Messagebox
@@ -40,7 +40,7 @@ import org.zkoss.zul.Separator;
  *		<a href="https://github.com/adempiere/adempiere/issues/609">
  * 		@see FR [ 609 ] Confirm dialog for ZK don't have a Standard ADempiere Buttons</a>
 */
-public class Messagebox extends Window implements EventListener
+public class Messagebox extends Window implements org.zkoss.zk.ui.event.EventListener<org.zkoss.zk.ui.event.Event>
 {	
 	/**
 	 * generated serial version ID
@@ -101,10 +101,10 @@ public class Messagebox extends Window implements EventListener
 
 	/** Contains no symbols. */
 	public static final String NONE = null;
-	
+
 	/**	 */
 	private Keylistener keyListener;
-	
+
 	private static final int KEYBOARD_KEY_RETURN = 13;
 	
 	public Messagebox()
@@ -168,7 +168,7 @@ public class Messagebox extends Window implements EventListener
 		pnlMessage.appendChild(lblMsg);
 
 		keyListener = new Keylistener();
-		
+
 		keyListener.setCtrlKeys("#enter");
 		keyListener.addEventListener(Events.ON_CTRL_KEY, this);
 		addEventListener(Events.ON_CANCEL, this);
@@ -177,7 +177,7 @@ public class Messagebox extends Window implements EventListener
 
 		img.setSrc(imgSrc);
 
-		pnlImage.setWidth("72px");
+		ZKUpdateUtil.setWidth(pnlImage, "72px");
 		pnlImage.setAlign("center");
 		pnlImage.setPack("center");
 		pnlImage.appendChild(img);
@@ -190,7 +190,7 @@ public class Messagebox extends Window implements EventListener
 		north.appendChild(pnlMessage);
 
 		Hbox pnlButtons = new Hbox();
-		pnlButtons.setHeight("52px");
+		ZKUpdateUtil.setHeight(pnlButtons, "52px");
 		pnlButtons.setAlign("center");
 		pnlButtons.setPack("end");
 		pnlButtons.appendChild(btnCancel);		
@@ -202,13 +202,13 @@ public class Messagebox extends Window implements EventListener
 		pnlButtons.appendChild(btnIgnore);
 
 		Separator separator = new Separator();
-		separator.setWidth("100%");
+		ZKUpdateUtil.setWidth(separator, "100%");
 		separator.setBar(true);
 		this.appendChild(separator);
 		
 		Hbox south = new Hbox();
 		south.setPack("end");
-		south.setWidth("100%");
+		ZKUpdateUtil.setWidth(south, "100%");
 		this.appendChild(south);		
 		south.appendChild(pnlButtons);
 		
@@ -279,13 +279,13 @@ public class Messagebox extends Window implements EventListener
 	{
 		if (event == null)
 			return;
-		
+
 		if (event.getName().equals(Events.ON_CTRL_KEY) && event.getTarget() == keyListener) {
-				
+
 				KeyEvent keyEvent = (KeyEvent) event;
 				int code = keyEvent.getKeyCode();
 				if (code == KEYBOARD_KEY_RETURN) {
-					returnValue = OK; 
+					returnValue = OK;
 				}
 		 }
 		if (event.getTarget() == btnOk || event.getName().equals(Events.ON_OK))

@@ -17,19 +17,8 @@
 
 package org.adempiere.webui.panel;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
-import java.util.logging.Level;
-
+import org.adempiere.exceptions.ValueChangeEvent;
+import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.apps.BusyDialog;
 import org.adempiere.webui.component.Button;
@@ -49,12 +38,11 @@ import org.adempiere.webui.component.Window;
 import org.adempiere.webui.editor.WPAttributeEditor;
 import org.adempiere.webui.editor.WSearchEditor;
 import org.adempiere.webui.editor.WTableDirEditor;
-import org.adempiere.exceptions.ValueChangeEvent;
-import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.event.WTableModelEvent;
 import org.adempiere.webui.event.WTableModelListener;
 import org.adempiere.webui.part.ITabOnSelectHandler;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.minigrid.ColumnInfo;
 import org.compiere.minigrid.IDColumn;
 import org.compiere.model.MRole;
@@ -73,19 +61,31 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.KeyEvent;
-import org.zkoss.zk.ui.event.SelectEvent;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
-import org.zkoss.zkex.zul.West;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.ListModelExt;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.North;
 import org.zkoss.zul.Paging;
 import org.zkoss.zul.Separator;
+import org.zkoss.zul.South;
+import org.zkoss.zul.West;
 import org.zkoss.zul.event.ZulEvents;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+import java.util.logging.Level;
 
 /**
  *	Search Information and return selection - Base Class.
@@ -100,7 +100,7 @@ import org.zkoss.zul.event.ZulEvents;
  * @author Michael McKay, ADEMPIERE-72 VLookup and Info Window improvements
  * 	<li>https://adempiere.atlassian.net/browse/ADEMPIERE-72
  */
-public abstract class InfoPanel extends Window implements EventListener, WTableModelListener, ListModelExt
+public abstract class InfoPanel extends Window implements EventListener<Event>, WTableModelListener, ListModelExt
 {
 	
 	/**
@@ -165,14 +165,13 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 	 */
 	public static void showBPartner (int WindowNo)
 	{
-		InfoBPartnerPanel info = new InfoBPartnerPanel (WindowNo, false, 0, "", 
-			true, false, true, false, "");
+		InfoBPartnerPanel info = new InfoBPartnerPanel (WindowNo, false, 0, "",
+				!Env.getContext(Env.getCtx(),"IsSOTrx").equals("N"), false, true, false, "");
 		AEnv.showWindow(info);
 	}   //  showBPartner
 
 	/**
 	 * Show Asset Info (non modal)
-	 * @param frame Parent Frame
 	 * @param WindowNo window no
 	 */
 	public static void showAsset (int WindowNo)
@@ -183,7 +182,6 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 
 	/**
 	 * Show Product Info (non modal)
-	 * @param frame Parent Frame
 	 * @param WindowNo window no
 	 */
 	public static void showProduct (int WindowNo)
@@ -197,7 +195,6 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 	
 	/**
 	 * Show Order Info (non modal)
-	 * @param frame Parent Frame
 	 * @param WindowNo window no
 	 * @param value query value
 	 */
@@ -209,7 +206,6 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 
 	/**
 	 * Show Invoice Info (non modal)
-	 * @param frame Parent Frame
 	 * @param WindowNo window no
 	 * @param value query value
 	 */
@@ -221,7 +217,6 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 
 	/**
 	 * Show Shipment Info (non modal)
-	 * @param frame Parent Frame
 	 * @param WindowNo window no
 	 * @param value query value
 	 */
@@ -234,7 +229,6 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 
 	/**
 	 * Show Payment Info (non modal)
-	 * @param frame Parent Frame
 	 * @param WindowNo window no
 	 * @param value query value
 	 */
@@ -247,7 +241,6 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 
 	/**
 	 * Show Cash Line Info (non modal)
-	 * @param frame Parent Frame
 	 * @param WindowNo window no
 	 * @param value query value
 	 */
@@ -260,7 +253,6 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 
 	/**
 	 * Show Assignment Info (non modal)
-	 * @param frame Parent Frame
 	 * @param WindowNo window no
 	 * @param value query value
 	 */
@@ -298,9 +290,13 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 	 * @param saveResults flag if the results will be saved in context
      * @param whereClause   whereClause
 	 */
-	protected InfoPanel (int WindowNo, boolean modal,
-		String tableName, String keyColumn, boolean multipleSelection, boolean saveResults,
-		 String whereClause)
+	protected InfoPanel (int WindowNo,
+						 boolean modal,
+						 String tableName,
+						 String keyColumn,
+						 boolean multipleSelection,
+						 boolean saveResults,
+						 String whereClause)
 	{
 
 		log.info("WinNo=" + p_WindowNo + " " + whereClause);
@@ -333,26 +329,22 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 			
 		});
 		
-		p_table.addActionListener(new EventListener() {
-			public void onEvent(Event event) throws Exception {
+		p_table.addActionListener(event -> {
 
-				if (p_table.getRowCount() == 0)
-				{
-					enableButtons();		
-					return;
-				}
-				//
-				
-				if (event.getName().equals("onSelect"))
-				{
-					SelectEvent se = ((SelectEvent) event);
-					setNumRecordsSelected(se.getSelectedItems().size());
-					recordSelected(p_table.getLeadRowKey());
-					p_selectedRecordKey = p_table.getLeadRowKey();
-				}
-
-				enableButtons();		
+			if (p_table.getRowCount() == 0) {
+				enableButtons();
+				return;
 			}
+			//
+
+			if (event.getName().equals("onSelect")) {
+				org.zkoss.zk.ui.event.SelectEvent se = ((org.zkoss.zk.ui.event.SelectEvent) event);
+				setNumRecordsSelected(se.getSelectedItems().size());
+				recordSelected(p_table.getLeadRowKey());
+				p_selectedRecordKey = p_table.getLeadRowKey();
+			}
+
+			enableButtons();
 		});
 		
 		p_table.getModel().addTableModelListener(this);
@@ -368,24 +360,24 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 		//  the p_centerCenter which should fill the remaining space.
 		// Have to set the criteriaGrid height specifically.  58 is the height of the reset button and label.
 		// p_criteriaGrid is assumed to hold a Rows component that is non null and has children.
-		int rowHeight = (30*((Rows) p_criteriaGrid.getFirstChild()).getChildren().size());
-		rowHeight = rowHeight > 58 ? rowHeight : 58;
-		p_northLayout.setHeight(rowHeight + "px");
-		p_southLayout.setHeight("70px");
-		
+		//int rowHeight = (30*((Rows) p_criteriaGrid.getFirstChild()).getChildren().size());
+		//rowHeight = Math.max(rowHeight, 58);
+		//ZKUpdateUtil.setHeight(p_southLayout,rowHeight + "px");
+		ZKUpdateUtil.setHeight(p_southLayout, "70px");
+
 		if (p_centerNorth.getChildren().size() == 0)
 		{
 			p_centerNorth.detach();
 		}
 		else
 		{
-			p_centerNorth.setHeight("25px");
+			ZKUpdateUtil.setHeight(p_centerNorth,"25px");
 		}
 		
 		if (p_centerSouth.getChildren().size() > 0)
 		{
-			int detailHeight = (p_height * 25 / 100);
-			p_centerSouth.setHeight(detailHeight + "px");
+			int detailHeight = (p_height * 20 / 100);
+			ZKUpdateUtil.setHeight(p_centerSouth,detailHeight + "px");
 		}
 		else
 		{
@@ -401,8 +393,8 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 			setAttribute(Window.MODE_KEY, Window.MODE_MODAL);
 			setBorder("normal");
 			setClosable(true);
-			setWidth(p_width + "px");
-			setHeight(p_height + "px");
+			ZKUpdateUtil.setWindowWidthX(this, p_width);
+			ZKUpdateUtil.setWindowHeightX(this, p_height);
     		setContentStyle("overflow: auto");
             setSizable(true);      
             setMaximizable(true);        
@@ -411,19 +403,20 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 		{
 			setAttribute(Window.MODE_KEY, Window.MODE_EMBEDDED);
 			setBorder("none");
-			setWidth("100%");
-			setHeight("100%");
+			ZKUpdateUtil.setWidth(this, "100%");
+			ZKUpdateUtil.setHeight(this,"100%");
 			setStyle("position: absolute");
 		}
 		
         confirmPanel = new ConfirmPanel(true, true, false, true, true, true);  // Elaine 2008/12/16
-        confirmPanel.addActionListener(Events.ON_CLICK, this);
-        confirmPanel.setStyle("border-top: 2px; border-bottom: 2px; padding: 4px");
-        
+		ZKUpdateUtil.setHeight(confirmPanel, "30px");
+		confirmPanel.addActionListener(Events.ON_CLICK, this);
+        confirmPanel.setStyle("border-top: 0px; border-bottom: 0px; padding: 0px");
+
         // Elaine 2008/12/16
 		confirmPanel.getButton(ConfirmPanel.A_CUSTOMIZE).setVisible(hasCustomize());
 		confirmPanel.getButton(ConfirmPanel.A_HISTORY).setVisible(hasHistory());
-		confirmPanel.getButton(ConfirmPanel.A_ZOOM).setVisible(hasZoom());		
+		confirmPanel.getButton(ConfirmPanel.A_ZOOM).setVisible(hasZoom());
 		confirmPanel.getButton(ConfirmPanel.A_OK).setVisible(p_saveResults);
 
 		checkAutoQuery.setText(Msg.getMsg(Env.getCtx(), "AutoRefresh"));
@@ -454,15 +447,16 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 		lblReset.setValue(Util.cleanAmp(Msg.translate(Env.getCtx(), "Reset")));
 
         p_table.setOddRowSclass(null);
-        p_table.setAttribute("zk_component_ID", "Lookup_Data_SearchResults");        
-        p_table.setVflex(true);
-        
-        p_centerLayout.setWidth("100%");
+        p_table.setAttribute("zk_component_ID", "Lookup_Data_SearchResults");
+		ZKUpdateUtil.setVflex(p_table,true);
+		p_table.setSizedByContent(false);
+		p_centerLayout.setStyle("padding: 0px");
+		ZKUpdateUtil.setWidth(p_centerLayout, "100%");
         //p_centerLayout.setHeight("100%");
         if (isModal())
-        	p_centerLayout.setStyle("border: none; position: relative");
+        	p_centerLayout.setStyle("border: none; position: relative; padding: 0px");
         else
-        	p_centerLayout.setStyle("border: none; position: absolute");
+        	p_centerLayout.setStyle("border: none; position: absolute; padding: 0px");
 
 		p_centerLayout.appendChild(p_centerNorth);  // May be empty
 		p_centerLayout.appendChild(p_centerCenter); // the table
@@ -473,23 +467,24 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 		div.setStyle("width :100%; height: 100%");
 		p_centerCenter.appendChild(div);
 		p_centerCenter.setAutoscroll(false);
-        p_centerCenter.setFlex(true);
+		ZKUpdateUtil.setVflex(p_centerCenter, "flex");
 		//
 		p_centerSouth.setCollapsible(true);
 		p_centerSouth.setSplittable(true);
-		p_centerSouth.setFlex(true);
 
 		//  Setup the north reset button and criteria grid
 		West spWest = new West();
+		ZKUpdateUtil.setWidth(spWest, "100px");
 		spWest.setBorder("0");
 		Center spCenter = new Center();
 		spCenter.setBorder("0");
+		//ZKUpdateUtil.setWidth(p_northLayout, "");
 
-		p_northLayout.setWidth("");
 		p_northLayout.appendChild(spWest);
 		p_northLayout.appendChild(spCenter);
 		// spWest - the reset button
 		Grid bGrid = GridFactory.newGridLayout();
+		//ZKUpdateUtil.setWidth(bGrid, "100%");
 		Rows bRows = new Rows();
 		Row bRow = new Row();
 		bGrid.appendChild(bRows);
@@ -499,15 +494,15 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 		bRows.appendChild(bRow);
 		bRow.appendChild(lblReset);
 		spWest.appendChild(bGrid);
-		
 		// The criteria table
 		spCenter.appendChild(p_criteriaGrid);
 
         Borderlayout mainPanel = new Borderlayout();
-        mainPanel.setWidth("100%");
-        mainPanel.setHeight("100%");
+		ZKUpdateUtil.setVflex(mainPanel, "true");
+		ZKUpdateUtil.setHflex(mainPanel, "true");
         //
         North north = new North();
+		ZKUpdateUtil.setHeight(north,"180px");
         mainPanel.appendChild(north);
         north.appendChild(p_northLayout);
         //
@@ -526,15 +521,15 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 		this.appendChild(mainPanel);
         this.addEventListener(Events.ON_OK, this);
         this.setVisible(true);
-        
+
         // Add Key Events
         keyListener = new Keylistener();
-		
+
 		keyListener.setCtrlKeys("#enter");
 		keyListener.addEventListener(Events.ON_CTRL_KEY, this);
 		addEventListener(Events.ON_CANCEL, this);
 		appendChild(keyListener);
-        
+
 	}  //  init
 	
 	private static String SYSCONFIG_INFO_AUTO_WILDCARD = "INFO_AUTO_WILDCARD";
@@ -977,12 +972,10 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 				}
 			}
 		}
-
 		catch (SQLException e)
 		{
 			log.log(Level.SEVERE, dataSql, e);
 		}
-
 		finally
 		{
 			DB.close(m_rs, m_pstmt);
@@ -1036,12 +1029,13 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 													MRole.SQL_FULLYQUALIFIED, MRole.SQL_RO);
 		log.finer(countSql);
 		m_count = -1;
-		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
-			PreparedStatement pstmt = DB.prepareStatement(countSql, null);
+			pstmt = DB.prepareStatement(countSql, null);
 			setParameters (pstmt, true);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 		
 			if (rs.next())
 				m_count = rs.getInt(1);
@@ -1054,8 +1048,15 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 			log.log(Level.SEVERE, countSql, e);
 			m_count = -2;
 		}
-		
-		log.fine("#" + m_count + " - " + (System.currentTimeMillis()-start) + "ms");
+		finally
+		{
+			DB.close(rs, pstmt);
+			rs = null;
+			pstmt = null;
+		}
+
+		if (log.isLoggable(Level.FINE))
+			log.fine("#" + m_count + " - " + (System.currentTimeMillis() - start) + "ms");
 		
 		//Armen: add role checking (Patch #1694788 )
 		//MRole role = MRole.getDefault(); 		
@@ -1076,7 +1077,7 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 			return;
 
 		log.config( "OK=" + m_ok);
-		
+
 		if (!m_ok)      //  did not press OK
 		{
 			m_results.clear();
@@ -1423,44 +1424,39 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 		//
 		String sql = "SELECT AD_Window_ID, PO_Window_ID FROM AD_Table WHERE TableName=?";
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try
 		{
 			pstmt = DB.prepareStatement(sql, null);
 			pstmt.setString(1, tableName);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			if (rs.next())
 			{
 				m_SO_Window_ID = rs.getInt(1);
 				m_PO_Window_ID = rs.getInt(2);
 			}
-			rs.close();
-			pstmt.close();
-			pstmt = null;
 		}
 		catch (Exception e)
 		{
 			log.log(Level.SEVERE, sql, e);
 		}
-		try
+		finally
 		{
-			if (pstmt != null)
-				pstmt.close();
+			DB.close(rs, pstmt);
+			rs = null;
 			pstmt = null;
 		}
-		catch (Exception e)
-		{
-			pstmt = null;
-		}
-		//
+
 		if (!isSOTrx && m_PO_Window_ID > 0)
 			return m_PO_Window_ID;
+
 		return m_SO_Window_ID;
 	}	//	getAD_Window_ID
     
     public void onEvent(Event event)
-    {
-    	
-    	// Handle actions 
+    {   // Handle actions
+		if (event == null)
+			return;
 
 		if(!p_loadedOK)
 			return;		//  We aren't ready
@@ -1479,7 +1475,7 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
     		}
 
         	Component component = event.getTarget();
-    		
+
     		if(component != null)
     		{
     			//  Generic components in the criteria fields
@@ -1507,7 +1503,7 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
     				//  Check box changes generally always cause a refresh
     				//  Capture changes that don't in a specific event handler
     				p_triggerRefresh = true;
-    				
+
     				Checkbox cb = (Checkbox) component;
     				if (cb.getName() != null && cb.getName().equals("AutoQuery"))
     				{
@@ -1518,7 +1514,7 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
     					}
     				}
     			}
-    			else 
+    			else
     			{
     				//  Assume another type of component
     				if(event.getName().equals("onChange"))
@@ -1529,10 +1525,10 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 								 p_triggerRefresh = true;
     					}
     					else
-    						p_triggerRefresh = true;	
+    						p_triggerRefresh = true;
 					}
 				}
-    			
+
     			//  Buttons
 	        	if (component.equals(confirmPanel.getButton(ConfirmPanel.A_OK)) || event.getName().equals(Events.ON_CTRL_KEY) )
 	            {
@@ -1541,9 +1537,9 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
     				int code = keyEvent.getKeyCode();
     					if (code != KEYBOARD_KEY_RETURN)
     						return;
-	        		}	
+	        		}
 						//  The enter key is mapped to the Ok button which will close the dialog.
-						//  Don't let this happen if there are outstanding changes to any of the 
+						//  Don't let this happen if there are outstanding changes to any of the
 						//  VLookup fields in the criteria
 						if (hasOutstandingChanges())
 						{
@@ -1555,7 +1551,7 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 							p_triggerRefresh = false;
 						}
 		                onOk();
-    			
+
 	            }
 	            else if (component == p_table && event.getName().equals(Events.ON_DOUBLE_CLICK))
 	            {
@@ -1568,19 +1564,19 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 					m_busy = true;  // Prevent other actions
 					initInfo();  // Should be overridden in the subordinate class
 					m_busy = false;
-					
+
 					p_triggerRefresh = true;
 					p_refreshNow = true;  // Ignore the autoQuery value and refresh now.
-					
+
 				}
 				else if (component.equals(confirmPanel.getButton(ConfirmPanel.A_REFRESH)))
-	            {            	
+	            {
 					//  Refresh always causes a requery in case there are
-					//  changes to the underlying tables - even if the 
+					//  changes to the underlying tables - even if the
 					//  criteria haven't changed.
 					p_resetColumns = true;
 					p_triggerRefresh = true;
-					p_refreshNow = true;	
+					p_refreshNow = true;
 	            }
 	            else if (component.equals(confirmPanel.getButton(ConfirmPanel.A_CANCEL)) || event.getName().equals(Events.ON_CANCEL))
 	            {
@@ -1618,11 +1614,11 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 	            else if (component == paging)
 	            {
 	            	int pgNo = paging.getActivePage();
-	            	if (pageNo != pgNo) 
+	            	if (pageNo != pgNo)
 	            	{
-	            	
+
 	            		p_table.clearSelection();
-	    			
+
 	            		pageNo = pgNo;
 	            		int start = pageNo * PAGE_SIZE;
 	            		int end = start + PAGE_SIZE;
@@ -1631,12 +1627,12 @@ public abstract class InfoPanel extends Window implements EventListener, WTableM
 	        			model.setSorter(this);
 	    	            model.addTableModelListener(this);
 	    	            p_table.setData(model, null);
-	    	            
+
 	    				p_table.setSelectedIndex(0);
 	    			}
 	            }
     		}
-    		
+
     		//  All events, unless trapped above, will get here.
 			//  Check if we need to reset the table.  The flag is reset when
 			//  the table is reset.  The first change triggers the reset.

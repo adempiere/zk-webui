@@ -1,23 +1,19 @@
 package org.adempiere.webui.component;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.util.LinkedList;
-import java.util.Properties;
-import java.util.logging.Level;
-
-import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.excel.SmjReportLogic;
 import org.adempiere.excel.SmjXlsReport;
+import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.pdf.SmjPdfReport;
+import org.adempiere.util.StringUtils;
 import org.adempiere.webui.panel.StatusBarPanel;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.adempiere.webui.window.ZkReportViewer;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.adempiere.util.StringUtils;
 import org.compiere.model.MClientInfo;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MRole;
+import org.compiere.model.ReportTO;
 import org.compiere.report.MReportColumn;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
@@ -26,14 +22,18 @@ import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Iframe;
+import org.zkoss.zul.North;
 import org.zkoss.zul.Separator;
 import org.zkoss.zul.Toolbar;
 
-import org.compiere.model.ReportTO;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.util.LinkedList;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  *	Print View Frame
@@ -135,7 +135,7 @@ public class SMJReportViewer extends Window implements EventListener {
 				this.setStyle("width: 100%; height: 100%; position: absolute");
 
 				//-------------Toolbar -------------
-				toolBar.setHeight("26px");
+				ZKUpdateUtil.setHeight(toolBar,"26px");
 				
 				previewType.setMold("select");
 				previewType.appendItem("PDF", "PDF");
@@ -152,12 +152,12 @@ public class SMJReportViewer extends Window implements EventListener {
 				north.appendChild(toolBar);
 				
 				Center center = new Center();
-				center.setFlex(true);
+				ZKUpdateUtil.setVflex(center, "flex");
 				layout.appendChild(center);
 				iframe = new Iframe();
 				iframe.setId("reportFrame");
-				iframe.setHeight("100%");
-				iframe.setWidth("100%");
+				ZKUpdateUtil.setWidth(iframe, "100%");
+				ZKUpdateUtil.setHeight(iframe, "100%");
 				center.appendChild(iframe);
 
 				try {

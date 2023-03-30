@@ -19,6 +19,7 @@ package org.adempiere.webui.desktop;
 
 import org.adempiere.webui.apps.graph.WGraph;
 import org.adempiere.webui.apps.graph.WPerformanceDetail;
+import org.adempiere.webui.component.Tab;
 import org.adempiere.webui.component.Tabpanel;
 import org.adempiere.webui.component.ToolBarButton;
 import org.adempiere.webui.dashboard.DPActivities;
@@ -31,6 +32,7 @@ import org.adempiere.webui.session.SessionManager;
 import org.adempiere.webui.util.IServerPushCallback;
 import org.adempiere.webui.util.ServerPushTemplate;
 import org.adempiere.webui.util.UserPreference;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.I_AD_Menu;
 import org.compiere.model.MDashboardContent;
 import org.compiere.model.MGoal;
@@ -51,16 +53,17 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.OpenEvent;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.West;
-import org.zkoss.zkmax.zul.Portalchildren;
-import org.zkoss.zkmax.zul.Portallayout;
+import org.zkoss.zul.Anchorchildren;
+import org.zkoss.zul.Anchorlayout;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Html;
+import org.zkoss.zul.North;
 import org.zkoss.zul.Panel;
 import org.zkoss.zul.Panelchildren;
 import org.zkoss.zul.Toolbarbutton;
+import org.zkoss.zul.Vlayout;
+import org.zkoss.zul.West;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -92,7 +95,7 @@ public class DefaultDesktop extends TabbedDesktop implements MenuListener, Seria
 
 	private Borderlayout layout;
 
-	private Portallayout portalLayout;
+	private Anchorlayout portalLayout;
 
 	private DashboardRunnable dashboardRunnable;
 
@@ -140,8 +143,8 @@ public class DefaultDesktop extends TabbedDesktop implements MenuListener, Seria
         if (parent != null)
         {
         	layout.setParent(parent);
-        	layout.setWidth("100%");
-        	layout.setHeight("100%");
+			ZKUpdateUtil.setVflex(layout, "true");
+			ZKUpdateUtil.setHflex(layout, "true");
         	layout.setStyle("position: absolute");
         }
         else
@@ -157,12 +160,12 @@ public class DefaultDesktop extends TabbedDesktop implements MenuListener, Seria
 
         West w = new West();
         layout.appendChild(w);
-        w.setWidth("300px");
+		ZKUpdateUtil.setWidth(w, "355px");
         w.setCollapsible(true);
         w.setSplittable(true);
         w.setTitle(Util.cleanAmp(Msg.getMsg(Env.getCtx(), "Menu")));
-        w.setFlex(true);
-        w.addEventListener(Events.ON_OPEN, new EventListener() {			
+		ZKUpdateUtil.setVflex(w, "flex");
+        w.addEventListener(Events.ON_OPEN, new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				OpenEvent oe = (OpenEvent) event;
@@ -178,7 +181,7 @@ public class DefaultDesktop extends TabbedDesktop implements MenuListener, Seria
 
         windowArea = new Center();
         windowArea.setParent(layout);
-        windowArea.setFlex(true);
+		ZKUpdateUtil.setVflex(windowArea, "flex");
 
         windowContainer.createPart(windowArea);
 
@@ -191,14 +194,15 @@ public class DefaultDesktop extends TabbedDesktop implements MenuListener, Seria
 		Tabpanel homeTab = new Tabpanel();
 		windowContainer.addWindow(homeTab, Msg.getMsg(Env.getCtx(), "Home").replaceAll("&", ""), false);
 
-		portalLayout = createPortalLayout();
-		portalLayout.setWidth("100%");
-		portalLayout.setHeight("100%");
-		portalLayout.setStyle("position: absolute; overflow: auto");
+		portalLayout = new Anchorlayout();//createPortalLayout();
+		portalLayout.setSclass("adhome-portal");
+		ZKUpdateUtil.setHflex(portalLayout, "1");
+		//portalLayout.setStyle("position: absolute; overflow: auto");
 		homeTab.appendChild(portalLayout);
 
 		// Dashboard content
-		Portalchildren portalChildren = null;
+		//Portalchildren portalChildren = null;
+		Vlayout portalChildren = null;
 		int currentColumnNo = 0;
 		int noOfColumns = 0;
 		int width = 0;
@@ -224,11 +228,15 @@ public class DefaultDesktop extends TabbedDesktop implements MenuListener, Seria
 					String columnWidth = "" + width;
 					if (size != null && size.length > 0 && size.length > counter && !Util.isEmpty(size[counter], true))
 						columnWidth = size[counter];
-					portalChildren = new Portalchildren();
-					portalLayout.appendChild(portalChildren);
-					portalChildren.setWidth(columnWidth.trim() + "%");
+					portalChildren = new Vlayout(); //new Portalchildren();
 					portalChildren.setStyle("padding: 5px");
-
+					portalChildren.setSclass("adhome-portal-column");
+					Anchorchildren dashboardColumn = new Anchorchildren();
+					dashboardColumn.setAnchor(columnWidth.trim() + "% 100%");
+					dashboardColumn.appendChild(portalChildren);
+					portalLayout.appendChild(dashboardColumn);
+					//ZKUpdateUtil.setWidth(portalChildren, columnWidth.trim() + "%");
+					//portalChildren.setStyle("padding: 5px");
 					currentColumnNo = columnNo;
 					counter++;
 				}
@@ -400,9 +408,13 @@ public class DefaultDesktop extends TabbedDesktop implements MenuListener, Seria
 		dashboardRunnable.start();
 	}
 
-    Portallayout createPortalLayout() {
+    /*Portallayout createPortalLayout() {
         return new Portallayout();
-    }
+    }*/
+
+	/*Vlayout createPortalLayout() {
+        return new Vlayout();
+    }*/
 
     CLogger getLogger() {
         return logger;
@@ -503,19 +515,30 @@ public class DefaultDesktop extends TabbedDesktop implements MenuListener, Seria
 				+ ", " + Msg.translate(Env.getCtx(), "R_Request_ID") + " : " + noOfRequest
 				+ ", " + Msg.getMsg (Env.getCtx(), "WorkflowActivities") + " : " + noOfWorkflow);
 	}
-	
+
+	private final static String autoHideMenuScript = "(function(){try{let w=zk.Widget.$('#{0}');let t=zk.Widget.$('#{1}');" +
+			"let e=new Object;e.target=t;w._docClick(e);}catch(error){}})()";
 	private void autoHideMenu() {
 		if (layout.getWest().isCollapsible() && !layout.getWest().isOpen())
 		{
 			//using undocumented js api, need to be retested after every version upgrade
-			String id = layout.getWest().getUuid() + "!real";
+			/*String id = layout.getWest().getUuid() + "!real";
 			String btn = layout.getWest().getUuid() + "!btn";
 			String script = "zk.show('" + id + "', false);";
 			script += "$e('"+id+"')._isSlide = false;";
 			script += "$e('"+id+"')._lastSize = null;";
 			script += "$e('"+btn+"').style.display = '';";
 			AuScript aus = new AuScript(layout.getWest(), script);
-			Clients.response("autoHideWest", aus);
+			Clients.response("autoHideWest", aus);*/
+			String id = layout.getWest().getUuid();
+			Tab tab = windowContainer.getSelectedTab();
+			if (tab != null) {
+				String tabId = tab.getUuid();
+				String script = autoHideMenuScript.replace("{0}", id);
+				script = script.replace("{1}", tabId);
+				AuScript aus = new AuScript(layout.getWest(), script);
+				Clients.response("autoHideWest", aus);
+			}
 		}
 	}
 

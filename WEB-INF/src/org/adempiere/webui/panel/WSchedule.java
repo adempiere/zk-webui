@@ -16,13 +16,9 @@
  *****************************************************************************/
 package org.adempiere.webui.panel;
 
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.TimeZone;
-import java.util.logging.Level;
-
 import org.adempiere.webui.component.Panel;
 import org.adempiere.webui.component.ToolBarButton;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.InfoSchedule;
 import org.adempiere.webui.window.WAssignmentDialog;
 import org.compiere.model.MResourceAssignment;
@@ -36,6 +32,11 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.MouseEvent;
 
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+import java.util.logging.Level;
+
 /**
  *	Visual and Control Part of Schedule.
  *  Contains Time and Schedule Panels
@@ -46,7 +47,7 @@ import org.zkoss.zk.ui.event.MouseEvent;
  *  Zk Port
  *  @author Low Heng Sin
  */
-public class WSchedule extends Panel implements EventListener
+public class WSchedule extends Panel implements EventListener<Event>
 {
 	/**
 	 * 
@@ -102,8 +103,8 @@ public class WSchedule extends Panel implements EventListener
 		this.getChildren().clear();
 				
 		timeLine = new Timeline();
-		timeLine.setHeight("400px");
-		timeLine.setWidth("100%");
+		ZKUpdateUtil.setWidth(timeLine, "400px");
+		ZKUpdateUtil.setHeight(timeLine, "100%");
 		timeLine.setId("resoureSchedule");
 		
 		this.appendChild(timeLine);		
@@ -123,7 +124,7 @@ public class WSchedule extends Panel implements EventListener
 		hourBand = new Bandinfo();
 		timeLine.appendChild(hourBand);
 		hourBand.setIntervalUnit("hour");
-		hourBand.setWidth("40%");
+		ZKUpdateUtil.setWidth(hourBand, "40%");
 		hourBand.setIntervalPixels(40);
 		hourBand.setTimeZone(TimeZone.getDefault());
 		
@@ -132,11 +133,11 @@ public class WSchedule extends Panel implements EventListener
 		dayBand = new Bandinfo();
 		timeLine.appendChild(dayBand);
 		dayBand.setIntervalUnit("day");
-		dayBand.setWidth("35%");
+		ZKUpdateUtil.setWidth(dayBand, "35%");
 		dayBand.setIntervalPixels(100);
 		dayBand.setSyncWith(hourBand.getId());		
 		dayBand.setTimeZone(TimeZone.getDefault());
-		dayBand.setShowEventText(false);
+		//dayBand.setShowEventText(false);
 		// listening band scroll event
 		dayBand.addEventListener("onBandScroll", this);
 		
@@ -145,11 +146,11 @@ public class WSchedule extends Panel implements EventListener
 		mthBand = new Bandinfo();
 		timeLine.appendChild(mthBand);
 		mthBand.setIntervalUnit("month");
-		mthBand.setWidth("25%");
+		ZKUpdateUtil.setWidth(mthBand, "25%");
 		mthBand.setIntervalPixels(150);
 		mthBand.setSyncWith(dayBand.getId());		
 		mthBand.setTimeZone(TimeZone.getDefault());
-		mthBand.setShowEventText(false);		
+		//mthBand.setShowEventText(false);
 	}
 
 	/**

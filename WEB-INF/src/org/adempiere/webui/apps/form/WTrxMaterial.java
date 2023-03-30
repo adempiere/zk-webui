@@ -16,10 +16,8 @@
  *****************************************************************************/
 package org.adempiere.webui.apps.form;
 
-import java.sql.Timestamp;
-import java.util.Properties;
-import java.util.logging.Level;
-
+import org.adempiere.exceptions.ValueChangeEvent;
+import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.LayoutUtils;
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.ConfirmPanel;
@@ -33,11 +31,13 @@ import org.adempiere.webui.editor.WDateEditor;
 import org.adempiere.webui.editor.WLocatorEditor;
 import org.adempiere.webui.editor.WSearchEditor;
 import org.adempiere.webui.editor.WTableDirEditor;
-import org.adempiere.exceptions.ValueChangeEvent;
-import org.adempiere.exceptions.ValueChangeListener;
-import org.adempiere.webui.panel.*;
+import org.adempiere.webui.panel.ADForm;
 import org.adempiere.webui.panel.ADTabPanel;
+import org.adempiere.webui.panel.CustomForm;
+import org.adempiere.webui.panel.IFormController;
+import org.adempiere.webui.panel.StatusBarPanel;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.apps.form.TrxMaterial;
 import org.compiere.model.MLocatorLookup;
 import org.compiere.model.MLookup;
@@ -47,11 +47,15 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
+import org.zkoss.zul.North;
 import org.zkoss.zul.Separator;
+import org.zkoss.zul.South;
+
+import java.sql.Timestamp;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  * Material Transaction History
@@ -60,7 +64,7 @@ import org.zkoss.zul.Separator;
  * @version $Id: VTrxMaterial.java,v 1.3 2006/07/30 00:51:28 jjanke Exp $
  */
 public class WTrxMaterial extends TrxMaterial
-	implements IFormController, EventListener, ValueChangeListener
+	implements IFormController, EventListener<Event>, ValueChangeListener
 {
 	/**
 	 * 
@@ -121,8 +125,8 @@ public class WTrxMaterial extends TrxMaterial
 		form.appendChild(mainPanel);
 		mainPanel.setStyle("width: 99%; height: 100%; border: none; padding: 0; margin: 0");
 		mainPanel.appendChild(mainLayout);
-		mainLayout.setWidth("100%");
-		mainLayout.setHeight("100%");
+		ZKUpdateUtil.setWidth(mainLayout, "100%");
+		ZKUpdateUtil.setHeight(mainLayout, "100%");
 		parameterPanel.appendChild(parameterLayout);
 		//
 		orgLabel.setText(Msg.translate(Env.getCtx(), "AD_Org_ID"));
@@ -209,7 +213,7 @@ public class WTrxMaterial extends TrxMaterial
 			m_gridController.switchRowPresentation();
 		Center center = new Center();
 		mainLayout.appendChild(center);
-		center.setFlex(true);
+		ZKUpdateUtil.setVflex(center, "flex");
 		center.appendChild(m_gridController);
 	}   //  dynInit
 

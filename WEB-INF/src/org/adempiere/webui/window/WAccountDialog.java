@@ -16,11 +16,6 @@
  *****************************************************************************/
 package org.adempiere.webui.window;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-
 import org.adempiere.exceptions.ValueChangeEvent;
 import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.apps.AEnv;
@@ -38,6 +33,7 @@ import org.adempiere.webui.editor.WebEditorFactory;
 import org.adempiere.webui.panel.ADTabPanel;
 import org.adempiere.webui.panel.StatusBarPanel;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.DataStatusEvent;
 import org.compiere.model.DataStatusListener;
 import org.compiere.model.GridField;
@@ -57,15 +53,20 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
 import org.zkoss.zul.Caption;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Groupbox;
 import org.zkoss.zul.Hbox;
+import org.zkoss.zul.North;
+import org.zkoss.zul.South;
 import org.zkoss.zul.Vbox;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
 
 /**
  *	Dialog to enter Account Info
@@ -77,7 +78,7 @@ import org.zkoss.zul.Vbox;
  * 		@see BR [ 1063 ] Null pointer exception in field type Account zk</a>
  */
 public final class WAccountDialog extends Window
-	implements EventListener, DataStatusListener, ValueChangeListener
+	implements EventListener<Event>, DataStatusListener, ValueChangeListener
 {
 
 	private static final long serialVersionUID = 7999516267209766287L;
@@ -93,8 +94,8 @@ public final class WAccountDialog extends Window
 	{
 		super ();
 		this.setTitle(title);
-		this.setHeight("500px");
-		this.setWidth("700px");
+		ZKUpdateUtil.setWindowWidthX(this,1024);
+		ZKUpdateUtil.setWindowHeightX(this,700);
 
 		log.config("C_AcctSchema_ID=" + C_AcctSchema_ID
 			+ ", C_ValidCombination_ID=" + mAccount.C_ValidCombination_ID);
@@ -208,9 +209,9 @@ public final class WAccountDialog extends Window
 		//
 
 		northPanel.appendChild(parameterPanel);
-		parameterPanel.setWidth("95%");
+		ZKUpdateUtil.setWidth(parameterPanel, "95%");
 		northPanel.appendChild(toolBar);
-		northPanel.setWidth("100%");
+		ZKUpdateUtil.setWidth(northPanel, "100%");
 
 		m_adTabPanel = new ADTabPanel();
 		//	BR [ 1063 ]
@@ -222,21 +223,21 @@ public final class WAccountDialog extends Window
 		layout.setParent(this);
 		if (AEnv.isFirefox2())
 		{
-			layout.setHeight("93%");
-			layout.setWidth("98%");
+			ZKUpdateUtil.setWidth(layout, "98%");
+			ZKUpdateUtil.setHeight(layout, "93%");
 			layout.setStyle("background-color: transparent; position: absolute;");
 			this.setStyle("position: relative;");
 		}
 		else
 		{
-			layout.setHeight("100%");
-			layout.setWidth("100%");
+			ZKUpdateUtil.setWidth(layout, "100%");
+			ZKUpdateUtil.setHeight(layout, "100%");
 			layout.setStyle("background-color: transparent;");
 		}
 
 		North nRegion = new North();
 		nRegion.setParent(layout);
-		nRegion.setFlex(false);
+		ZKUpdateUtil.setVflex(nRegion, "flex");
 		nRegion.appendChild(northPanel);
 		nRegion.setStyle("background-color: transparent; border: none");
 		northPanel.setStyle("background-color: transparent;");
@@ -244,7 +245,7 @@ public final class WAccountDialog extends Window
 		Center cRegion = new Center();
 		cRegion.setParent(layout);
 		cRegion.appendChild(m_adTabPanel);
-		cRegion.setFlex(true);
+		ZKUpdateUtil.setVflex(cRegion, "flex");
 
 		South sRegion = new South();
 		sRegion.setParent(layout);

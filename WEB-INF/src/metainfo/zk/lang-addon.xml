@@ -19,13 +19,48 @@ Copyright (C) 2007 Ashley G Ramdass (ADempiere WebUI).
 
 	<version>
 		<version-class>org.adempiere.webui.AdempiereWebUI</version-class>
-		<version-uid>3.5</version-uid>
+		<version-uid>3.9.4</version-uid>
 	</version>
 
-	<javascript src="/js/calc.js" charset="UTF-8"/>
+	<component>
+		<component-name>keylistener</component-name>
+		<component-class>org.zkforge.keylistener.Keylistener</component-class>
+		<widget-class>zkforge.KeyListener</widget-class>
+		<mold>
+			<mold-name>default</mold-name>
+			<mold-uri>mold/key-listener.js</mold-uri>
+		</mold>
+	</component>
+
+	<component>
+		<component-name>chosenbox</component-name>
+		<component-class>org.zkoss.addon.chosenbox.Chosenbox</component-class>
+		<widget-class>chosenbox.Chosenbox</widget-class>
+		<mold>
+			<mold-name>default</mold-name>
+			<mold-uri>mold/chosenbox.js</mold-uri>
+			<css-uri>css/chosenbox.css.dsp</css-uri>
+		</mold>
+	</component>
+	
+ 	<javascript src="/js/calc.js" charset="UTF-8"/>
 	<javascript src="/js/layout.js" charset="UTF-8"/>
-	<javascript src="/js/report.js" charset="UTF-8"/>	
-	<javascript src="/js/persist-min.js" charset="UTF-8"/>
-	<javascript src="/js/token.js" charset="UTF-8"/>
-	<javascript src="/js/text_action.js" charset="UTF-8"/>
+	<javascript src="/js/report.js" charset="UTF-8"/>
+	<javascript src="/js/window.js" charset="UTF-8"/>	
+	
+		<!-- Show date picker dialog -->
+	<javascript src="/js/jquery.1.7.0.js" charset="UTF-8" />
+	<javascript src="/js/picker.js" charset="UTF-8" />
+	<javascript src="/js/picker.date.js" charset="UTF-8" />
+	<javascript src="/js/date-picker-dialog.js" charset="UTF-8" />
+	<javascript src="/js/legacy.js" charset="UTF-8" />
+	
+	<!-- Drag & Drop In Attachment -->
+	<javascript src="/js/drag-drop-attachment.js" charset="UTF-8" />
+	
+	<!-- Smart Sidebar -->
+	<javascript src="/js/smart-sidebar-panel.js" charset="UTF-8" />
+
+	<javascript package="jawwa.atmosphere" merge="false" />
+
 </language>

@@ -17,13 +17,6 @@
 
 package org.adempiere.webui.editor;
 
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-
 import org.adempiere.exceptions.ValueChangeEvent;
 import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.ValuePreference;
@@ -61,6 +54,13 @@ import org.zkforge.keylistener.Keylistener;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.KeyEvent;
+
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
 
 /**
  * Search Editor for web UI.
@@ -213,7 +213,7 @@ public class WSearchEditor extends WEditor implements ContextMenuListener, Value
 			getComponent().setButtonImage("/images/PickOpen10.png");
 		}
 		
-		getComponent().getTextbox().setContext(popupMenu.getId());
+		getComponent().getTextbox().setContext(popupMenu);
 		if (gridField != null && gridField.getGridTab() != null)
 		{
 			WRecordInfo.addMenu(popupMenu);

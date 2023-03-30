@@ -17,12 +17,13 @@
 package org.adempiere.webui.component;
 
 import org.adempiere.webui.apps.AEnv;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.Obscure;
 import org.zkoss.zk.ui.WrongValueException;
+import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Constraint;
-import org.zkoss.zul.Div;
 
 /**
  * @author e-Evolution , victor.perez@e-evolution.com
@@ -30,7 +31,7 @@ import org.zkoss.zul.Div;
  *    <li>New ADempiere 3.8.0 ZK Theme Light  https://adempiere.atlassian.net/browse/ADEMPIERE-320
  */
 
-public class StringBox extends Div implements org.zkoss.zul.api.Textbox
+public class StringBox extends org.zkoss.zul.Div //implements org.zkoss.zul.Textbox
 {
     /**
 	 * 
@@ -46,10 +47,7 @@ public class StringBox extends Div implements org.zkoss.zul.api.Textbox
 	{
 		return textbox.isReadonly();
 	}
-        /**
-     * 
-     * @param integral
-     */
+
     public StringBox()
     {
         super();
@@ -103,13 +101,13 @@ public class StringBox extends Div implements org.zkoss.zul.api.Textbox
      * method to ease porting of swing form
      * @param listener
      */
-	public void addFocusListener(EventListener listener) {
+	public void addFocusListener(EventListener<Event> listener) {
 		textbox.addEventListener(Events.ON_FOCUS, listener);
 		textbox.addEventListener(Events.ON_BLUR, listener);
 	}
 	
 	@Override
-	public boolean addEventListener(String evtnm, EventListener listener)
+	public boolean addEventListener(String evtnm, org.zkoss.zk.ui.event.EventListener<? extends org.zkoss.zk.ui.event.Event> listener)
 	{
 	     
 	         return textbox.addEventListener(evtnm, listener);
@@ -126,140 +124,141 @@ public class StringBox extends Div implements org.zkoss.zul.api.Textbox
 	{
 		return textbox;
 	}
-	@Override
+
 	public boolean isDisabled() {
 		return textbox.isDisabled();
 	}
-	@Override
+
 	public void setDisabled(boolean disabled) {
 		textbox.setDisabled(disabled);
 	}
-	@Override
+
 	public void setReadonly(boolean readonly) {
 		textbox.setReadonly(readonly);
 	}
-	@Override
+
 	public String getName() {
 		return textbox.getName();
 	}
-	@Override
+
 	public void setName(String name) {
 		textbox.setName(name);
 	}
-	@Override
+
 	public String getErrorMessage() {
 		return textbox.getErrorMessage();
 	}
-	@Override
+
 	public void clearErrorMessage(boolean revalidateRequired) {
 		textbox.clearErrorMessage(revalidateRequired);
 	}
-	@Override
+
 	public void clearErrorMessage() {
 		textbox.clearErrorMessage();
 	}
-	@Override
+
 	public String getText() throws WrongValueException {
 		return textbox.getText();
 	}
-	@Override
+
 	public void setText(String value) throws WrongValueException {
 		textbox.setText(value);
 	}
-	@Override
+
 	public int getMaxlength() {
 		return textbox.getMaxlength();
 	}
-	@Override
+
 	public void setMaxlength(int maxlength) {
 		textbox.setMaxlength(maxlength);
 	}
-	@Override
+
 	public int getCols() {
 		return textbox.getCols();
 	}
-	@Override
+
 	public void setCols(int cols) throws WrongValueException {
 		textbox.setCols(cols);
 	}
-	@Override
+
 	public int getTabindex() {
 		return textbox.getTabindex();
 	}
-	@Override
+
 	public void setTabindex(int tabindex) throws WrongValueException {
 		textbox.setTabindex(tabindex);
 	}
-	@Override
+
 	public boolean isMultiline() {
 		return textbox.isMultiline();
 	}
-	@Override
+
 	public String getType() {
 		return textbox.getType();
 	}
-	@Override
+
 	public void select() {
 		textbox.select();
 	}
-	@Override
+
 	public void setConstraint(String constr) {
 		textbox.setConstraint(constr);
 	}
-	@Override
+
 	public Object getRawValue() {
 		return textbox.getRawValue();
 	}
-	@Override
+
 	public String getRawText() {
 		return textbox.getRawText();
 	}
-	@Override
+
 	public void setRawValue(Object value) {
 		textbox.setRawValue(value);
 	}
-	@Override
+
 	public boolean isValid() {
 		return textbox.isValid();
 	}
-	@Override
+
 	public void setSelectedText(int start, int end, String newtxt,
 			boolean isHighLight) {
 		textbox.setSelectedText(start, end, newtxt, isHighLight);
 	}
-	@Override
+
 	public void setSelectionRange(int start, int end) {
 		textbox.setSelectionRange(start, end);
 	}
-	@Override
-	public String getAreaText() {
+
+	/*public String getAreaText() {
 		return textbox.getAreaText();
-	}
-	@Override
+	}*/
+
+
 	public void setConstraint(Constraint constr) {
 		textbox.setConstraint(constr);
 	}
-	@Override
+
 	public Constraint getConstraint() {
 		return textbox.getConstraint();
 	}
-	@Override
+
 	public void setValue(String value) throws WrongValueException {
 		textbox.setValue(value);
 	}
-	@Override
+
 	public void setType(String type) throws WrongValueException {
 		textbox.setType(type);
 	}
-	@Override
+
 	public int getRows() {
 		return textbox.getRows();
 	}
-	@Override
+
 	public void setRows(int rows) throws WrongValueException {
 		textbox.setRows(rows);
 	}
-	@Override
+
 	public void setMultiline(boolean multiline) {
 		textbox.setMultiline(multiline);
 	}
@@ -279,14 +278,12 @@ public class StringBox extends Div implements org.zkoss.zul.api.Textbox
 	
 	public void setWidth(String width)
 	{
-		super.setWidth(width);
-		textbox.setWidth(width);
+		ZKUpdateUtil.setWidth(textbox, width);
 	}
 	
 	public void setHeight(String height)
 	{
-		super.setHeight(height);
-		textbox.setHeight("95%");
+		ZKUpdateUtil.setHeight(textbox, height);
 	}
-	
+
 }

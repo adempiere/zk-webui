@@ -17,15 +17,12 @@
 
 package org.adempiere.webui.editor;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-
+import org.adempiere.exceptions.ValueChangeEvent;
 import org.adempiere.webui.ValuePreference;
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.NumberBox;
 import org.adempiere.webui.event.ContextMenuEvent;
 import org.adempiere.webui.event.ContextMenuListener;
-import org.adempiere.exceptions.ValueChangeEvent;
 import org.adempiere.webui.window.WRecordInfo;
 import org.compiere.model.GridField;
 import org.compiere.model.MRole;
@@ -33,6 +30,9 @@ import org.compiere.util.DisplayType;
 import org.compiere.util.Env;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
+
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 /**
  *
@@ -131,7 +131,7 @@ public class WNumberEditor extends WEditor implements ContextMenuListener
 		{
 			WRecordInfo.addMenu(popupMenu);
 		}
-    	getComponent().setContext(popupMenu.getId());
+    	getComponent().setContext(popupMenu);
     }
 
 	/**

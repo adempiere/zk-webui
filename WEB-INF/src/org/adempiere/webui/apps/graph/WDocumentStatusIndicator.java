@@ -22,6 +22,7 @@ import org.adempiere.webui.component.ToolBarButton;
 import org.adempiere.webui.component.Window;
 import org.adempiere.webui.panel.ADForm;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.MQuery;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -82,7 +83,7 @@ public class WDocumentStatusIndicator extends Panel implements EventListener {
 		nameLabel.setLabel(m_documentStatus.getName());
 		
 		statusLabel = new Label();
-		statusLabel.setWidth("60px");
+		ZKUpdateUtil.setWidth(statusLabel, "60px");
 		
 		Hbox box = new Hbox();
 		box.setSclass("docStatus");

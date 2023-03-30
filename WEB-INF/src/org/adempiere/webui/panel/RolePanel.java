@@ -23,9 +23,6 @@
 
 package org.adempiere.webui.panel;
 
-import java.util.Properties;
-import java.util.ResourceBundle;
-
 import org.adempiere.webui.LayoutUtils;
 import org.adempiere.webui.component.ComboItem;
 import org.adempiere.webui.component.Combobox;
@@ -37,6 +34,7 @@ import org.adempiere.webui.session.SessionManager;
 import org.adempiere.webui.theme.ITheme;
 import org.adempiere.webui.theme.ThemeManager;
 import org.adempiere.webui.util.UserPreference;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.LoginWindow;
 import org.compiere.model.MRole;
 import org.compiere.model.MSysConfig;
@@ -60,7 +58,11 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Div;
+import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Image;
+
+import java.util.Properties;
+import java.util.ResourceBundle;
 
 import static org.adempiere.webui.session.SessionContextListener.SERVLET_SESSION_ID;
 
@@ -75,7 +77,7 @@ import static org.adempiere.webui.session.SessionContextListener.SERVLET_SESSION
  * @see https://github.com/adempiere/adempiere/issues/1769
  * @date    July 18, 2007
  */
-public class RolePanel extends Window implements EventListener, Deferrable
+public class RolePanel extends Window implements EventListener<Event>, Deferrable
 {
 	/**
 	 * 
@@ -222,16 +224,21 @@ public class RolePanel extends Window implements EventListener, Deferrable
     	tr.appendChild(td);
     	td.appendChild(lstWarehouse);
 
-    	div = new Div();
-    	div.setSclass(ITheme.LOGIN_BOX_FOOTER_CLASS);
+    	//div = new Div();
+    	//div.setSclass(ITheme.LOGIN_BOX_FOOTER_CLASS);
+        Hbox confirmBox = new Hbox();
+        confirmBox.setSclass(ITheme.LOGIN_BOX_FOOTER_CLASS);
+        confirmBox.setAlign("center");
+        ZKUpdateUtil.setWidth(confirmBox, "150px");
+
         ConfirmPanel pnlButtons = new ConfirmPanel(true);
         pnlButtons.addActionListener(this);
         LayoutUtils.addSclass(ITheme.LOGIN_BOX_FOOTER_PANEL_CLASS, pnlButtons);
-        pnlButtons.setWidth(null);
+        ZKUpdateUtil.setWidth(pnlButtons, null);
         pnlButtons.getButton(ConfirmPanel.A_OK).setSclass(ITheme.LOGIN_BUTTON_CLASS);
         pnlButtons.getButton(ConfirmPanel.A_CANCEL).setSclass(ITheme.LOGIN_BUTTON_CLASS);
-        div.appendChild(pnlButtons);
-        this.appendChild(div);
+        confirmBox.appendChild(pnlButtons);
+        this.appendChild(confirmBox);
     }
 
     private void initComponents()
@@ -261,28 +268,28 @@ public class RolePanel extends Window implements EventListener, Deferrable
         lstRole.setAutodrop(true);
         lstRole.setId("lstRole");
         lstRole.addEventListener(Events.ON_SELECT, this);
-        lstRole.setWidth("220px");
+        ZKUpdateUtil.setWidth(lstRole, "220px");
 
         lstClient = new Combobox();
         lstClient.setAutocomplete(true);
         lstClient.setAutodrop(true);
         lstClient.setId("lstClient");
         lstClient.addEventListener(Events.ON_SELECT, this);
-        lstClient.setWidth("220px");
+        ZKUpdateUtil.setWidth(lstClient, "220px");
 
         lstOrganisation = new Combobox();
         lstOrganisation.setAutocomplete(true);
         lstOrganisation.setAutodrop(true);
         lstOrganisation.setId("lstOrganisation");
         lstOrganisation.addEventListener(Events.ON_SELECT, this);
-        lstOrganisation.setWidth("220px");
+        ZKUpdateUtil.setWidth(lstOrganisation, "220px");
 
         lstWarehouse = new Combobox();
         lstWarehouse.setAutocomplete(true);
         lstWarehouse.setAutodrop(true);
         lstWarehouse.setId("lstWarehouse");
         lstWarehouse.addEventListener(Events.ON_SELECT, this);
-        lstWarehouse.setWidth("220px");
+        ZKUpdateUtil.setWidth(lstWarehouse, "220px");
 
         btnOk = new Button();
         btnOk.setId("btnOk");
@@ -293,7 +300,6 @@ public class RolePanel extends Window implements EventListener, Deferrable
         btnCancel.setId("btnCancel");
         btnCancel.setLabel("Cancel");
         btnCancel.addEventListener("onClick", this);
-
         // initial role - Elaine 2009/02/06
         updateRoleList();
     }

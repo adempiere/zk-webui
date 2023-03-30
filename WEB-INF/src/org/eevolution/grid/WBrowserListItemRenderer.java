@@ -17,18 +17,6 @@
 
 package org.eevolution.grid;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.adempiere.exceptions.ValueChangeEvent;
 import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.model.MBrowseField;
@@ -49,6 +37,7 @@ import org.adempiere.webui.editor.WEditor;
 import org.adempiere.webui.editor.WebEditorFactory;
 import org.adempiere.webui.event.TableValueChangeEvent;
 import org.adempiere.webui.event.TableValueChangeListener;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.minigrid.IDColumn;
 import org.compiere.model.GridField;
 import org.compiere.util.DisplayType;
@@ -70,6 +59,18 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.ListitemRendererExt;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * for the {@link org.adempiere.webui.component.Listbox}.
  *
@@ -86,7 +87,7 @@ import org.zkoss.zul.ListitemRendererExt;
  * 		<li><a href="https://github.com/adempiere/adempiere/issues/560">
  * 		FR [ 560 ] SB on ZK have always editable the columns</a>
  */
-public class WBrowserListItemRenderer implements ListitemRenderer, EventListener, ListitemRendererExt , ValueChangeListener
+public class WBrowserListItemRenderer implements ListitemRenderer<Object>, EventListener<Event>, ListitemRendererExt , ValueChangeListener
 {
 	/** Array of listeners for changes in the table components. */
 	protected ArrayList<TableValueChangeListener> m_listeners =
@@ -166,12 +167,6 @@ public class WBrowserListItemRenderer implements ListitemRenderer, EventListener
 			throw new IllegalArgumentException("There is no WTableColumn at column "
                     + columnIndex);
 		}
-	}
-
-
-	@Override
-	public void render(Listitem item, Object data) throws Exception {
-		render((ListItem)item, data);
 	}
 
 	/**
@@ -278,13 +273,18 @@ public class WBrowserListItemRenderer implements ListitemRenderer, EventListener
 		else
 			label.setDynamicProperty("title", "");
 	}
-	
+
+	public void render(Listitem item, Object data, int index) throws Exception
+	{
+		render((ListItem)item, data, index);
+	}
+
 	/**
 	 * Render Item
 	 * @param item
 	 * @param data
 	 */
-	private void render(ListItem item, Object data)
+	private void render(ListItem item, Object data, int index)
 	{
 		Listcell listcell = null;
 		int colIndex = 0;
@@ -392,7 +392,7 @@ public class WBrowserListItemRenderer implements ListitemRenderer, EventListener
 					NumberBox numberbox = new NumberBox(false);
 					numberbox.setFormat(format);
 					numberbox.setValue(field);
-					numberbox.setWidth("100px");
+					ZKUpdateUtil.setWidth(numberbox, "100px");
 					numberbox.setStyle("text-align:right; " + listcell.getStyle());
 					numberbox.addEventListener(Events.ON_CHANGE, this);
 					listcell.appendChild(numberbox);
@@ -621,13 +621,13 @@ public class WBrowserListItemRenderer implements ListitemRenderer, EventListener
         	if (!isColumnVisible(getColumn(headerIndex)))
         	{
         		header = new ListHeader("");
-        		header.setWidth("0px");
+				ZKUpdateUtil.setWidth(header, "0px");
         		header.setStyle("width: 0px");
         	}
         	else if (classType != null && classType.isAssignableFrom(IDColumn.class))
         	{
         		header = new ListHeader("");
-        		header.setWidth("35px");
+				ZKUpdateUtil.setWidth(header, "35px");
         	}
         	else
         	{
@@ -661,8 +661,8 @@ public class WBrowserListItemRenderer implements ListitemRenderer, EventListener
 	            }
 	            else if (width > 0 && width < 100)
 	            	width = 100;
-	
-	            header.setWidth(width + "px");
+
+				ZKUpdateUtil.setWidth(header, width + "px");
         	}
             m_headers.add(header);
         }
@@ -673,7 +673,7 @@ public class WBrowserListItemRenderer implements ListitemRenderer, EventListener
             if (!isColumnVisible(getColumn(headerIndex)))
         	{
         		header.setLabel("");
-        		header.setWidth("0px");
+				ZKUpdateUtil.setWidth(header,  "0px");
         		header.setStyle("width: 0px");
         	}
         	else if (!header.getLabel().equals(headerText))

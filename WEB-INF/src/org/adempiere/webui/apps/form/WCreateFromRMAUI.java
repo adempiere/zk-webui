@@ -13,10 +13,8 @@
  *****************************************************************************/
 package org.adempiere.webui.apps.form;
 
-import java.io.IOException;
-import java.util.Vector;
-import java.util.logging.Level;
-
+import org.adempiere.exceptions.ValueChangeEvent;
+import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.component.Grid;
 import org.adempiere.webui.component.GridFactory;
 import org.adempiere.webui.component.Label;
@@ -26,11 +24,10 @@ import org.adempiere.webui.component.Row;
 import org.adempiere.webui.component.Rows;
 import org.adempiere.webui.editor.WEditor;
 import org.adempiere.webui.editor.WSearchEditor;
-import org.adempiere.exceptions.ValueChangeEvent;
-import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.panel.ADForm;
 import org.adempiere.webui.panel.CustomForm;
 import org.adempiere.webui.panel.IFormController;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.apps.form.CreateFromRMA;
 import org.compiere.apps.form.ICreateFrom;
 import org.compiere.model.MLookup;
@@ -40,8 +37,12 @@ import org.compiere.util.CLogger;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
+
+import java.io.IOException;
+import java.util.Vector;
+import java.util.logging.Level;
 
 /**
  *	@author Yamel Senih, ysenih@erpcya.com, ERPCyA http://www.erpcya.com
@@ -127,8 +128,8 @@ public class WCreateFromRMAUI extends CreateFromRMA
 		bPartnerLabel.setText(Msg.getElement(Env.getCtx(), "C_BPartner_ID"));
         
 		Borderlayout parameterLayout = new Borderlayout();
-		parameterLayout.setHeight("120px");
-		parameterLayout.setWidth("100%");
+		ZKUpdateUtil.setWidth(parameterLayout, "120px");
+		ZKUpdateUtil.setHeight(parameterLayout, "100%");
     	Panel parameterPanel = v_CreateFromPanel.getParameterPanel();
 		parameterPanel.appendChild(parameterLayout);
 		
@@ -146,8 +147,8 @@ public class WCreateFromRMAUI extends CreateFromRMA
 		if (bPartnerField != null)
 			row.appendChild(bPartnerField.getComponent());
     	//	Add to Main
-    	v_CreateFromPanel.setWidth("100%");
-    	v_CreateFromPanel.setHeight("100%");
+		ZKUpdateUtil.setWidth(v_CreateFromPanel, "100%");
+		ZKUpdateUtil.setHeight(v_CreateFromPanel, "100%");
     	v_Container.appendChild(v_CreateFromPanel);
 	}
 	

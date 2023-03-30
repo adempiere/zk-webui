@@ -13,13 +13,6 @@
  *****************************************************************************/
 package org.adempiere.webui.apps.wf;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Level;
-
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Button;
 import org.adempiere.webui.component.Grid;
@@ -37,6 +30,7 @@ import org.adempiere.webui.component.Window;
 import org.adempiere.webui.editor.WSearchEditor;
 import org.adempiere.webui.panel.ADForm;
 import org.adempiere.webui.panel.StatusBarPanel;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.model.MColumn;
 import org.compiere.model.MLookup;
@@ -61,13 +55,20 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Html;
+import org.zkoss.zul.North;
+import org.zkoss.zul.South;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Direct port from WFActivity
@@ -145,8 +146,8 @@ public class WWFActivity extends ADForm implements EventListener
 	private void init()
 	{
 		Grid grid = new Grid();
-		grid.setWidth("100%");
-        grid.setHeight("100%");
+		ZKUpdateUtil.setWidth(grid, "100%");
+		ZKUpdateUtil.setHeight(grid, "100%");
         grid.setStyle("margin:0; padding:0; position: absolute; align: center; valign: center;");
         grid.makeNoStrip();
         grid.setOddRowSclass("even");
@@ -161,7 +162,7 @@ public class WWFActivity extends ADForm implements EventListener
 		div.appendChild(lNode);
 		row.appendChild(div);
 		row.appendChild(fNode);
-		fNode.setWidth("100%");
+		ZKUpdateUtil.setWidth(fNode, "100%");
 		fNode.setReadonly(true);
 
 		row = new Row();
@@ -173,7 +174,7 @@ public class WWFActivity extends ADForm implements EventListener
 		row.appendChild(div);
 		row.appendChild(fDescription);
 		fDescription.setMultiline(true);
-		fDescription.setWidth("100%");
+		ZKUpdateUtil.setWidth(fDescription, "100%");
 		fDescription.setReadonly(true);
 
 		row = new Row();
@@ -184,7 +185,7 @@ public class WWFActivity extends ADForm implements EventListener
 		row.appendChild(div);
 		row.appendChild(fHelp);
 		fHelp.setMultiline(true);
-		fHelp.setWidth("100%");
+		ZKUpdateUtil.setWidth(fHelp, "100%");
 		fHelp.setReadonly(true);
 		fHelp.setRows(3);
 		row.appendChild(new Label());
@@ -221,7 +222,7 @@ public class WWFActivity extends ADForm implements EventListener
 		row.appendChild(div);
 		row.appendChild(fTextMsg);
 		fTextMsg.setMultiline(true);
-		fTextMsg.setWidth("100%");
+		ZKUpdateUtil.setWidth(fTextMsg, "100%");
 		row.appendChild(new Label());
 
 		row = new Row();
@@ -238,15 +239,15 @@ public class WWFActivity extends ADForm implements EventListener
 		bOK.addEventListener(Events.ON_CLICK, this);
 
 		Borderlayout layout = new Borderlayout();
-		layout.setWidth("100%");
-		layout.setHeight("100%");
+		ZKUpdateUtil.setWidth(layout, "100%");
+		ZKUpdateUtil.setHeight(layout, "100%");
 		layout.setStyle("background-color: transparent; position: absolute;");
 
 		North north = new North();
 		north.appendChild(listbox);
 		north.setSplittable(true);
-		north.setFlex(true);
-		north.setHeight("50%");
+		ZKUpdateUtil.setVflex(north, "flex");
+		ZKUpdateUtil.setHflex(north, "true");
 		layout.appendChild(north);
 		north.setStyle("background-color: transparent");
 		listbox.addEventListener(Events.ON_SELECT, this);
@@ -255,8 +256,7 @@ public class WWFActivity extends ADForm implements EventListener
 		center.appendChild(grid);
 		layout.appendChild(center);
 		center.setStyle("background-color: transparent");
-		center.setFlex(true);
-
+		ZKUpdateUtil.setVflex(center, "flex");
 		South south = new South();
 		south.appendChild(statusBar);
 		layout.appendChild(south);
@@ -277,7 +277,7 @@ public class WWFActivity extends ADForm implements EventListener
     			cmd_zoom();
     		else if (comp == bOK)
     		{
-    			Clients.showBusy(Msg.getMsg(Env.getCtx(), "Processing"), true);
+    			Clients.showBusy(Msg.getMsg(Env.getCtx(), "Processing"));
     			Events.echoEvent("onOK", this, null);
     		}
     		else if (comp == fAnswerButton)
@@ -422,15 +422,21 @@ public class WWFActivity extends ADForm implements EventListener
 				Msg.translate(Env.getCtx(), "Summary")};
 
 		WListItemRenderer renderer = new WListItemRenderer(Arrays.asList(columns));
-		ListHeader header = new ListHeader();
-		header.setWidth("30px");
-		renderer.setListHeader(0, header);
+		ListHeader header0 = new ListHeader();
+		ZKUpdateUtil.setWidth(header0, "60px");
+		renderer.setListHeader(0, header0);
+		ListHeader header1 = new ListHeader();
+		ZKUpdateUtil.setWidth(header1, null);
+		renderer.setListHeader(1, header1);
+		ListHeader header2 = new ListHeader();
+		ZKUpdateUtil.setWidth(header2, "500px");
+		renderer.setListHeader(2, header2);
 		renderer.addTableValueChangeListener(listbox);
 		model.setNoColumns(columns.length);
 		listbox.setModel(model);
 		listbox.setItemRenderer(renderer);
 		listbox.repaint();
-		listbox.setFixedLayout(true);
+		listbox.setSizedByContent(false);
 
 		return m_activities.length;
 	}	//	loadActivities
@@ -606,7 +612,7 @@ public class WWFActivity extends ADForm implements EventListener
 		log.config("Activity=" + m_activity);
 		if (m_activity == null)
 		{
-			Clients.showBusy(null, false);
+			Clients.clearBusy();
 			return;
 		}
 		int AD_User_ID = Env.getAD_User_ID(Env.getCtx());
@@ -701,7 +707,7 @@ public class WWFActivity extends ADForm implements EventListener
 		}
 		finally
 		{
-			Clients.showBusy(null, false);
+			Clients.clearBusy();
 			if (trx != null)
 				trx.close();
 			if(Util.isEmpty(errorMessage)) {

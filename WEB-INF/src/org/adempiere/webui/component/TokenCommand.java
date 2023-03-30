@@ -16,35 +16,41 @@ package org.adempiere.webui.component;
 import org.adempiere.webui.event.TokenEvent;
 import org.zkoss.lang.Objects;
 import org.zkoss.zk.au.AuRequest;
-import org.zkoss.zk.au.Command;
+import org.zkoss.zk.au.AuService;
 import org.zkoss.zk.mesg.MZk;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.UiException;
 import org.zkoss.zk.ui.event.Events;
+
+import java.util.Map;
 
 /**
  * Command class to handle user authentication token event
  * @author hengsin
  *
  */
-public class TokenCommand extends Command {
+public class TokenCommand implements AuService {
 
-	public TokenCommand(String id, int flags) {
-		super(id, flags);
+	public TokenCommand() {
 	}
 
-	@Override
-	protected void process(AuRequest request) {
-		final String[] data = request.getData();
+	public boolean service(AuRequest request, boolean everError) {
+		if (!TokenEvent.ON_USER_TOKEN.equals(request.getCommand()))
+			return false;
 
+		final Map<?, ?> map = request.getData();
+		String sid = (String) map.get("sid");
+		String hash = (String) map.get("hash");
+		final String[] data = new String[] {sid, hash};
 		final Component comp = request.getComponent();
 		if (comp == null)
 			throw new UiException(MZk.ILLEGAL_REQUEST_COMPONENT_REQUIRED, this);
-		
+
 		if (data == null || data.length < 2)
 			throw new UiException(MZk.ILLEGAL_REQUEST_WRONG_DATA, new Object[] {
 					Objects.toString(data), this });
-		
-		Events.postEvent(new TokenEvent(getId(), comp, data));
+
+		Events.postEvent(new TokenEvent(request.getCommand(), comp, data));
+		return true;
 	}
 }

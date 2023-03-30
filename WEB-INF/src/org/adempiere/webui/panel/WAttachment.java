@@ -16,11 +16,6 @@
 
 package org.adempiere.webui.panel;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.logging.Level;
-
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Button;
 import org.adempiere.webui.component.ListItem;
@@ -28,6 +23,7 @@ import org.adempiere.webui.component.Listbox;
 import org.adempiere.webui.component.Panel;
 import org.adempiere.webui.component.Textbox;
 import org.adempiere.webui.component.Window;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.model.MAttachment;
 import org.compiere.model.MAttachmentEntry;
@@ -36,22 +32,27 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.zkoss.util.media.AMedia;
 import org.zkoss.util.media.Media;
-import org.zkoss.zk.au.AuScript;
 import org.zkoss.zk.au.out.AuEcho;
+import org.zkoss.zk.au.out.AuScript;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Fileupload;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Iframe;
+import org.zkoss.zul.North;
+import org.zkoss.zul.South;
 import org.zkoss.zul.Timer;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
 
 /**
  * 
@@ -173,15 +174,15 @@ public class WAttachment extends Window implements EventListener
 	void staticInit() throws Exception
 	{
 		this.setMaximizable(true);
-		this.setWidth("700px");
-		this.setHeight("600px");
+		ZKUpdateUtil.setWidth(this, "700px");
+		ZKUpdateUtil.setHeight(this, "600px");
 		this.setTitle("Attachment");
 		this.setClosable(true);
 		this.setSizable(true);
 		this.setBorder("normal");
 		this.appendChild(mainPanel);
-		mainPanel.setHeight("100%");
-		mainPanel.setWidth("100%");		
+		ZKUpdateUtil.setWidth(mainPanel, "100%");
+		ZKUpdateUtil.setHeight(mainPanel, "100%");
 		
 		North northPanel = new North();
 		northPanel.setCollapsible(false);
@@ -200,7 +201,7 @@ public class WAttachment extends Window implements EventListener
 		Div div = new Div();
 		div.appendChild(toolBar);
 		text.setRows(3);
-		text.setWidth("100%");
+		ZKUpdateUtil.setWidth(text, "100%");
 		div.appendChild(text);
 		northPanel.appendChild(div);
 		
@@ -218,19 +219,19 @@ public class WAttachment extends Window implements EventListener
 		bDelete.addEventListener(Events.ON_CLICK, this);
 
 		previewPanel.appendChild(preview);
-		preview.setHeight("100%");
-		preview.setWidth("100%");
+		ZKUpdateUtil.setWidth(preview, "100%");
+		ZKUpdateUtil.setHeight(preview, "100%");
 			
 		Center centerPane = new Center();
 		centerPane.setAutoscroll(true);
-		centerPane.setFlex(true);
+		ZKUpdateUtil.setVflex(centerPane, "flex");
 		mainPanel.appendChild(centerPane);
 		centerPane.appendChild(previewPanel);
 		
 		South southPane = new South();
 		mainPanel.appendChild(southPane);
 		southPane.appendChild(confirmPanel);
-		southPane.setHeight("30px");
+		ZKUpdateUtil.setHeight(southPane, "30px");
 		
 		bCancel.setImage("/images/Cancel16.png");
 		bCancel.addEventListener(Events.ON_CLICK, this);
@@ -451,28 +452,21 @@ public class WAttachment extends Window implements EventListener
 		preview.setVisible(false);
 		
 		Media media = null;
-		
-		try 
-		{
-			media = Fileupload.get(true); 
-			
-			if (media != null)
+
+		media = Fileupload.get(true);
+
+		if (media != null)
 			{
 //				pdfViewer.setContent(media);
 				;
 			}
-			else 
+			else
 			{
 				preview.setVisible(true);
 				preview.invalidate();
 				return;
 			}
-		}
-		catch (InterruptedException e) 
-		{
-			log.log(Level.WARNING, e.getLocalizedMessage(), e);
-		}
-	
+
 		String fileName = media.getName(); 
 		log.config(fileName);
 		int cnt = m_attachment.getEntryCount();

@@ -13,8 +13,6 @@
  *****************************************************************************/
 package org.adempiere.webui.desktop;
 
-import java.util.List;
-
 import org.adempiere.model.MBrowse;
 import org.adempiere.webui.apps.ProcessDialog;
 import org.adempiere.webui.apps.wf.WFPanel;
@@ -25,6 +23,7 @@ import org.adempiere.webui.component.Window;
 import org.adempiere.webui.panel.ADForm;
 import org.adempiere.webui.panel.CustomForm;
 import org.adempiere.webui.part.WindowContainer;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.ADWindow;
 import org.adempiere.webui.window.WTask;
 import org.compiere.model.MQuery;
@@ -38,6 +37,8 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Iframe;
 import org.zkoss.zul.Tab;
 import org.zkoss.zul.Tabpanels;
+
+import java.util.List;
 
 /**
  * A Tabbed MDI implementation
@@ -211,12 +212,12 @@ public abstract class TabbedDesktop extends AbstractDesktop {
      */
     private void addWin(Iframe fr, String title, boolean closeable)
     {
-    	fr.setWidth("100%");
-        fr.setHeight("100%");
+		ZKUpdateUtil.setWidth(fr, "100%");
+		ZKUpdateUtil.setHeight(fr, "100%");
         fr.setStyle("padding: 0; margin: 0; border: none; position: absolute");
         Window window = new Window();
-        window.setWidth("100%");
-        window.setHeight("100%");
+		ZKUpdateUtil.setWidth(window, "100%");
+		ZKUpdateUtil.setHeight(window, "100%");
         window.setStyle("padding: 0; margin: 0; border: none");
         window.appendChild(fr);
         window.setStyle("position: absolute");

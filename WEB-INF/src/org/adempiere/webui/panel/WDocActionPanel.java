@@ -17,9 +17,6 @@
 
 package org.adempiere.webui.panel;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.adempiere.webui.component.ConfirmPanel;
 import org.adempiere.webui.component.Grid;
 import org.adempiere.webui.component.GridFactory;
@@ -27,6 +24,7 @@ import org.adempiere.webui.component.Panel;
 import org.adempiere.webui.component.Row;
 import org.adempiere.webui.component.Rows;
 import org.adempiere.webui.component.Window;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.model.GridTab;
 import org.compiere.model.MTable;
@@ -47,6 +45,9 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Space;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -71,7 +72,7 @@ public class WDocActionPanel extends Window implements EventListener
 	private boolean m_OKpressed;
     private ConfirmPanel confirmPanel;
     private Keylistener keyListener;
-	
+
     private static final CLogger logger;
 	private static final int KEYBOARD_KEY_RETURN = 13;
 
@@ -240,7 +241,7 @@ public class WDocActionPanel extends Window implements EventListener
 		lstDocAction.setId("lstDocAction");
 		lstDocAction.setRows(0);
 		lstDocAction.setMold("select");
-		lstDocAction.setWidth("100px");
+		ZKUpdateUtil.setWidth(lstDocAction, "100px");
 		lstDocAction.addEventListener(Events.ON_SELECT, this);
 
         confirmPanel = new ConfirmPanel(true);
@@ -253,7 +254,8 @@ public class WDocActionPanel extends Window implements EventListener
 
 		Grid grid = GridFactory.newGridLayout();
         grid.setId("grd");
-        grid.setWidth("400px");
+		ZKUpdateUtil.setWidth(grid, "400px");
+
 
         Rows rows = new Rows();
 
@@ -278,13 +280,13 @@ public class WDocActionPanel extends Window implements EventListener
 
 	    grid.appendChild(rows);
 	    this.setTitle(Msg.translate(Env.getCtx(), "DocAction"));
-	    this.setWidth("410px");
+		ZKUpdateUtil.setWidth(this, "410px");
 	    this.setBorder("normal");
 	    this.appendChild(grid);
-	    
+
 
 		keyListener = new Keylistener();
-		
+
 		keyListener.setCtrlKeys("#enter");
 		keyListener.addEventListener(Events.ON_CTRL_KEY, this);
 		appendChild(keyListener);

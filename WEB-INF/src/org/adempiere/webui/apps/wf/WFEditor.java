@@ -12,18 +12,12 @@
  *****************************************************************************/
 package org.adempiere.webui.apps.wf;
 
-import java.awt.Dimension;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.util.logging.Level;
-
-import javax.imageio.ImageIO;
-
 import org.adempiere.webui.component.ConfirmPanel;
 import org.adempiere.webui.component.ListItem;
 import org.adempiere.webui.component.Listbox;
 import org.adempiere.webui.component.ListboxFactory;
 import org.adempiere.webui.panel.ADForm;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.apps.wf.WFLine;
 import org.compiere.model.MRole;
 import org.compiere.util.DB;
@@ -36,11 +30,17 @@ import org.zkoss.image.AImage;
 import org.zkoss.image.Image;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Imagemap;
+import org.zkoss.zul.North;
+import org.zkoss.zul.South;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.util.logging.Level;
 
 /**
  * 
@@ -58,7 +58,7 @@ public class WFEditor extends ADForm {
 
 	@Override
 	protected void initForm() {
-		this.setHeight("100%");
+		ZKUpdateUtil.setHeight( this,"100%");
 		Borderlayout layout = new Borderlayout();
 		layout.setStyle("width: 100%; height: 100%; position: absolute;");
 		appendChild(layout);
@@ -78,7 +78,7 @@ public class WFEditor extends ADForm {
 		layout.appendChild(north);
 		north.appendChild(workflowList);
 		workflowList.setStyle("margin-left: 10px; margin-top: 5px;");
-		north.setHeight("30px");
+		ZKUpdateUtil.setHeight(north,"30px");
 		
 		imageMap = new Imagemap();
 		Center center = new Center();
@@ -92,7 +92,7 @@ public class WFEditor extends ADForm {
 		South south = new South();
 		layout.appendChild(south);
 		south.appendChild(confirmPanel);
-		south.setHeight("36px");
+		ZKUpdateUtil.setHeight(south,"36px");
 	}
 
 	@Override
@@ -137,8 +137,8 @@ public class WFEditor extends ADForm {
 		try {
 			ImageIO.write(bi, "png", os);
 			AImage imageContent = new AImage("workflow.png", os.toByteArray());
-			imageMap.setWidth(dimension.width + "px");
-			imageMap.setHeight(dimension.height + "px");
+			ZKUpdateUtil.setWidth(imageMap, dimension.width + "px");
+			ZKUpdateUtil.setHeight(imageMap, dimension.height + "px");
 			imageMap.setContent(imageContent);
 			
 		} catch (Exception e) {

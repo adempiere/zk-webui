@@ -14,6 +14,7 @@ package org.adempiere.webui.component;
 
 import org.adempiere.webui.LayoutUtils;
 import org.adempiere.webui.apps.AEnv;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.zkoss.zhtml.Table;
 import org.zkoss.zhtml.Td;
 import org.zkoss.zhtml.Tr;
@@ -63,7 +64,7 @@ public class Locationbox extends EditorBox
     	removeChild(getFirstChild());
  		Table grid = new Table();
  		appendChild(grid);
- 		setWidth("100%");
+		ZKUpdateUtil.setWidth(this, "100%");
  		grid.setStyle("border: none; padding: 0px; margin: 0px;");
  		grid.setDynamicProperty("width", "100%");
  		grid.setDynamicProperty("border", "0");

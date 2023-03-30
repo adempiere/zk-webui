@@ -18,9 +18,6 @@ package org.adempiere.webui.session;
 
 import org.compiere.util.CLogger;
 
-import java.io.IOException;
-import java.util.Map;
-
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -29,6 +26,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Map;
 
 
 public class SessionTimeoutFilter implements Filter {

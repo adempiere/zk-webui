@@ -16,18 +16,6 @@
  *****************************************************************************/
 package org.adempiere.webui.apps.form;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
-import java.util.logging.Level;
-
 import org.adempiere.exceptions.ValueChangeEvent;
 import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.component.Button;
@@ -52,6 +40,7 @@ import org.adempiere.webui.panel.ADForm;
 import org.adempiere.webui.panel.CustomForm;
 import org.adempiere.webui.panel.IFormController;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -76,20 +65,33 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.OpenEvent;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listfoot;
 import org.zkoss.zul.Listfooter;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Menuitem;
+import org.zkoss.zul.North;
+import org.zkoss.zul.South;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+import java.util.logging.Level;
 
 /**
  * @author Nikunj Panelia
  */
-public class WTrialBalance extends TrialBalanceDrill implements IFormController, EventListener, ValueChangeListener
+public class WTrialBalance extends TrialBalanceDrill implements IFormController, EventListener<Event>, ValueChangeListener
 {
 	private CustomForm		form			= new CustomForm();
 	/** Logger */
@@ -162,7 +164,7 @@ public class WTrialBalance extends TrialBalanceDrill implements IFormController,
 
 		Rows rows = null;
 		Row row = null;
-		parameterLayout.setWidth("100%");
+		ZKUpdateUtil.setWidth(parameterPanel, "100%");
 		rows = parameterLayout.newRows();
 		row = rows.newRow();
 		
@@ -195,9 +197,9 @@ public class WTrialBalance extends TrialBalanceDrill implements IFormController,
 		Center center = new Center();
 		mainLayout.appendChild(center);
 		center.appendChild(miniTable);
-		miniTable.setWidth("99%");
-		miniTable.setHeight("99%");
-		center.setFlex(true);
+		ZKUpdateUtil.setWidth(miniTable, "99%");
+		ZKUpdateUtil.setHeight(miniTable, "99%");
+		ZKUpdateUtil.setVflex(center, "flex");
 		center.setStyle("border: none");
 
 		// Command Panel
@@ -429,8 +431,8 @@ public class WTrialBalance extends TrialBalanceDrill implements IFormController,
 	}
 
 	private void updateFooter() {
-		List<ListItem> items = miniTable.getItems();
-		Iterator<ListItem> it = items.iterator();
+		List<Listitem> items = miniTable.getItems();
+		Iterator<Listitem> it = items.iterator();
 		
 		BigDecimal periodActual	= new BigDecimal(0.0);
 		BigDecimal periodBudget = new BigDecimal(0.0);
@@ -442,7 +444,7 @@ public class WTrialBalance extends TrialBalanceDrill implements IFormController,
 		boolean noneSelected = true;
 		while(it.hasNext())
 		{
-			ListItem item = it.next();
+			Listitem item = it.next();
 			if (item.isSelected())
 				noneSelected = false;
 		}
@@ -451,7 +453,7 @@ public class WTrialBalance extends TrialBalanceDrill implements IFormController,
 		
 		while(it.hasNext())
 		{
-			ListItem item = it.next();
+			Listitem item = it.next();
 			
 			if ((noneSelected || item.isSelected()) && item.getChildren().size() > 1)
 			{
@@ -521,8 +523,8 @@ public class WTrialBalance extends TrialBalanceDrill implements IFormController,
 	private void renderListBox()
 	{
 		miniTable.renderAll();
-		List<ListItem> items = miniTable.getItems();
-		Iterator<ListItem> it = items.iterator();
+		List<Listitem> items = miniTable.getItems();
+		Iterator<Listitem> it = items.iterator();
 		popup = new WEditorPopupMenu(true, false, false);
 		popup.addEventListener(Events.ON_OPEN, this);
 		Menuitem menu = (Menuitem) popup.getChildren().get(0);
@@ -531,7 +533,7 @@ public class WTrialBalance extends TrialBalanceDrill implements IFormController,
 		boolean isAttached = false;
 		while (it.hasNext())
 		{
-			ListItem item = it.next();
+			Listitem item = it.next();
 			if (item.getChildren().size() > 1)
 			{
 
@@ -570,7 +572,7 @@ public class WTrialBalance extends TrialBalanceDrill implements IFormController,
 		}
 		
 		Listfoot listfoot = new Listfoot();
-		listfoot.setHeight("25px");
+		ZKUpdateUtil.setHeight(listfoot,"25px");
 		Listfooter listfooter = new Listfooter(""); // Select
 		listfoot.appendChild(listfooter);
 		

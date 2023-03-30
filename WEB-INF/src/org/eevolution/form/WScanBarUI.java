@@ -18,12 +18,8 @@
 
 package org.eevolution.form;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Vector;
-import java.util.logging.Level;
-
+import org.adempiere.exceptions.ValueChangeEvent;
+import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.component.ConfirmPanel;
 import org.adempiere.webui.component.Grid;
 import org.adempiere.webui.component.GridFactory;
@@ -37,11 +33,10 @@ import org.adempiere.webui.component.WListbox;
 import org.adempiere.webui.editor.WLocatorEditor;
 import org.adempiere.webui.editor.WNumberEditor;
 import org.adempiere.webui.editor.WStringEditor;
-import org.adempiere.exceptions.ValueChangeEvent;
-import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.panel.ADForm;
 import org.adempiere.webui.panel.CustomForm;
 import org.adempiere.webui.panel.IFormController;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.model.MAttributeSetInstance;
 import org.compiere.model.MLocatorLookup;
@@ -55,11 +50,17 @@ import org.eevolution.service.ScanBar;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
+import org.zkoss.zul.North;
 import org.zkoss.zul.Separator;
+import org.zkoss.zul.South;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Vector;
+import java.util.logging.Level;
 
 /**
  * Implementation Scan Bar UI
@@ -197,8 +198,8 @@ public class WScanBarUI extends ScanBar implements IFormController, EventListene
     {
     	Borderlayout borderlayout = new Borderlayout();
     	borderlayout.setStyle("position: absolute");
-    	borderlayout.setWidth("100%");
-    	borderlayout.setHeight("100%");
+		ZKUpdateUtil.setWidth(borderlayout, "100%");
+		ZKUpdateUtil.setHeight(borderlayout, "100%");
     	productPanel.appendChild(borderlayout);
 
 		North north = new North();
@@ -210,7 +211,7 @@ public class WScanBarUI extends ScanBar implements IFormController, EventListene
 
 		Center center = new Center();
 		center.setBorder("none");
-		center.setFlex(true);
+		ZKUpdateUtil.setVflex(center, "flex");
 		center.setAutoscroll(true);
 		borderlayout.appendChild(center);
 		center.appendChild(productTable);

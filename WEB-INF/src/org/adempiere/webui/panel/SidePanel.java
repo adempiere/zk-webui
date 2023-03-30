@@ -18,6 +18,7 @@
 package org.adempiere.webui.panel;
 
 import org.adempiere.webui.component.Panel;
+import org.adempiere.webui.util.ZKUpdateUtil;
 
 /**
  *
@@ -40,9 +41,8 @@ public class SidePanel extends Panel
     private void init()
     {
         pnlMenu = new MenuPanel();
-        
-        this.setWidth("100%");
-        this.setHeight("100%");
+        ZKUpdateUtil.setWidth(this, "100%");
+        ZKUpdateUtil.setHeight(this, "100%");
         this.appendChild(pnlMenu);        
     }
     

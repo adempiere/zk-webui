@@ -16,9 +16,6 @@
 
 package org.adempiere.webui.editor;
 
-import java.beans.PropertyChangeEvent;
-import java.util.logging.Level;
-
 import org.adempiere.exceptions.ValueChangeEvent;
 import org.adempiere.webui.component.Radio;
 import org.adempiere.webui.event.ContextMenuEvent;
@@ -30,6 +27,9 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
+
+import java.beans.PropertyChangeEvent;
+import java.util.logging.Level;
 
 /**
  * An Adempiere ZK editor for a radio button.  To function within a RadioGroup, the 
@@ -78,7 +78,7 @@ public class WRadioEditor extends WEditor implements ContextMenuListener
 		{
 			WRecordInfo.addMenu(popupMenu);
 		}
-		getComponent().setContext(popupMenu.getId());
+		getComponent().setContext(popupMenu);
     }
 
     public void onEvent(Event event)

@@ -17,8 +17,6 @@
 
 package org.adempiere.webui.panel;
 
-import java.util.TreeMap;
-
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.AutoComplete;
 import org.adempiere.webui.component.Label;
@@ -27,6 +25,7 @@ import org.adempiere.webui.util.DocumentSearch;
 import org.adempiere.webui.util.TreeItemAction;
 import org.adempiere.webui.util.TreeNodeAction;
 import org.adempiere.webui.util.TreeUtils;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.MTreeNode;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
@@ -35,12 +34,14 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zul.DefaultTreeNode;
 import org.zkoss.zul.Div;
-import org.zkoss.zul.SimpleTreeNode;
 import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.event.TreeDataEvent;
 import org.zkoss.zul.event.TreeDataListener;
+
+import java.util.TreeMap;
 
 /**
  *
@@ -48,7 +49,7 @@ import org.zkoss.zul.event.TreeDataListener;
  * @date    Mar 3, 2007
  * @version $Revision: 0.10 $
  */
-public class TreeSearchPanel extends Panel implements EventListener, TreeDataListener
+public class TreeSearchPanel extends Panel implements EventListener<Event>, TreeDataListener
 {
     /**
 	 * 
@@ -123,10 +124,15 @@ public class TreeSearchPanel extends Panel implements EventListener, TreeDataLis
         cmbSearch = new AutoComplete();
         cmbSearch.setAutodrop(true);
         cmbSearch.addEventListener(Events.ON_CHANGE, this);
+		ZKUpdateUtil.setHflex(cmbSearch, "true");
         if (AEnv.isInternetExplorer())
         {
-        	cmbSearch.setWidth("200px");
+			ZKUpdateUtil.setWidth(cmbSearch, "200px");
         }
+		else
+		{
+			ZKUpdateUtil.setHflex(cmbSearch, "true");
+		}
 
         this.appendChild(div);
         this.appendChild(cmbSearch);
@@ -142,7 +148,7 @@ public class TreeSearchPanel extends Panel implements EventListener, TreeDataLis
         treeNodeItemMap.put(key, treeItem);
     }
 
-    private void addTreeItem(SimpleTreeNode node) {
+    private void addTreeItem(DefaultTreeNode<Object> node) {
     	Object data = node.getData();
     	if (data instanceof MTreeNode) {
     		MTreeNode mNode = (MTreeNode) data;
@@ -174,7 +180,7 @@ public class TreeSearchPanel extends Panel implements EventListener, TreeDataLis
 	    	});
 		} else {
 			TreeUtils.traverse(tree.getModel(), new TreeNodeAction() {
-				public void run(SimpleTreeNode treeNode) {
+				public void run(DefaultTreeNode<Object> treeNode) {
 					addTreeItem(treeNode);
 				}
 	    	});
@@ -194,9 +200,9 @@ public class TreeSearchPanel extends Panel implements EventListener, TreeDataLis
         		treeValues[i] = treeItem.getLabel();
         		treeDescription[i] = treeItem.getTooltiptext();
         	}
-        	else if (value instanceof SimpleTreeNode)
+        	else if (value instanceof DefaultTreeNode)
         	{
-        		SimpleTreeNode sNode = (SimpleTreeNode) value;
+        		DefaultTreeNode sNode = (DefaultTreeNode) value;
         		MTreeNode mNode = (MTreeNode) sNode.getData();
         		treeValues[i] = mNode.getName();
         		treeDescription[i] = mNode.getDescription();
@@ -233,15 +239,15 @@ public class TreeSearchPanel extends Panel implements EventListener, TreeDataLis
             } else if (node instanceof Treeitem) {
 	            treeItem = (Treeitem) node;
             } else {
-            	SimpleTreeNode sNode = (SimpleTreeNode) node;
-            	int[] path = tree.getModel().getPath(tree.getModel().getRoot(), sNode);
+            	DefaultTreeNode sNode = (DefaultTreeNode) node;
+            	int[] path = tree.getModel().getPath(tree.getModel().getRoot());
     			treeItem = tree.renderItemByPath(path);
     			tree.setSelectedItem(treeItem);
             }
             if (treeItem != null)
             {
                 select(treeItem);
-                Clients.showBusy(Msg.getMsg(Env.getCtx(), "Loading"), true);
+                Clients.showBusy(Msg.getMsg(Env.getCtx(), "Loading"));
                 Events.echoEvent("onPostSelect", this, null);
                 Event event2=new Event(Events.ON_CLICK, ((Component)(treeItem.getTreerow().getChildren().get(0))));
                 Events.postEvent(event2);
@@ -254,7 +260,7 @@ public class TreeSearchPanel extends Panel implements EventListener, TreeDataLis
      * don't call this directly, use internally for post selection event
      */
     public void onPostSelect() {
-    	Clients.showBusy(null, false);
+		Clients.clearBusy();
     	Event event = null;
     	if(tree.getSelectedItem() == null && eventToFire.equals(Events.ON_CLICK))
     		return;

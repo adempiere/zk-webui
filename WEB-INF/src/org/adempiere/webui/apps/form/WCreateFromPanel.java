@@ -16,8 +16,6 @@
  *****************************************************************************/
 package org.adempiere.webui.apps.form;
 
-import java.io.IOException;
-
 import org.adempiere.webui.component.Button;
 import org.adempiere.webui.component.ConfirmPanel;
 import org.adempiere.webui.component.ListModelTable;
@@ -28,6 +26,7 @@ import org.adempiere.webui.component.WListbox;
 import org.adempiere.webui.event.WTableModelEvent;
 import org.adempiere.webui.event.WTableModelListener;
 import org.adempiere.webui.panel.StatusBarPanel;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.apps.form.ICreateFrom;
 import org.compiere.util.Env;
@@ -36,11 +35,13 @@ import org.compiere.util.Trx;
 import org.compiere.util.TrxRunnable;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
+import org.zkoss.zul.North;
 import org.zkoss.zul.Separator;
+import org.zkoss.zul.South;
+
+import java.io.IOException;
 
 /**
  * @author Yamel Senih, ysenih@erpcya.com, ERPCyA http://www.erpcya.com
@@ -112,11 +113,11 @@ public class WCreateFromPanel extends Panel implements EventListener, WTableMode
 
 		southPanel.appendChild(new Separator());
 		southPanel.appendChild(statusBar);
-		
-		setWidth("750px");
-		setHeight("550px");
-		contentPane.setWidth("100%");
-		contentPane.setHeight("100%");
+
+		ZKUpdateUtil.setWidth(this, "750px");
+		ZKUpdateUtil.setHeight(this, "550px");
+		ZKUpdateUtil.setWidth(contentPane, "100%");
+		ZKUpdateUtil.setHeight(contentPane, "100%");
 	}
 
 	public void onEvent(Event e) throws Exception

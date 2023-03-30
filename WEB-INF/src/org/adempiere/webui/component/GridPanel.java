@@ -12,19 +12,14 @@
  *****************************************************************************/
 package org.adempiere.webui.component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.table.AbstractTableModel;
-
 import org.adempiere.webui.LayoutUtils;
 import org.adempiere.webui.editor.WEditor;
 import org.adempiere.webui.panel.ADTabPanel;
 import org.adempiere.webui.panel.AbstractADWindowPanel;
 import org.adempiere.webui.panel.IADTabPanel;
+import org.adempiere.webui.session.SessionManager;
 import org.adempiere.webui.util.SortComparator;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
 import org.compiere.model.GridTable;
@@ -43,14 +38,20 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.KeyEvent;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Column;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Paging;
 import org.zkoss.zul.Row;
+import org.zkoss.zul.South;
 import org.zkoss.zul.event.ZulEvents;
+
+import javax.swing.table.AbstractTableModel;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Grid view implemented using the Grid component.
@@ -60,7 +61,7 @@ import org.zkoss.zul.event.ZulEvents;
  *    <li>New ADempiere 3.8.0 ZK Theme Light  https://adempiere.atlassian.net/browse/ADEMPIERE-320 
  *
  */
-public class GridPanel extends Borderlayout implements EventListener
+public class GridPanel extends Borderlayout implements EventListener<Event>
 {
 	/**
 	 * generated serial version ID
@@ -82,7 +83,7 @@ public class GridPanel extends Borderlayout implements EventListener
 
 	public static final String		CNTRL_KEYS				= "#f5#del^d^s";
 	private static final String		KEYS_MOVE			= "#pgup#pgdn#end#home#up#down#left#right#enter";
-	
+
 	private int lastKeyEvent = 0;	
 
 	private GridField[] gridField;
@@ -108,11 +109,11 @@ public class GridPanel extends Borderlayout implements EventListener
 	public static final String PAGE_SIZE_KEY = "ZK_PAGING_SIZE";
 
 	public static final String MODE_LESS_KEY = "ZK_GRID_EDIT_MODELESS";
-	
+
 	private IADTabPanel tabPanel;
 
 	private Keylistener	keyListener;
-	
+
 	private int currentCol = 0;
 	
 	private Center center;
@@ -148,7 +149,23 @@ public class GridPanel extends Borderlayout implements EventListener
 	public GridPanel(int windowNo)
 	{
 		this.windowNo = windowNo;
-				
+		createListbox();
+
+		south = new South();
+		south.setStyle("border: none; margin:0; padding: 0;");
+		this.appendChild(south);
+
+		center = new Center();
+		center.appendChild(listbox);
+		this.appendChild(center);
+
+		//default false for better performance
+		modeless = getSysConfigModelessOrDefault(false);
+
+		listbox.addEventListener(Events.ON_FOCUS, this);
+		listbox.setOddRowSclass(null);
+
+		addEventListener("onSelectRow", this);
 	}
 
 	/**
@@ -157,21 +174,24 @@ public class GridPanel extends Borderlayout implements EventListener
 	 */
 	public void init(GridTab gridTab)
 	{
+		if (init) return;
+
 	    if (pageSize < 0)
 	        pageSize = getSysConfigPageSizeOrDefault(100);
-        modeless = getSysConfigModelessOrDefault(false);
-        
-	    if (init && !gridTab.isQuickEntry()) return; 
 
-	    listbox.addEventListener(Events.ON_FOCUS, this);
-        listbox.setOddRowSclass(null);
         
-        south = new South();
-        this.appendChild(south);
+	    if (init && !gridTab.isQuickEntry()) return;
 
-        center = new Center();
-        center.appendChild(listbox);
-        this.appendChild(center);
+
+
+		//south.detach();
+        //south = new South();
+        //this.appendChild(south);
+
+		//center.detach();
+        //center = new Center();
+        //center.appendChild(listbox);
+        //this.appendChild(center);
 
 	    
 		this.gridTab = gridTab;
@@ -349,8 +369,8 @@ public class GridPanel extends Borderlayout implements EventListener
 					if (l < MIN_NUMERIC_COL_WIDTH)
 						l = MIN_NUMERIC_COL_WIDTH;
 				}
-				column.setWidth(Integer.toString(l) + "px");
-				
+				ZKUpdateUtil.setWidth(column, l + "px");
+
 				// FR 3051618 - Hide in list view
 				if (!gridField[i].isDisplayedGrid()) {
 					column.setVisible(false);
@@ -365,12 +385,12 @@ public class GridPanel extends Borderlayout implements EventListener
 	{
 		LayoutUtils.addSclass("adtab-grid-panel", this);
 
-		listbox.setVflex(true);
-		listbox.setFixedLayout(true);
+		ZKUpdateUtil.setVflex(listbox, true);
+		listbox.setSizedByContent(false);
 		listbox.addEventListener(Events.ON_CLICK, this);
 		listbox.addEventListener(Events.ON_DOUBLE_CLICK, this);
 		listbox.addEventListener(Events.ON_CANCEL, this);
-		
+
 		updateModel();
 		
 		if (pageSize > 0)
@@ -388,7 +408,7 @@ public class GridPanel extends Borderlayout implements EventListener
 		{
 			south.setVisible(false);
 		}
-		if(keyListener == null) { 
+		if(keyListener == null) {
 			keyListener = new Keylistener();
 			if (windowPanel != null)
 				windowPanel.getStatusBar().appendChild(keyListener);
@@ -653,8 +673,8 @@ public class GridPanel extends Borderlayout implements EventListener
 				listModel.setPage(pgNo);
 				onSelectedRowChange(0);
 			}
-		} 
-		
+		}
+
 		keyListener.invalidate();
 	}
 	
@@ -977,16 +997,16 @@ public class GridPanel extends Borderlayout implements EventListener
 	public void addKeyListener() {
 		if(renderer == null)
 			return;
-		if(keyListener == null) { 
+		if(keyListener == null) {
 			keyListener = new Keylistener();
 			if (windowPanel != null)
 				windowPanel.getStatusBar().appendChild(keyListener);
 		}
 		if(!((ADTabPanel)tabPanel).isGridView() )
 			keyListener.setCtrlKeys(CNTRL_KEYS);
-		else 
+		else
 			keyListener.setCtrlKeys(CNTRL_KEYS+KEYS_MOVE);
-		
+
 		keyListener.addEventListener(Events.ON_CTRL_KEY, this);
 	}
 
@@ -1000,9 +1020,10 @@ public class GridPanel extends Borderlayout implements EventListener
 	{
 		listbox = new Grid();
 		listbox.setOddRowSclass(null);
-		listbox.setVflex(true);
+		ZKUpdateUtil.setVflex(listbox, true);
+		listbox.setSizedByContent(false);
 	} // createListbox
-	
+
 	// Visible for testing
 	protected void onNew() {
 		if(renderer.getTotalColumns() != -1) {
@@ -1015,8 +1036,8 @@ public class GridPanel extends Borderlayout implements EventListener
 		}
 	}
 	
-	public Keylistener getKeyListener() {
-		return keyListener;
+	public org.zkforge.keylistener.Keylistener getKeyListener() {
+		return SessionManager.getApplication().getKeylistener();
 	}
 	
 	public void onIgnore() {
@@ -1182,4 +1203,8 @@ public class GridPanel extends Borderlayout implements EventListener
 
     }
 
+	public void setGridTab(GridTab gridTab) {
+		this.gridTab = gridTab;
+		tableModel = gridTab.getTableModel();
+	}
 }

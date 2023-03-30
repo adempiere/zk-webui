@@ -14,13 +14,8 @@
 
 package org.adempiere.webui.apps.form;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
-import java.util.logging.Level;
-
+import org.adempiere.exceptions.ValueChangeEvent;
+import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.component.Checkbox;
 import org.adempiere.webui.component.Grid;
 import org.adempiere.webui.component.GridFactory;
@@ -35,11 +30,10 @@ import org.adempiere.webui.editor.WEditor;
 import org.adempiere.webui.editor.WLocatorEditor;
 import org.adempiere.webui.editor.WSearchEditor;
 import org.adempiere.webui.editor.WStringEditor;
-import org.adempiere.exceptions.ValueChangeEvent;
-import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.panel.ADForm;
 import org.adempiere.webui.panel.CustomForm;
 import org.adempiere.webui.panel.IFormController;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.apps.form.CreateFromShipment;
 import org.compiere.apps.form.ICreateFrom;
 import org.compiere.model.MLocatorLookup;
@@ -55,9 +49,16 @@ import org.compiere.util.Msg;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Space;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+import java.util.logging.Level;
 
 /**
  * @author	Michael McKay
@@ -182,8 +183,8 @@ public class WCreateFromShipmentUI extends CreateFromShipment
         upcLabel.setText(Msg.getElement(Env.getCtx(), "UPC", false));
 
 		Borderlayout parameterLayout = new Borderlayout();
-		parameterLayout.setHeight("120px");
-		parameterLayout.setWidth("100%");
+		ZKUpdateUtil.setWidth(parameterLayout, "120px");
+		ZKUpdateUtil.setHeight(parameterLayout, "100%");
     	Panel parameterPanel = v_CreateFromPanel.getParameterPanel();
 		parameterPanel.appendChild(parameterLayout);
 		
@@ -227,8 +228,8 @@ public class WCreateFromShipmentUI extends CreateFromShipment
             row.appendChild(rmaField);
     	}
     	//	Add to Main
-    	v_CreateFromPanel.setWidth("100%");
-    	v_CreateFromPanel.setHeight("100%");
+		ZKUpdateUtil.setWidth(v_CreateFromPanel, "100%");
+		ZKUpdateUtil.setHeight(v_CreateFromPanel, "100%");
     	v_Container.appendChild(v_CreateFromPanel);
 	}
 

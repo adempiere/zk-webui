@@ -14,20 +14,21 @@
  *****************************************************************************/
 package org.adempiere.webui.window;
 
-import java.util.Arrays;
-
 import org.adempiere.webui.component.ConfirmPanel;
 import org.adempiere.webui.component.Textbox;
 import org.adempiere.webui.component.Window;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
+import org.zkoss.zul.South;
+
+import java.util.Arrays;
 
 /**
  * Based on WPreference.java and Info.java
@@ -53,8 +54,8 @@ public class WContext extends Window implements EventListener {
 		setClosable(true);
 		int height = SessionManager.getAppDesktop().getClientInfo().desktopHeight * 85 / 100;
 		int width = SessionManager.getAppDesktop().getClientInfo().desktopWidth * 50 / 100;
-		this.setWidth(width + "px");
-		this.setHeight(height + "px");
+		ZKUpdateUtil.setWidth(this, width + "px");
+		ZKUpdateUtil.setHeight(this, height + "px");
 		this.setContentStyle("overflow: auto");
         this.setSizable(true);      
         this.setMaximizable(true);
@@ -63,8 +64,8 @@ public class WContext extends Window implements EventListener {
 		Textbox contextText = new Textbox();
 		contextText.setMultiline(true);
 		contextText.setReadonly(true);
-		contextText.setWidth("100%");
-		contextText.setHeight("100%");
+		ZKUpdateUtil.setWidth(contextText, "100%");
+		ZKUpdateUtil.setHeight(contextText, "100%");
 
         confirmPanel = new ConfirmPanel(false, false, false, false, false, false);
         confirmPanel.addActionListener(Events.ON_CLICK, this);
@@ -72,7 +73,8 @@ public class WContext extends Window implements EventListener {
 		
         Borderlayout mainPanel = new Borderlayout();
         //mainPanel.setWidth("100%");
-        mainPanel.setHeight("100%");
+		ZKUpdateUtil.setWidth(mainPanel, "100%");
+		ZKUpdateUtil.setHeight(mainPanel,"100%");
         Center center = new Center();
         mainPanel.appendChild(center);
         center.appendChild(contextText);

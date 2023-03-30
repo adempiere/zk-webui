@@ -16,24 +16,38 @@
  *****************************************************************************/
 package org.adempiere.webui.process;
 
-import java.io.*;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.*;
-
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Window;
 import org.adempiere.webui.session.SessionManager;
 import org.adempiere.webui.window.SimplePDFViewer;
-import org.compiere.model.*;
-import org.compiere.print.*;
+import org.compiere.model.MClient;
+import org.compiere.model.MInvoice;
+import org.compiere.model.MMailText;
+import org.compiere.model.MQuery;
+import org.compiere.model.MUser;
+import org.compiere.model.PrintInfo;
+import org.compiere.model.X_C_Invoice;
+import org.compiere.print.MPrintFormat;
+import org.compiere.print.ReportEngine;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.*;
+import org.compiere.util.AdempiereUserError;
+import org.compiere.util.DB;
+import org.compiere.util.Env;
+import org.compiere.util.Ini;
+import org.compiere.util.Language;
 import org.spin.queue.notification.DefaultNotifier;
 import org.spin.queue.util.QueueLoader;
 import org.zkoss.zk.ui.util.Clients;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
 
 /**
  *	Print Invoices on Paperor send PDFs
@@ -346,7 +360,7 @@ public class InvoicePrint extends SvrProcess
 				File outFile = File.createTempFile("InvoicePrint", ".pdf");					
 				AEnv.mergePdf(pdfList, outFile);
 
-				Clients.showBusy(null, false);
+				Clients.clearBusy();
 				Window win = new SimplePDFViewer(this.getName(), new FileInputStream(outFile));
 				win.setAttribute(Window.MODE_KEY, Window.MODE_HIGHLIGHTED);
 				SessionManager.getAppDesktop().showWindow(win, "center");
@@ -354,7 +368,7 @@ public class InvoicePrint extends SvrProcess
 				log.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 		} else if (pdfList.size() > 0) {
-			Clients.showBusy(null, false);
+			Clients.clearBusy();
 			try {
 				Window win = new SimplePDFViewer(this.getName(), new FileInputStream(pdfList.get(0)));
 				win.setAttribute(Window.MODE_KEY, Window.MODE_HIGHLIGHTED);

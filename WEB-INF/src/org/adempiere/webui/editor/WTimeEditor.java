@@ -13,19 +13,19 @@
 
 package org.adempiere.webui.editor;
 
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.logging.Level;
-
+import org.adempiere.exceptions.ValueChangeEvent;
 import org.adempiere.webui.event.ContextMenuEvent;
 import org.adempiere.webui.event.ContextMenuListener;
-import org.adempiere.exceptions.ValueChangeEvent;
 import org.adempiere.webui.window.WRecordInfo;
 import org.compiere.model.GridField;
 import org.compiere.util.CLogger;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Timebox;
+
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.logging.Level;
 
 /**
  *
@@ -109,7 +109,7 @@ public class WTimeEditor extends WEditor implements ContextMenuListener
 		{
 			WRecordInfo.addMenu(popupMenu);
 		}
-		getComponent().setContext(popupMenu.getId());
+		getComponent().setContext(popupMenu);
 	}
 	
 	public void onEvent(Event event)

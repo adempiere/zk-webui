@@ -17,6 +17,7 @@ package org.adempiere.webui.panel;
 import org.adempiere.webui.component.Checkbox;
 import org.adempiere.webui.component.SimpleTreeModel;
 import org.adempiere.webui.util.TreeUtils;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.MTreeNode;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
@@ -24,12 +25,11 @@ import org.compiere.util.Util;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.DefaultTreeNode;
 import org.zkoss.zul.Panel;
 import org.zkoss.zul.Panelchildren;
-import org.zkoss.zul.SimpleTreeNode;
 import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Tree;
-import org.zkoss.zul.Treeitem;
 
 /**
  * 
@@ -68,7 +68,6 @@ public class ADTreePanel extends Panel implements EventListener
     
     /**
      * @param AD_Tree_ID
-     * @param windowNo
      * @param whereClause
      */
     public void initTree(int AD_Tree_ID, String whereClause) {
@@ -82,13 +81,13 @@ public class ADTreePanel extends Panel implements EventListener
     
     private void init()
     {
-    	this.setWidth("100%");
-    	this.setHeight("100%");
-    	
+		ZKUpdateUtil.setWidth(this, "100%");
+		ZKUpdateUtil.setHeight(this, "100%");
+
         tree = new Tree();
         tree.setMultiple(false);
-        tree.setWidth("100%");
-        tree.setVflex(true);
+		ZKUpdateUtil.setVflex(tree, true);
+		ZKUpdateUtil.setWidth(tree, "100%");
         tree.setPageSize(-1); // Due to bug in the new paging functionality
         
         tree.setStyle("border: none");
@@ -169,7 +168,7 @@ public class ADTreePanel extends Panel implements EventListener
 			collapseAll();
 	}
 	//
-	
+
 	/**************************************************************************
 	 *  Node Changed - synchronize Node
 	 *
@@ -191,31 +190,32 @@ public class ADTreePanel extends Panel implements EventListener
 			return;	
 
 		//  try to find the node
-		SimpleTreeModel model = (SimpleTreeModel) tree.getModel();
-		SimpleTreeNode root = model.getRoot();
-		SimpleTreeNode node = model.find(null, keyID);
+		SimpleTreeModel  model =(SimpleTreeModel) ((org.zkoss.zul.TreeModel<?>)  tree.getModel());
+		DefaultTreeNode<Object> root = model.getRoot();
+		DefaultTreeNode<Object> node = model.find(null, keyID);
 		
 		//  Node not found and saved -> new
 		if (node == null && save)
 		{
-			MTreeNode rootData = (MTreeNode) root.getData();
-			MTreeNode mTreeNode = new MTreeNode (keyID, 0, name, description,
+			MTreeNode rootData = (org.compiere.model.MTreeNode) root.getData();
+			MTreeNode mTreeNode = new org.compiere.model.MTreeNode(keyID, 0, name, description,
 				rootData.getNode_ID(), isSummary, imageIndicator, false, null);
-			SimpleTreeNode newNode = new SimpleTreeNode(mTreeNode, null); 
+			DefaultTreeNode<Object> newNode = new DefaultTreeNode<>(mTreeNode, new java.util.ArrayList<>());
+
 			model.addNode(root, newNode, 0);
-			int[] path = model.getPath(model.getRoot(), newNode);
-			Treeitem ti = tree.renderItemByPath(path);
+			int[] path = model.getPath(newNode);
+			org.zkoss.zul.Treeitem ti = tree.renderItemByPath(path);
 			tree.setSelectedItem(ti);
 		}
 
 		//  Node found and saved -> change
 		else if (node != null && save)
 		{
-			MTreeNode mTreeNode = (MTreeNode) node.getData();
+			MTreeNode mTreeNode = (org.compiere.model.MTreeNode) node.getData();
 			mTreeNode.setName (name);
 			mTreeNode.setAllowsChildren(isSummary);
-			int[] path = model.getPath(model.getRoot(), node);
-			Treeitem ti = tree.renderItemByPath(path);
+			int[] path = model.getPath(node);
+			org.zkoss.zul.Treeitem ti = tree.renderItemByPath(path);
 			tree.setSelectedItem(ti);
 		}
 
@@ -236,6 +236,7 @@ public class ADTreePanel extends Panel implements EventListener
 			return;
 
 	}   //  nodeChanged
+
 
 	public int getTreeId()
 	{

@@ -23,8 +23,6 @@
 
 package org.adempiere.webui.panel;
 
-import java.util.Properties;
-
 import org.adempiere.webui.LayoutUtils;
 import org.adempiere.webui.component.ConfirmPanel;
 import org.adempiere.webui.component.Label;
@@ -33,6 +31,7 @@ import org.adempiere.webui.component.Window;
 import org.adempiere.webui.theme.ITheme;
 import org.adempiere.webui.theme.ThemeManager;
 import org.adempiere.webui.util.BrowserToken;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.LoginWindow;
 import org.compiere.util.EMail;
 import org.compiere.util.Msg;
@@ -48,6 +47,8 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Image;
+
+import java.util.Properties;
 
 /**
  * Panel for establish new password
@@ -145,7 +146,7 @@ public class PassResetPanel extends Window implements EventListener
         ConfirmPanel pnlButtons = new ConfirmPanel(true);
         pnlButtons.addActionListener(this);
         LayoutUtils.addSclass(ITheme.LOGIN_BOX_FOOTER_PANEL_CLASS, pnlButtons);
-        pnlButtons.setWidth(null);
+        ZKUpdateUtil.setWidth(pnlButtons, null);
 
         pnlButtons.getButton(ConfirmPanel.A_OK).setSclass(ITheme.LOGIN_BUTTON_CLASS);
         pnlButtons.getButton(ConfirmPanel.A_CANCEL).setSclass(ITheme.LOGIN_BUTTON_CLASS);
@@ -166,7 +167,7 @@ public class PassResetPanel extends Window implements EventListener
         txtUserId.setId("txtUserId");
         txtUserId.setCols(25);
         txtUserId.setMaxlength(40);
-        txtUserId.setWidth("220px");
+        ZKUpdateUtil.setWidth(txtUserId, "220px");
         txtUserId.addEventListener(Events.ON_CHANGE, this); // Elaine 2009/02/06
     	
         lblMsg= new Label();

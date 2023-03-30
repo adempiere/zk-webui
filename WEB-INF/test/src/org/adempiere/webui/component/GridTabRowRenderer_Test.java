@@ -1,15 +1,5 @@
 package org.adempiere.webui.component;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
-import java.util.ArrayList;
-import java.util.stream.Stream;
-
-import org.adempiere.test.CommonUnitTestSetup;
 import org.compiere.model.GridTab;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,10 +13,17 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.zkoss.zul.Paging;
 
+import java.util.ArrayList;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
+import static org.mockito.Mockito.*;
+
 @Tag("ZK")
 @Tag("GridTabRowRenderer")
 @DisplayName("TestGridTabRowRenderer: Feature: Rendering of rows in a GridTab")
-class GridTabRowRenderer_Test extends CommonUnitTestSetup {
+class GridTabRowRenderer_Test /*extends CommonUnitTestSetup*/ {
 
     int numberOfRows = 100;
     ArrayList<Row> testRows = new ArrayList<>();

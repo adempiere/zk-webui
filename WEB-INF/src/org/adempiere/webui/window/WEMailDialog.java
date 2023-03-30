@@ -17,11 +17,8 @@
  *****************************************************************************/
 package org.adempiere.webui.window;
 
-import java.beans.PropertyVetoException;
-import java.io.File;
-import java.util.StringTokenizer;
-import java.util.logging.Level;
-
+import org.adempiere.exceptions.ValueChangeEvent;
+import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.ConfirmPanel;
 import org.adempiere.webui.component.Grid;
@@ -31,9 +28,8 @@ import org.adempiere.webui.component.Rows;
 import org.adempiere.webui.component.Textbox;
 import org.adempiere.webui.component.Window;
 import org.adempiere.webui.editor.WSearchEditor;
-import org.adempiere.exceptions.ValueChangeEvent;
-import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.panel.StatusBarPanel;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.Lookup;
 import org.compiere.model.MClient;
 import org.compiere.model.MLookupFactory;
@@ -47,11 +43,16 @@ import org.spin.queue.notification.DefaultNotifier;
 import org.spin.queue.util.QueueLoader;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Separator;
+import org.zkoss.zul.South;
+
+import java.beans.PropertyVetoException;
+import java.io.File;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
 
 /**
  *	EMail Dialog
@@ -92,8 +93,8 @@ public class WEMailDialog extends Window implements EventListener, ValueChangeLi
 	{
 		super();
         this.setTitle(title);
-		this.setWidth("500px");
-		this.setHeight("500px");
+		ZKUpdateUtil.setWidth(this, "500px%");
+		ZKUpdateUtil.setHeight(this, "500px%");
 		this.setClosable(true);
 		this.setBorder("normal");
         this.setStyle("position:absolute");
@@ -191,7 +192,7 @@ public class WEMailDialog extends Window implements EventListener, ValueChangeLi
 		//
 				
 		Grid grid = new Grid();
-		grid.setWidth("480px");
+		ZKUpdateUtil.setHflex(grid, "1");
         grid.setStyle("margin:0; padding:0; position: absolute; align: center; valign: center;");
         grid.makeNoStrip();
         grid.setOddRowSclass("even");
@@ -206,7 +207,7 @@ public class WEMailDialog extends Window implements EventListener, ValueChangeLi
 		div.appendChild(lFrom);
 		row.appendChild(div);
 		row.appendChild(fFrom);
-		fFrom.setWidth("100%");
+		ZKUpdateUtil.setWidth(fFrom,"100%");
 		
 		row = new Row();
 		rows.appendChild(row);
@@ -215,13 +216,13 @@ public class WEMailDialog extends Window implements EventListener, ValueChangeLi
 		div.appendChild(lTo);
 		row.appendChild(div);
 		row.appendChild(fUser.getComponent());
-		fUser.getComponent().setWidth("100%");
+		ZKUpdateUtil.setWidth(fUser.getComponent(),"100%");
 		
 		row = new Row();
 		rows.appendChild(row);
 		row.appendChild(new Label(""));
 		row.appendChild(fTo);
-		fTo.setWidth("100%");
+		ZKUpdateUtil.setWidth(fTo,"100%");
 		
 		row = new Row();
 		rows.appendChild(row);
@@ -230,13 +231,13 @@ public class WEMailDialog extends Window implements EventListener, ValueChangeLi
 		div.appendChild(lCc);
 		row.appendChild(div);
 		row.appendChild(fCcUser.getComponent());
-		fCcUser.getComponent().setWidth("100%");
+		ZKUpdateUtil.setWidth(fCcUser.getComponent(),"100%");
 		
 		row = new Row();
 		rows.appendChild(row);
 		row.appendChild(new Label(""));
 		row.appendChild(fCc);
-		fCc.setWidth("100%");
+		ZKUpdateUtil.setWidth(fCc,"100%");
 		
 		row = new Row();
 		rows.appendChild(row);
@@ -250,7 +251,7 @@ public class WEMailDialog extends Window implements EventListener, ValueChangeLi
 		div.appendChild(lSubject);
 		row.appendChild(div);
 		row.appendChild(fSubject);
-		fSubject.setWidth("100%");
+		ZKUpdateUtil.setWidth(fSubject,"100%");
 		
 		row = new Row();
 		rows.appendChild(row);
@@ -264,15 +265,14 @@ public class WEMailDialog extends Window implements EventListener, ValueChangeLi
 		div.appendChild(lAttachment);
 		row.appendChild(div);
 		row.appendChild(fAttachment);
-		fAttachment.setWidth("100%");
+		ZKUpdateUtil.setWidth(fAttachment,"100%");
 		
 		row = new Row();
 		rows.appendChild(row);
 		row.setSpans("2");
 		row.appendChild(fMessage);
-		fMessage.setWidth("100%");
-		fMessage.setHeight("100%");
-		fMessage.setRows(10);
+		ZKUpdateUtil.setHflex(fMessage, "1");
+		ZKUpdateUtil.setVflex(fMessage, "1");
 		
 		row = new Row();
 		rows.appendChild(row);
@@ -281,8 +281,8 @@ public class WEMailDialog extends Window implements EventListener, ValueChangeLi
 		confirmPanel.addActionListener(this);
 		
 		Borderlayout layout = new Borderlayout();
-		layout.setWidth("490px");
-		layout.setHeight("470px");
+		ZKUpdateUtil.setVflex(layout, "1");
+		ZKUpdateUtil.setHflex(layout, "1");
 		layout.setStyle("background-color: white; position: absolute;");
 		
 		Center center = new Center();

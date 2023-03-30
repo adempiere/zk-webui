@@ -25,7 +25,8 @@ public interface ITheme {
 	//theme key in MSysConfig
 	public static final String ZK_THEME = "ZK_THEME";
 	//default theme
-	public static final String ZK_THEME_DEFAULT = "default";
+	public static final String ZK_THEME_DEFAULT = "atlantic";
+	//public static final String ZK_THEME_DEFAULT = "ADempiereZkTheme";
 	//theme resource url prefix
 	public static final String THEME_PATH_PREFIX = "/theme/";
 

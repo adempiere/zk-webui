@@ -13,13 +13,6 @@
  *****************************************************************************/
 package org.adempiere.webui.apps.form;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.text.DecimalFormat;
-import java.util.Vector;
-import java.util.logging.Level;
-
 import org.adempiere.webui.component.Button;
 import org.adempiere.webui.component.ConfirmPanel;
 import org.adempiere.webui.component.Grid;
@@ -38,6 +31,7 @@ import org.adempiere.webui.editor.WTableDirEditor;
 import org.adempiere.webui.panel.ADForm;
 import org.adempiere.webui.panel.CustomForm;
 import org.adempiere.webui.panel.IFormController;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.apps.form.CreateFromStatement;
 import org.compiere.apps.form.ICreateFrom;
 import org.compiere.model.MBankStatement;
@@ -53,9 +47,16 @@ import org.compiere.util.Msg;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Hbox;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.util.Vector;
+import java.util.logging.Level;
 
 /**
  *	@author Yamel Senih, ysenih@erpcya.com, ERPCyA http://www.erpcya.com
@@ -197,8 +198,8 @@ public class WCreateFromStatementUI extends CreateFromStatement
     	amtToField.getComponent().setTooltiptext(Msg.translate(Env.getCtx(), "AmtTo"));
     	
     	Borderlayout parameterLayout = new Borderlayout();
-		parameterLayout.setHeight("120px");
-		parameterLayout.setWidth("100%");
+		ZKUpdateUtil.setWidth(parameterLayout, "120px");
+		ZKUpdateUtil.setHeight(parameterLayout, "100%");
     	Panel parameterPanel = v_CreateFromPanel.getParameterPanel();
 		parameterPanel.appendChild(parameterLayout);
 		
@@ -245,8 +246,8 @@ public class WCreateFromStatementUI extends CreateFromStatement
 		hbox.appendChild(dateToField.getComponent());
 		row.appendChild(hbox);
 		//	Add to Main
-		v_CreateFromPanel.setWidth("100%");
-		v_CreateFromPanel.setHeight("100%");
+		ZKUpdateUtil.setWidth(v_CreateFromPanel, "100%");
+		ZKUpdateUtil.setHeight(v_CreateFromPanel, "100%");
 		v_Container.appendChild(v_CreateFromPanel);
 	}
 

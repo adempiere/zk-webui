@@ -36,7 +36,7 @@ import org.zkoss.zul.Space;
  * @author hengsin
  *
  */
-public class WPreference extends Popup implements EventListener {
+public class WPreference extends Popup implements EventListener<Event> {
 
 	private static final long serialVersionUID = 7163067116469715021L;
 	private WYesNoEditor autoCommit;

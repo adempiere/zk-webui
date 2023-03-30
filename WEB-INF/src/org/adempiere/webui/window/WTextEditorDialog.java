@@ -22,7 +22,8 @@ import org.adempiere.webui.component.Tabs;
 import org.adempiere.webui.component.Textbox;
 import org.adempiere.webui.component.VerticalBox;
 import org.adempiere.webui.component.Window;
-import org.zkforge.fckez.FCKeditor;
+import org.adempiere.webui.util.ZKUpdateUtil;
+import org.zkforge.ckez.CKeditor;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -35,7 +36,7 @@ import org.zkoss.zul.Separator;
  * @author Low Heng Sin
  *
  */
-public class WTextEditorDialog extends Window implements EventListener{
+public class WTextEditorDialog extends Window implements EventListener<Event>{
 	
 	/**
 	 * 
@@ -47,7 +48,7 @@ public class WTextEditorDialog extends Window implements EventListener{
 	private boolean cancelled;
 	private Tabbox tabbox;
 	private Textbox textBox;
-	private FCKeditor editor;
+	private CKeditor editor;
 	private Label status;
 	private boolean isShowHTMLTab = true;
 
@@ -109,8 +110,8 @@ public class WTextEditorDialog extends Window implements EventListener{
 		textBox.setCols(80);
 		textBox.setRows(30);
 		textBox.setEnabled(editable);
-		textBox.setWidth("700px");
-		textBox.setHeight("500px");
+		ZKUpdateUtil.setWidth(textBox, "700px");
+		ZKUpdateUtil.setHeight(textBox, "500px");
 		tabPanel.appendChild(textBox);
 		
 		if (isShowHTMLTab) {
@@ -120,15 +121,15 @@ public class WTextEditorDialog extends Window implements EventListener{
 			tabPanel = new Tabpanel();
 			tabPanels.appendChild(tabPanel);
 			if (editable) {
-				editor = new FCKeditor();
+				editor = new CKeditor();
 				tabPanel.appendChild(editor);
 				editor.setWidth("700px");
 				editor.setHeight("500px");
 				editor.setValue(text);
 			} else {
 				Div div = new Div();
-				div.setHeight("500px");
-				div.setWidth("700px");
+				ZKUpdateUtil.setWidth(div, "700px");
+				ZKUpdateUtil.setHeight(div, "500px");
 				div.setStyle("overflow: auto; border: 1px solid");
 				tabPanel.appendChild(div);
 				Html html = new Html();

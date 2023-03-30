@@ -17,15 +17,13 @@
 
 package org.adempiere.webui.editor;
 
-import java.beans.PropertyChangeEvent;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
+import org.adempiere.exceptions.ValueChangeEvent;
 import org.adempiere.webui.ValuePreference;
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Combobox;
 import org.adempiere.webui.event.ContextMenuEvent;
 import org.adempiere.webui.event.ContextMenuListener;
-import org.adempiere.exceptions.ValueChangeEvent;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.WRecordInfo;
 import org.compiere.model.GridField;
 import org.compiere.model.Lookup;
@@ -39,6 +37,10 @@ import org.compiere.util.ValueNamePair;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Comboitem;
+
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import java.beans.PropertyChangeEvent;
 
 /**
  *
@@ -120,7 +122,7 @@ ContextMenuListener, IZoomableEditor
     
     private void init()
     {
-        getComponent().setWidth("200px"); 
+		ZKUpdateUtil.setWidth(getComponent(), "200px");
         getComponent().setAutocomplete(true);
         getComponent().setAutodrop(true);
         getComponent().addEventListener(Events.ON_BLUR, this);
@@ -151,7 +153,7 @@ ContextMenuListener, IZoomableEditor
     		{
     			WRecordInfo.addMenu(popupMenu);
     		}
-        	getComponent().setContext(popupMenu.getId());
+        	getComponent().setContext(popupMenu);
         }
     }
 

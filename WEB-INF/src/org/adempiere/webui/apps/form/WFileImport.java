@@ -21,13 +21,6 @@
 
 package org.adempiere.webui.apps.form;
 
-import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-
 import org.adempiere.controller.FileImportController;
 import org.adempiere.webui.component.Button;
 import org.adempiere.webui.component.ConfirmPanel;
@@ -41,6 +34,7 @@ import org.adempiere.webui.panel.IFormController;
 import org.adempiere.webui.session.SessionManager;
 import org.adempiere.webui.theme.ITheme;
 import org.adempiere.webui.util.ReaderInputStream;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.impexp.ImpFormatRow;
 import org.compiere.model.MRole;
@@ -53,14 +47,21 @@ import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Fileupload;
 import org.zkoss.zul.Hbox;
+import org.zkoss.zul.North;
 import org.zkoss.zul.Separator;
+import org.zkoss.zul.South;
+
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
 
 /**
  * 	Fixed length file import
@@ -115,17 +116,17 @@ public class WFileImport extends FileImportController implements IFormController
 			jbInit();
 			dynInit();
 			Borderlayout layout = new Borderlayout();
-			form.setWidth("100%");
+			ZKUpdateUtil.setWidth(form, "100%");
 			form.setClosable(true);
 			form.setBorder("normal");
 			form.appendChild(layout);
-			layout.setHeight("100%");
-			layout.setWidth("100%");
+			ZKUpdateUtil.setWidth(layout, "100%");
+			ZKUpdateUtil.setHeight(layout, "100%");
 			North north = new North();
 			layout.appendChild(north);
 			north.appendChild(northPanel);
 			Center center = new Center();
-			center.setFlex(true);
+			ZKUpdateUtil.setVflex(center, "flex");
 			layout.appendChild(center);
 			center.appendChild(centerPanel);
 			South south = new South();
@@ -186,18 +187,16 @@ public class WFileImport extends FileImportController implements IFormController
 		northPanel.appendChild(bPrevious);
 		northPanel.appendChild(record);
 		northPanel.appendChild(bNext);
-		
-		rawData.setWidth("100%");
+
 		rawData.setCols(80);
 		rawData.setRows(MAX_SHOWN_LINES);
-		rawData.setHeight("40%");
-		
-		previewPanel.setWidth("100%");
-		previewPanel.setHeight("58%");
+		ZKUpdateUtil.setWidth(rawData, "100%");
+		ZKUpdateUtil.setHeight(rawData, "40%");
+		ZKUpdateUtil.setWidth(previewPanel, "100%");
+		ZKUpdateUtil.setHeight(previewPanel, "58%");
 		previewPanel.setStyle("overflow: auto");
-		
-		centerPanel.setWidth("100%"); // Elaine 2008/11/07 - fix text area is not expanded in IE7
-		centerPanel.setHeight("100%");
+		ZKUpdateUtil.setWidth(centerPanel, "100%");
+		ZKUpdateUtil.setHeight(centerPanel, "100%");
 		centerPanel.appendChild(rawData);
 		centerPanel.appendChild(new Separator());
 		centerPanel.appendChild(previewPanel);
@@ -287,12 +286,8 @@ public class WFileImport extends FileImportController implements IFormController
 	private void cmd_loadFile() {
 		Media media = null;
 		InputStream file = null;
-		try {
-			media = Fileupload.get();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		//	
+		media = Fileupload.get();
+		//
 		if (media == null) {
 			return;
 		}
@@ -345,7 +340,7 @@ public class WFileImport extends FileImportController implements IFormController
 			m_labels[i] = new Label(row.getColumnName());
 			
 			Hbox hbox = new Hbox();
-			hbox.setWidth("100%");
+			ZKUpdateUtil.setWidth(hbox, "100%");
 			hbox.setWidths("30%, 70%");
 			hbox.setStyle("padding-bottom: 3px");
 			

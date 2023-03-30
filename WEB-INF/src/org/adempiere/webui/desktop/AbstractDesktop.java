@@ -13,9 +13,6 @@
  *****************************************************************************/
 package org.adempiere.webui.desktop;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.adempiere.webui.ClientInfo;
 import org.adempiere.webui.component.Window;
 import org.adempiere.webui.exception.ApplicationException;
@@ -25,6 +22,9 @@ import org.compiere.model.MRecentItem;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.zkoss.zk.ui.event.Events;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base class for desktop implementation
@@ -197,15 +197,8 @@ public abstract class AbstractDesktop extends AbstractUIPart implements IDesktop
    		//fall back to highlighted if can't execute doModal
    		if (Events.inEventListener())
    		{
-			try
-			{
-				win.doModal();
-			}
-			catch(InterruptedException e)
-			{
-				
-			}
-   		}
+			win.doModal();
+		}
    		else
    		{
    			showHighlighted(win, null);

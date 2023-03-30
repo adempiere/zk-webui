@@ -12,14 +12,6 @@
  *****************************************************************************/
 package org.adempiere.webui.component;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.adempiere.webui.editor.WButtonEditor;
 import org.adempiere.webui.editor.WEditor;
 import org.adempiere.webui.editor.WEditorPopupMenu;
@@ -45,6 +37,14 @@ import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.ListitemRendererExt;
 import org.zkoss.zul.Paging;
 import org.zkoss.zul.RendererCtrl;
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * ListItem renderer for GridTab list box.
@@ -74,9 +74,9 @@ public class GridTabListItemRenderer implements ListitemRenderer, ListitemRender
 	/**
 	 * @param listitem
 	 * @param data
-	 * @see ListitemRenderer#render(Listitem, Object)
+	 * @see ListitemRenderer#render(Listitem, Object, int)
 	 */
-	public void render(Listitem listitem, Object data) throws Exception {
+	public void render(Listitem listitem, Object data, int index) throws Exception {
 		//don't render if not visible
 		for(Component c = listitem.getParent(); c != null; c = c.getParent()) {
 			if (!c.isVisible())

@@ -16,13 +16,14 @@
  *****************************************************************************/
 package org.adempiere.webui.apps;
 
-import java.util.logging.Level;
-
 import org.adempiere.webui.component.Window;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.process.ProcessInfo;
 import org.compiere.util.ASyncProcess;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
+
+import java.util.logging.Level;
 
 /**
  * 
@@ -171,8 +172,7 @@ public class ProcessModalDialog extends Window implements IZKProcessDialog, ASyn
 			setClosable(true);
 			setMaximizable(true);
 			setPosition("center");
-			//	FR [ 1051 ]
-			setWidth("55%");
+			ZKUpdateUtil.setWidth(this, "55%");
 			
 			appendChild(processPanel.getPanel());
 		} else {

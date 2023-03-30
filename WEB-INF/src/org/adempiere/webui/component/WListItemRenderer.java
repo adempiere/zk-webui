@@ -17,22 +17,10 @@
 
 package org.adempiere.webui.component;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.event.TableValueChangeEvent;
 import org.adempiere.webui.event.TableValueChangeListener;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.minigrid.ColumnInfo;
 import org.compiere.minigrid.IDColumn;
 import org.compiere.util.DisplayType;
@@ -51,8 +39,21 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.ListitemRendererExt;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
- * Renderer for {@link org.adempiere.webui.component.ListItems}
+ * Renderer for {@link org.adempiere.webui.component.ListItem}
  * for the {@link org.adempiere.webui.component.Listbox}.
  *
  * @author Andrew Kimball
@@ -61,7 +62,7 @@ import org.zkoss.zul.ListitemRendererExt;
  * 				<li>release/380 - enable red rows based on color row in miniTable.
  */
 
-public class WListItemRenderer implements ListitemRenderer, EventListener, ListitemRendererExt
+public class WListItemRenderer implements ListitemRenderer<Object>, EventListener<Event>, ListitemRendererExt
 {
 	/** Array of listeners for changes in the table components. */
 	protected ArrayList<TableValueChangeListener> m_listeners =
@@ -144,9 +145,9 @@ public class WListItemRenderer implements ListitemRenderer, EventListener, Listi
 	/* (non-Javadoc)
 	 * @see org.zkoss.zul.ListitemRenderer#render(org.zkoss.zul.Listitem, java.lang.Object)
 	 */
-	public void render(Listitem item, Object data) throws Exception
+	public void render(Listitem item, Object data, int index) throws Exception
 	{
-		render((ListItem)item, data);
+		render((ListItem)item, data , index);
 	}
 
 	/**
@@ -157,9 +158,9 @@ public class WListItemRenderer implements ListitemRenderer, EventListener, Listi
 	 * 				at all.
 	 * @param data 	that is returned from {@link ListModel#getElementAt}
 	 * @throws Exception
-	 * @see {@link #render(Listitem, Object)}
+	 * @see {@link #render(Listitem, Object, int)}
 	 */
-	private void render(ListItem item, Object data)
+	private void render(ListItem item, Object data, int index )
 	{
 		Listcell listcell = null;
 		int colIndex = 0;
@@ -270,7 +271,7 @@ public class WListItemRenderer implements ListitemRenderer, EventListener, Listi
 					NumberBox numberbox = new NumberBox(false);
 					numberbox.setFormat(format);
 					numberbox.setValue(field);
-					numberbox.setWidth("100px");
+					ZKUpdateUtil.setWidth(numberbox, "100%");
 					numberbox.setEnabled(true);
 					numberbox.addEventListener(Events.ON_CHANGE, this);
 					listcell.appendChild(numberbox);
@@ -486,13 +487,14 @@ public class WListItemRenderer implements ListitemRenderer, EventListener, Listi
     	if (!isColumnVisible(getColumn(headerIndex)))
     	{
     		header.setLabel("");
-    		header.setWidth("0px");
+			ZKUpdateUtil.setWidth(header, "0px");
     		header.setStyle("width: 0px");
     	}
     	else if (classType != null && classType.isAssignableFrom(IDColumn.class))
     	{
     		header.setLabel("");
-    		header.setWidth("35px");
+			ZKUpdateUtil.setWidth(header, "35px");
+
     	}
     	else
     	{
@@ -527,7 +529,7 @@ public class WListItemRenderer implements ListitemRenderer, EventListener, Listi
             else if (width > 0 && width < 100)
             	width = 100;
 
-            header.setWidth(width + "px");
+			ZKUpdateUtil.setWidth(header, width + "px");
     	}
 
         header.setAttribute("zk_component_ID", "ListItem_Header_C" + headerIndex);

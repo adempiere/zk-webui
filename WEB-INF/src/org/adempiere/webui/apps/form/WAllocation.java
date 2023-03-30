@@ -16,10 +16,6 @@
  *****************************************************************************/
 package org.adempiere.webui.apps.form;
 
-import java.math.BigDecimal;
-import java.util.Vector;
-import java.util.logging.Level;
-
 import org.adempiere.exceptions.ValueChangeEvent;
 import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.component.Checkbox;
@@ -44,6 +40,7 @@ import org.adempiere.webui.panel.CustomForm;
 import org.adempiere.webui.panel.IFormController;
 import org.adempiere.webui.panel.StatusBarPanel;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.apps.form.Allocation;
 import org.compiere.model.MLookup;
@@ -56,13 +53,17 @@ import org.compiere.util.TrxRunnable;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
+import org.zkoss.zul.North;
 import org.zkoss.zul.Separator;
+import org.zkoss.zul.South;
 import org.zkoss.zul.Space;
+
+import java.math.BigDecimal;
+import java.util.Vector;
+import java.util.logging.Level;
 
 
 /**
@@ -184,8 +185,9 @@ public class WAllocation extends Allocation
 		//	
 		confirmPanel = new ConfirmPanel(true);
 		form.appendChild(mainLayout);
-		mainLayout.setWidth("100%");
-		mainLayout.setHeight("100%");
+		ZKUpdateUtil.setWidth(mainLayout, "100%");
+		ZKUpdateUtil.setHeight(mainLayout, "100%");
+
 		dateLabel.setText(Msg.getMsg(Env.getCtx(), "Date"));
 		autoWriteOff.setSelected(false);
 		autoWriteOff.setText(Msg.getMsg(Env.getCtx(), "AutoWriteOff", true));
@@ -222,8 +224,7 @@ public class WAllocation extends Allocation
 		
 		Rows rows = null;
 		Row row = null;
-		
-		parameterLayout.setWidth("100%");
+		ZKUpdateUtil.setWidth(parameterLayout, "100%");
 		rows = parameterLayout.newRows();
 		row = rows.newRow();
 		row.appendChild(bpartnerLabel.rightAlign());
@@ -261,7 +262,7 @@ public class WAllocation extends Allocation
 		southPanel.appendChild(allocationPanel);
 		
 		allocationPanel.appendChild(allocationLayout);
-		allocationLayout.setWidth("100%");
+		ZKUpdateUtil.setWidth(allocationLayout, "100%");
 		rows = allocationLayout.newRows();
 		row = rows.newRow();
 		row.appendChild(differenceLabel.rightAlign());
@@ -280,17 +281,18 @@ public class WAllocation extends Allocation
 		row.appendChild(confirmPanel);
 		
 		paymentPanel.appendChild(paymentLayout);
-		paymentPanel.setWidth("100%");
-		paymentPanel.setHeight("100%");
-		paymentLayout.setWidth("100%");
-		paymentLayout.setHeight("100%");
+		ZKUpdateUtil.setWidth(paymentPanel, "99%");
+		ZKUpdateUtil.setHeight(paymentPanel, "99%");
+
+		ZKUpdateUtil.setWidth(paymentLayout, "100%");
+		ZKUpdateUtil.setHeight(paymentLayout, "100%");
 		paymentLayout.setStyle("border: none");
 		
 		invoicePanel.appendChild(invoiceLayout);
-		invoicePanel.setWidth("100%");
-		invoicePanel.setHeight("100%");
-		invoiceLayout.setWidth("100%");
-		invoiceLayout.setHeight("100%");
+		ZKUpdateUtil.setWidth(invoicePanel, "100%");
+		ZKUpdateUtil.setHeight(invoicePanel, "100%");
+		ZKUpdateUtil.setWidth(invoiceLayout, "100%");
+		ZKUpdateUtil.setHeight(invoiceLayout, "100%");
 		invoiceLayout.setStyle("border: none");
 		
 		north = new North();
@@ -304,8 +306,8 @@ public class WAllocation extends Allocation
 		Center center = new Center();
 		paymentLayout.appendChild(center);
 		center.appendChild(paymentTable);
-		paymentTable.setWidth("99%");
-		paymentTable.setHeight("100%");
+		ZKUpdateUtil.setWidth(paymentTable, "99%");
+		ZKUpdateUtil.setHeight(paymentTable, "100%");
 		paymentTable.setMultiSelection(true);
 		center.setStyle("border: none");
 		
@@ -320,29 +322,29 @@ public class WAllocation extends Allocation
 		center = new Center();
 		invoiceLayout.appendChild(center);
 		center.appendChild(invoiceTable);
-		invoiceTable.setWidth("99%");
-		invoiceTable.setHeight("99%");
+		ZKUpdateUtil.setWidth(invoiceTable, "99%");
+		ZKUpdateUtil.setHeight(invoiceTable, "100%");
 		invoiceTable.setMultiSelection(true);
 		center.setStyle("border: none");
 		//
 		center = new Center();
-		center.setFlex(true);
+		ZKUpdateUtil.setVflex(center, "flex");
 		mainLayout.appendChild(center);
 		center.appendChild(infoPanel);
 		
 		infoPanel.setStyle("border: none");
-		infoPanel.setWidth("100%");
-		infoPanel.setHeight("100%");
+		ZKUpdateUtil.setWidth(infoPanel, "99%");
+		ZKUpdateUtil.setHeight(infoPanel, "100%");
 		
 		north = new North();
 		north.setStyle("border: none");
-		north.setHeight("49%");
+		ZKUpdateUtil.setHeight(north, "49%");
 		infoPanel.appendChild(north);
 		north.appendChild(paymentPanel);
 		north.setSplittable(true);
 		center = new Center();
 		center.setStyle("border: none");
-		center.setFlex(true);
+		ZKUpdateUtil.setVflex(center, "flex");
 		infoPanel.appendChild(center);
 		center.appendChild(invoicePanel);
 	}   //  jbInit
@@ -451,7 +453,7 @@ public class WAllocation extends Allocation
 		if(m_isCalculating)
 			return;
 		m_isCalculating = true;
-		Clients.showBusy(null,true);
+		Clients.showBusy(Msg.getMsg(Env.getCtx(), "Processing"));
 		
 		int row = e.getFirstRow();
 		int col = e.getColumn();
@@ -463,8 +465,8 @@ public class WAllocation extends Allocation
 			FDialog.warn(getWindowNo(), "AllocationWriteOffWarn");
 
 		calculate();
-		
-		Clients.showBusy(null,false);
+
+		Clients.clearBusy();
 		m_isCalculating = false;
 	}   //  tableChanged
 
@@ -580,7 +582,7 @@ public class WAllocation extends Allocation
 	 */
 	private void loadBPartner()
 	{
-		Clients.showBusy(null,true);
+		Clients.showBusy(Msg.getMsg(Env.getCtx(), "Processing"));
 		
 		//checkBPartner();
 		Vector<Vector<Object>> data = getPaymentData(multiCurrency.isSelected(), dateField.getValue(), paymentTable);
@@ -619,7 +621,7 @@ public class WAllocation extends Allocation
 		
 		//  Calculate Totals
 		calculate();
-		Clients.showBusy(null,false);
+		Clients.clearBusy();
 	}   //  loadBPartner
 	
 	public void calculate()

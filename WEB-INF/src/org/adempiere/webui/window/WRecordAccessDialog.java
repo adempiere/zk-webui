@@ -13,11 +13,6 @@
  *****************************************************************************/
 package org.adempiere.webui.window;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.logging.Level;
-
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Checkbox;
 import org.adempiere.webui.component.ConfirmPanel;
@@ -29,6 +24,7 @@ import org.adempiere.webui.component.Listbox;
 import org.adempiere.webui.component.Row;
 import org.adempiere.webui.component.Rows;
 import org.adempiere.webui.component.Window;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.MRecordAccess;
 import org.compiere.model.MRole;
 import org.compiere.util.CLogger;
@@ -40,6 +36,11 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Toolbarbutton;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.logging.Level;
 
 /**
  *  Record Access Dialog
@@ -64,8 +65,8 @@ public class WRecordAccessDialog extends Window implements EventListener
 		super();
 		setTitle(Msg.translate(Env.getCtx(), "RecordAccessDialog"));
 		setAttribute("modal", Boolean.TRUE);
-		setBorder("normal");		
-		setWidth("600px");
+		setBorder("normal");
+		ZKUpdateUtil.setWidth(this, "600px");
 		setSizable(true);
 		
 		log.info("AD_Table_ID=" + AD_Table_ID + ", Record_ID=" + Record_ID);

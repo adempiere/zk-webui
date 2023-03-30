@@ -16,9 +16,6 @@
  *****************************************************************************/
 package org.adempiere.webui.apps.form;
 
-import java.util.ArrayList;
-import java.util.logging.Level;
-
 import org.adempiere.webui.LayoutUtils;
 import org.adempiere.webui.component.Button;
 import org.adempiere.webui.component.Checkbox;
@@ -31,6 +28,7 @@ import org.adempiere.webui.panel.ADForm;
 import org.adempiere.webui.panel.CustomForm;
 import org.adempiere.webui.panel.IFormController;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.apps.form.TreeMaintenance;
 import org.compiere.model.MTree;
@@ -41,15 +39,20 @@ import org.compiere.util.Msg;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.East;
-import org.zkoss.zkex.zul.North;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
+import org.zkoss.zul.DefaultTreeNode;
+import org.zkoss.zul.East;
 import org.zkoss.zul.ListModel;
-import org.zkoss.zul.SimpleTreeNode;
+import org.zkoss.zul.North;
 import org.zkoss.zul.Space;
 import org.zkoss.zul.Tree;
+import org.zkoss.zul.TreeModel;
+import org.zkoss.zul.TreeNode;
 import org.zkoss.zul.Treeitem;
+
+import java.util.ArrayList;
+import java.util.logging.Level;
 
 /**
  *	Tree Maintenance
@@ -57,7 +60,7 @@ import org.zkoss.zul.Treeitem;
  *  @author Jorg Janke
  *  @version $Id: VTreeMaintenance.java,v 1.3 2006/07/30 00:51:28 jjanke Exp $
  */
-public class WTreeMaintenance extends TreeMaintenance implements IFormController, EventListener {
+public class WTreeMaintenance extends TreeMaintenance implements IFormController, EventListener<Event> {
 	
 	private CustomForm form = new CustomForm();	
 	
@@ -115,13 +118,13 @@ public class WTreeMaintenance extends TreeMaintenance implements IFormController
 		bAdd.setSrc("images/StepBack16.png");
 		bDelete.setSrc("images/StepForward16.png");
 		bDeleteAll.setSrc("images/FastForward16.png");
-		
-		form.setWidth("99%");
-		form.setHeight("100%");
+
+		ZKUpdateUtil.setWidth(form, "99%");
+		ZKUpdateUtil.setHeight(form, "100%");
 		form.setStyle("position: absolute; padding: 0; margin: 0");
 		form.appendChild (mainLayout);
-		mainLayout.setWidth("100%");
-		mainLayout.setHeight("100%");
+		ZKUpdateUtil.setWidth(mainLayout, "100%");
+		ZKUpdateUtil.setHeight(mainLayout, "100%");
 		mainLayout.setStyle("position: absolute");
 		
 		treeLabel.setText (Msg.translate(Env.getCtx(), "AD_Tree_ID"));
@@ -140,7 +143,7 @@ public class WTreeMaintenance extends TreeMaintenance implements IFormController
 		North north = new North();
 		mainLayout.appendChild(north);
 		north.appendChild(northPanel);
-		north.setHeight("28px");
+		ZKUpdateUtil.setHeight(north,"28px");
 		//
 		northPanel.appendChild (treeLabel);
 		northPanel.appendChild (new Space());
@@ -161,7 +164,7 @@ public class WTreeMaintenance extends TreeMaintenance implements IFormController
 		Center center = new Center();
 		mainLayout.appendChild(center);	
 		center.appendChild(centerTree);
-		center.setFlex(true);
+		ZKUpdateUtil.setVflex(center, "flex");
 		center.setAutoscroll(true);
 		
 		East east = new East();
@@ -169,9 +172,9 @@ public class WTreeMaintenance extends TreeMaintenance implements IFormController
 		east.appendChild(centerList);
 		east.setCollapsible(false);
 		east.setSplittable(true);
-		east.setWidth("45%");
-		centerList.setVflex(true);
-		centerList.setFixedLayout(true);
+		ZKUpdateUtil.setWidth(east, "45%");
+		ZKUpdateUtil.setVflex(centerList,true);
+		centerList.setSizedByContent(false);
 		centerList.addEventListener(Events.ON_SELECT, this);
 	}	//	jbInit
 
@@ -288,10 +291,10 @@ public class WTreeMaintenance extends TreeMaintenance implements IFormController
 		log.info("Selected=" + selected);
 		if (selected != null)	//	allow add if not in tree
 		{
-			SimpleTreeModel tm = (SimpleTreeModel) centerTree.getModel();
-			SimpleTreeNode stn = tm.find(tm.getRoot(), selected.id);
+			SimpleTreeModel tm = (SimpleTreeModel)((TreeModel<?>)  centerTree.getModel());
+			DefaultTreeNode<Object> stn = tm.find(tm.getRoot(), selected.id);
 			if (stn != null) {
-				int[] path = tm.getPath(tm.getRoot(), stn);
+				int[] path = tm.getPath(stn);
 				Treeitem ti = centerTree.renderItemByPath(path);
 				ti.setSelected(true);
 			}
@@ -306,17 +309,17 @@ public class WTreeMaintenance extends TreeMaintenance implements IFormController
 	private void onTreeSelection (Event e)
 	{
 		Treeitem ti = centerTree.getSelectedItem();
-		SimpleTreeNode stn = (SimpleTreeNode) ti.getValue();
+		DefaultTreeNode<Object> stn = ti.getValue();
 		MTreeNode tn = (MTreeNode)stn.getData();
 		if (tn == null)
 			return;
 		log.info(tn.toString());
-		ListModel model = centerList.getModel();
+		ListModel<ListItem> model = centerList.getModel();
 		int size = model.getSize();
 		int index = -1;
 		for (index = 0; index < size; index++)
 		{
-			ListItem item = (ListItem)model.getElementAt(index);
+			ListItem item = model.getElementAt(index);
 			if (item.id == tn.getNode_ID())
 				break;
 		}
@@ -332,19 +335,20 @@ public class WTreeMaintenance extends TreeMaintenance implements IFormController
 		log.info("Item=" + item);
 		if (item != null)
 		{
-			SimpleTreeModel model = (SimpleTreeModel) centerTree.getModel();
-			SimpleTreeNode stn = model.find(model.getRoot(), item.id);
+			SimpleTreeModel model = (SimpleTreeModel) ((TreeModel<?>) centerTree.getModel());
+			DefaultTreeNode<Object> stn = model.find(model.getRoot(), item.id);
 			if (stn != null) {
 				MTreeNode tNode = (MTreeNode) stn.getData();
 				tNode.setName(item.name);
 				tNode.setAllowsChildren(item.isSummary);
 				tNode.setImageIndicator(item.imageIndicator);
 				model.nodeUpdated(stn);
-				Treeitem ti = centerTree.renderItemByPath(model.getPath(model.getRoot(), stn));
+				Treeitem ti = centerTree.renderItemByPath(model.getPath(stn));
 				ti.setTooltiptext(item.description);
 			} else {
-				stn = new SimpleTreeNode(new MTreeNode(item.id, 0, item.name, item.description, 0, item.isSummary,
-						item.imageIndicator, false, null), new ArrayList<Object>());
+				stn = new DefaultTreeNode<>(new MTreeNode(item.id, 0, item.name, item.description, 0, item.isSummary,
+						item.imageIndicator, false, null), new ArrayList<TreeNode<Object>>());
+
 				model.addNode(stn);
 			}
 			//	May cause Error if in tree
@@ -361,8 +365,8 @@ public class WTreeMaintenance extends TreeMaintenance implements IFormController
 		log.info("Item=" + item);
 		if (item != null)
 		{
-			SimpleTreeModel model = (SimpleTreeModel) centerTree.getModel();
-			SimpleTreeNode stn = model.find(model.getRoot(), item.id);
+			SimpleTreeModel model =  (SimpleTreeModel) ((TreeModel<?>) centerTree.getModel());
+			DefaultTreeNode<Object> stn = model.find(model.getRoot(), item.id);
 			if (stn != null)
 				model.removeNode(stn);
 			
@@ -378,12 +382,12 @@ public class WTreeMaintenance extends TreeMaintenance implements IFormController
 	private void action_treeAddAll()
 	{
 		log.info("");
-		ListModel model = centerList.getModel();
+		ListModel<ListItem> model = centerList.getModel();
 		int size = model.getSize();
 		int index = -1;
 		for (index = 0; index < size; index++)
 		{
-			ListItem item = (ListItem)model.getElementAt(index);
+			ListItem item = model.getElementAt(index);
 			action_treeAdd(item);
 		}
 	}	//	action_treeAddAll

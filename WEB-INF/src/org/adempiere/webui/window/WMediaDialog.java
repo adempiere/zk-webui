@@ -16,15 +16,11 @@
 
 package org.adempiere.webui.window;
 
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.SQLException;
-import java.util.logging.Level;
-
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Button;
 import org.adempiere.webui.component.Panel;
 import org.adempiere.webui.component.Window;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
@@ -33,14 +29,19 @@ import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Fileupload;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Iframe;
+import org.zkoss.zul.North;
+import org.zkoss.zul.South;
+
+import java.sql.Blob;
+import java.sql.Clob;
+import java.sql.SQLException;
+import java.util.logging.Level;
 
 /**
  * 
@@ -129,15 +130,14 @@ public class WMediaDialog extends Window implements EventListener
 	
 	void staticInit() throws Exception
 	{
-		this.setWidth("500px");
-		this.setHeight("600px");
+		ZKUpdateUtil.setWidth(this, "500px");
+		ZKUpdateUtil.setHeight(this, "600px");
 		this.setClosable(true);
 		this.setBorder("normal");
 		this.appendChild(mainPanel);
-		mainPanel.setHeight("100%");
-		mainPanel.setWidth("100%");
-		
-		
+		ZKUpdateUtil.setWidth(mainPanel, "100%");
+		ZKUpdateUtil.setHeight(mainPanel, "100%");
+
 		North northPanel = new North();
 		northPanel.setCollapsible(false);
 		northPanel.setSplittable(false);
@@ -164,19 +164,19 @@ public class WMediaDialog extends Window implements EventListener
 		bDelete.addEventListener(Events.ON_CLICK, this);
 
 		previewPanel.appendChild(preview);
-		preview.setHeight("100%");
-		preview.setWidth("100%");
+		ZKUpdateUtil.setWidth(preview, "100%");
+		ZKUpdateUtil.setHeight(preview, "100%");
 			
 		Center centerPane = new Center();
 		centerPane.setAutoscroll(true);
-		centerPane.setFlex(true);
+		ZKUpdateUtil.setVflex(centerPane, "flex");
 		mainPanel.appendChild(centerPane);
 		centerPane.appendChild(previewPanel);
 		
 		South southPane = new South();
 		mainPanel.appendChild(southPane);
 		southPane.appendChild(confirmPanel);
-		southPane.setHeight("30px");
+		ZKUpdateUtil.setWidth(southPane, "30px");
 		
 		bCancel.setImage("/images/Cancel16.png");
 		bCancel.addEventListener(Events.ON_CLICK, this);
@@ -318,19 +318,12 @@ public class WMediaDialog extends Window implements EventListener
 		log.info("");
 		
 		Media media = null;
-		
-		try 
-		{
-			media = Fileupload.get(); 
-			
-			if (media == null)
+
+		media = Fileupload.get();
+
+		if (media == null)
 				return;
-		}
-		catch (InterruptedException e) 
-		{
-			e.printStackTrace();
-		}
-	
+
 		String fileName = media.getName(); 
 		log.config(fileName);
 		//update		

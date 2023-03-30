@@ -16,11 +16,6 @@
  *****************************************************************************/
 package org.adempiere.webui.apps.form;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.Optional;
-import java.util.logging.Level;
-
 import org.adempiere.webui.LayoutUtils;
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Button;
@@ -45,6 +40,7 @@ import org.adempiere.webui.panel.CustomForm;
 import org.adempiere.webui.panel.IFormController;
 import org.adempiere.webui.panel.StatusBarPanel;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.apps.form.Match;
 import org.compiere.minigrid.ColumnInfo;
 import org.compiere.minigrid.IDColumn;
@@ -57,12 +53,17 @@ import org.compiere.util.Msg;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
+import org.zkoss.zul.North;
 import org.zkoss.zul.Separator;
+import org.zkoss.zul.South;
 import org.zkoss.zul.Space;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.Optional;
+import java.util.logging.Level;
 
 /**
  *  Manual Matching
@@ -199,8 +200,8 @@ public class WMatch extends Match
 		form.appendChild(mainPanel);
 		mainPanel.setStyle("width: 99%; height: 100%; padding: 0; margin: 0");
 		mainPanel.appendChild(mainLayout);
-		mainLayout.setWidth("100%");
-		mainLayout.setHeight("100%");
+		ZKUpdateUtil.setWidth(mainLayout, "100%");
+		ZKUpdateUtil.setHeight(mainLayout, "100%");
 		northPanel.appendChild(northLayout);
 		matchFromLabel.setText(Msg.translate(Env.getCtx(), "MatchFrom"));
 		matchToLabel.setText(Msg.translate(Env.getCtx(), "MatchTo"));
@@ -273,33 +274,33 @@ public class WMatch extends Match
 		Center center = new Center();
 		mainLayout.appendChild(center);
 		center.appendChild(centerPanel);
-		center.setFlex(true);
-		centerLayout.setWidth("100%");
-		centerLayout.setHeight("100%");
+		ZKUpdateUtil.setVflex(center, "flex");
+		ZKUpdateUtil.setWidth(centerLayout, "100%");
+		ZKUpdateUtil.setHeight(centerLayout, "100%");
 		north = new North();
 		centerLayout.appendChild(north);
 		north.setStyle("border: none");
 		Panel p = new Panel();
 		p.appendChild(xMatchedBorder);
 		p.appendChild(xMatchedTable);
-		xMatchedTable.setWidth("99%");
-		xMatchedTable.setHeight("85%");
+		ZKUpdateUtil.setWidth(xMatchedTable, "99%");
+		ZKUpdateUtil.setHeight(xMatchedTable, "85%");
 		p.setStyle("width: 100%; height: 100%; padding: 0; margin: 0");
 		north.appendChild(p);
-		north.setHeight("44%");
+		ZKUpdateUtil.setHeight(north,"44%");
 		
 		south = new South();
 		centerLayout.appendChild(south);
 		south.setStyle("border: none");
-		xMatchedToTable.setWidth("99%");
-		xMatchedToTable.setHeight("99%");
+		ZKUpdateUtil.setWidth(xMatchedToTable, "99%");
+		ZKUpdateUtil.setHeight(xMatchedToTable, "99%");
 		south.appendChild(xMatchedToTable);
-		south.setHeight("44%");
+		ZKUpdateUtil.setHeight(south, "44%");
 		
 		center = new Center();
 		centerLayout.appendChild(center);
 		center.setStyle("border: none");
-		center.setFlex(false);
+		ZKUpdateUtil.setVflex(center, "flex");
 //		center.setHeight("6%");
 		center.appendChild(xPanel);
 		xPanel.appendChild(sameBPartner);
@@ -307,7 +308,7 @@ public class WMatch extends Match
 		xPanel.appendChild(sameProduct);
 		xPanel.appendChild(new Space());
 		xPanel.appendChild(sameQty);
-		xPanel.setHeight("50px");
+		ZKUpdateUtil.setHeight(xPanel, "50px");
 		xPanel.appendChild(new Separator());
 		xPanel.appendChild(xMatchedToBorder);
 	}   //  jbInit

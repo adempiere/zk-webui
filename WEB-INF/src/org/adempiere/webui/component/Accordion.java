@@ -13,19 +13,20 @@
  *****************************************************************************/
 package org.adempiere.webui.component;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
+import org.zkoss.zul.North;
+import org.zkoss.zul.South;
 import org.zkoss.zul.Vbox;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A custom accoridon implementation using borderlayout
@@ -48,19 +49,19 @@ public class Accordion extends Borderlayout implements EventListener {
 		North north = new North();		
 		appendChild(north);
 		northBox = new Vbox();
-		northBox.setWidth("100%");
+		ZKUpdateUtil.setWidth(northBox, "100%");
 		north.appendChild(northBox);
 		north.setSplittable(false);
 		north.setCollapsible(false);
 		
 		Center center = new Center();
-		center.setFlex(true);
+		ZKUpdateUtil.setVflex(center, "flex");
 		appendChild(new Center());
 		
 		South south = new South();
 		appendChild(south);
 		southBox = new Vbox();
-		southBox.setWidth("100%");
+		ZKUpdateUtil.setWidth(southBox, "100%");
 		south.appendChild(southBox);
 		south.setSplittable(false);
 		south.setCollapsible(false);
@@ -75,7 +76,7 @@ public class Accordion extends Borderlayout implements EventListener {
 		ToolBarButton button = new ToolBarButton();
 		button.setLabel(label);
 		button.addEventListener(Events.ON_CLICK, this);
-		button.setWidth("100%");
+		ZKUpdateUtil.setWidth(button, "100%");
 		
 		Div div = new Div();
 		div.setClass("z-center-header");

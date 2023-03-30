@@ -13,13 +13,12 @@
 
 package org.adempiere.webui.part;
 
-import java.util.List;
-
 import org.adempiere.webui.component.Tab;
 import org.adempiere.webui.component.Tabbox;
 import org.adempiere.webui.component.Tabpanel;
 import org.adempiere.webui.component.Tabpanels;
 import org.adempiere.webui.component.Tabs;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.zkoss.zk.ui.Component;
@@ -28,6 +27,8 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Menuitem;
 import org.zkoss.zul.Menupopup;
+
+import java.util.List;
 
 /**
  * 
@@ -67,8 +68,8 @@ public class WindowContainer extends AbstractUIPart
 
         tabbox.appendChild(tabs);
         tabbox.appendChild(tabpanels);
-        tabbox.setWidth("100%");
-        tabbox.setHeight("100%");
+		ZKUpdateUtil.setWidth(tabbox, "100%");
+		ZKUpdateUtil.setHeight(tabbox, "100%");
         
         if (parent != null)
         	tabbox.setParent(parent);
@@ -179,7 +180,8 @@ public class WindowContainer extends AbstractUIPart
 			}
 		});
 		popupClose.appendChild(item);
-		popupClose.setWidth("auto");
+		ZKUpdateUtil.setWidth(popupClose, "auto");
+
 		tab.setContext(popupClose);
 		
 		tab.addEventListener(Events.ON_RIGHT_CLICK, new EventListener() {
@@ -212,8 +214,8 @@ public class WindowContainer extends AbstractUIPart
         	tabpanel.appendChild(comp);
         }
         tabpanel.setZclass("desktop-tabpanel");
-        tabpanel.setHeight("100%");
-        tabpanel.setWidth("100%");
+		ZKUpdateUtil.setWidth(tabpanel, "100%");
+		ZKUpdateUtil.setHeight(tabpanel, "100%");
         tabpanel.setStyle("position: relative;");
         
         if (refTab == null)  

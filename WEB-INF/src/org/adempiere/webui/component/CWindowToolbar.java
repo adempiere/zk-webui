@@ -17,19 +17,12 @@
 
 package org.adempiere.webui.component;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.logging.Level;
-
 import org.adempiere.webui.LayoutUtils;
 import org.adempiere.webui.event.ToolbarListener;
 import org.adempiere.webui.panel.IADTabPanel;
 import org.adempiere.webui.session.SessionManager;
 import org.adempiere.webui.theme.ITheme;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.MRole;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
@@ -40,6 +33,14 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.KeyEvent;
 import org.zkoss.zul.Space;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.logging.Level;
 
 /**
  *
@@ -60,17 +61,20 @@ import org.zkoss.zul.Space;
  * @author Michael McKay, mckayERP@gmail.com
  * 		<li><a href="https://github.com/adempiere/adempiere/issues/2373">#2373</a> Add copy record shortcut key Shift+F2
  */
-public class CWindowToolbar extends FToolbar implements EventListener
+public class CWindowToolbar extends FToolbar implements EventListener<Event>
 {
     /**
 	 *
 	 */
 	private static final long serialVersionUID = -8259762910508209764L;
 
-	private static final String TOOLBAR_BUTTON_STYLE = "background-color: transparent; display:inline-block; margin-left: 1px; margin-right: 1px; width: 26px; height: 24px;";
+	//private static final String TOOLBAR_BUTTON_STYLE = "background-color: transparent; display:inline-block; margin-left: 1px; margin-right: 1px; width: 26px; height: 24px;";
 
-	private static final String EMBEDDED_TOOLBAR_BUTTON_STYLE = "background-color: transparent; display:inline-block; margin-left: 1px; margin-right: 1px; width: 20px; height: 18px;";
-	
+    private static final String TOOLBAR_BUTTON_STYLE = "";
+
+   //private static final String EMBEDDED_TOOLBAR_BUTTON_STYLE = "background-color: transparent; display:inline-block; margin-left: 1px; margin-right: 1px; width: 20px; height: 18px;";
+    private static final String EMBEDDED_TOOLBAR_BUTTON_STYLE = "";
+
     private static CLogger log = CLogger.getCLogger(CWindowToolbar.class);
 
     private ToolBarButton btnIgnore;
@@ -234,12 +238,12 @@ public class CWindowToolbar extends FToolbar implements EventListener
     		btnHistoryRecords.setVisible(false);
     		btnProductInfo.setVisible(false);
     		setAlign("end");
-    		setWidth("100%");
+            ZKUpdateUtil.setWidth(this, "100%");
     		setStyle("background: transparent none; ");
         }
         else
         {
-        	setWidth("100%");
+            ZKUpdateUtil.setWidth(this, "100%");
         }
     }
 

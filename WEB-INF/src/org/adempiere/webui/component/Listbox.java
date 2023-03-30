@@ -17,10 +17,6 @@
 
 package org.adempiere.webui.component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 import org.compiere.util.KeyNamePair;
 import org.compiere.util.ValueNamePair;
 import org.zkoss.zk.ui.Component;
@@ -28,6 +24,10 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listitem;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -39,14 +39,14 @@ import org.zkoss.zul.Listitem;
  * 				<li>release/380 - add old value comparison for lookup/info window support
  */
 
-public class Listbox extends org.zkoss.zul.Listbox implements EventListener
+public class Listbox extends org.zkoss.zul.Listbox implements EventListener<Event>
 {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2102597724705225997L;
-	private List<EventListener> doubleClickListeners = new ArrayList<EventListener>();
-    private List<EventListener> onDropListeners = new ArrayList<EventListener>();
+	private List<EventListener<Event>> doubleClickListeners = new ArrayList<>();
+    private List<EventListener<Event>> onDropListeners = new ArrayList<>();
 	private boolean draggable;
 	private String oddRowSclass;
 	private Object m_oldValue;
@@ -105,12 +105,12 @@ public class Listbox extends org.zkoss.zul.Listbox implements EventListener
     }
     
     @SuppressWarnings("unchecked")
-    public List<ListItem> getItems()
+    public List<Listitem> getItems()
     {
-        return (List<ListItem>)super.getItems();
+        return (List<Listitem>)super.getItems();
     }
-    
-    /** 
+
+    /**
      * Set selected item for the list box based on the value of list item
      * set selected to none if no item found matching the value given or 
      * value is null
@@ -125,8 +125,8 @@ public class Listbox extends org.zkoss.zul.Listbox implements EventListener
             return ;
         }
         
-        List<ListItem> items = getItems();
-        for (ListItem item : items)
+        List<Listitem> items = getItems();
+        for (Listitem item : items)
         {
         	if (value.getClass() != item.getValue().getClass()) {
         		// if the classes of value and item are different convert both to String
@@ -188,11 +188,11 @@ public class Listbox extends org.zkoss.zul.Listbox implements EventListener
 		}
 	}
 
-	public void addOnDropListener(EventListener listener) {
+	public void addOnDropListener(EventListener<Event>  listener) {
 		onDropListeners.add(listener);
 	}
 
-	public void addDoubleClickListener(EventListener listener) {
+	public void addDoubleClickListener(EventListener<Event>  listener) {
 		doubleClickListeners.add(listener);
 	}
 	
@@ -221,11 +221,11 @@ public class Listbox extends org.zkoss.zul.Listbox implements EventListener
 
 	public void onEvent(Event event) throws Exception {
 		if (Events.ON_DOUBLE_CLICK.equals(event.getName()) && !doubleClickListeners.isEmpty()) {
-			for(EventListener listener : doubleClickListeners) {
+			for(EventListener<Event>  listener : doubleClickListeners) {
 				listener.onEvent(event);
 			}
 		} else if (Events.ON_DROP.equals(event.getName()) && !onDropListeners.isEmpty()) {
-			for(EventListener listener : onDropListeners) {
+			for(EventListener<Event>  listener : onDropListeners) {
 				listener.onEvent(event);
 			}
 		}
@@ -251,17 +251,15 @@ public class Listbox extends org.zkoss.zul.Listbox implements EventListener
 
 	/**
 	 * alias for removeEventListener(Events.ON_SELECT, listener), to ease porting of swing form
-	 * @param listener
 	 */
-	public void removeActionListener(EventListener listener) {
+	public void removeActionListener(EventListener<Event> listener) {
 		removeEventListener(Events.ON_SELECT, listener);
 	}
 
 	/**
 	 * alias for addEventListener(Events.ON_SELECT, listener), to ease porting of swing form
-	 * @param listener
 	 */
-	public void addActionListener(EventListener listener) {
+	public void addActionListener(EventListener<Event>  listener) {
 		addEventListener(Events.ON_SELECT, listener);
 	}
 
@@ -349,7 +347,7 @@ public class Listbox extends org.zkoss.zul.Listbox implements EventListener
 	@Override
 	public String toString() {
 		StringBuffer items = new StringBuffer("[");
-		for (ListItem item : getItems()) {
+		for (Listitem item : getItems()) {
 			if (items.length() > 1)
 				items.append(", ");
 			items.append(item.toString());

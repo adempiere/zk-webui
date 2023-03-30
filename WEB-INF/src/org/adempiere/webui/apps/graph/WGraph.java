@@ -13,20 +13,12 @@
  *****************************************************************************/
 package org.adempiere.webui.apps.graph;
 
-import java.awt.Point;
-import java.awt.image.BufferedImage;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.logging.Level;
-
 import org.adempiere.apps.graph.GraphBuilder;
 import org.adempiere.apps.graph.GraphColumn;
-import org.adempiere.webui.apps.AEnv;
-import org.adempiere.webui.editor.WTableDirEditor;
 import org.adempiere.exceptions.ValueChangeEvent;
 import org.adempiere.exceptions.ValueChangeListener;
+import org.adempiere.webui.apps.AEnv;
+import org.adempiere.webui.editor.WTableDirEditor;
 import org.compiere.model.MGoal;
 import org.compiere.model.MLookup;
 import org.compiere.model.MLookupFactory;
@@ -56,15 +48,23 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.MouseEvent;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.East;
 import org.zkoss.zul.Area;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
+import org.zkoss.zul.East;
 import org.zkoss.zul.Imagemap;
 import org.zkoss.zul.Panel;
 import org.zkoss.zul.Panelchildren;
 import org.zkoss.zul.Toolbar;
+
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.logging.Level;
 
 /**
  * Performance Graph

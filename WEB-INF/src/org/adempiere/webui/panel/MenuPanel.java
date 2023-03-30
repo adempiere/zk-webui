@@ -17,16 +17,13 @@
 
 package org.adempiere.webui.panel;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Properties;
-
 import org.adempiere.webui.component.Checkbox;
 import org.adempiere.webui.event.MenuListener;
 import org.adempiere.webui.exception.ApplicationException;
 import org.adempiere.webui.session.SessionManager;
 import org.adempiere.webui.theme.ITheme;
 import org.adempiere.webui.util.TreeUtils;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.MTree;
 import org.compiere.model.MTreeNode;
 import org.compiere.util.DB;
@@ -46,13 +43,17 @@ import org.zkoss.zul.Treecols;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
 
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Properties;
+
 /**
  *
  * @author  <a href="mailto:agramdass@gmail.com">Ashley G Ramdass</a>
  * @date    Feb 25, 2007
  * @version $Revision: 0.10 $
  */
-public class MenuPanel extends Panel implements EventListener
+public class MenuPanel extends Panel implements EventListener<Event>
 {
     /**
 	 * 
@@ -81,22 +82,26 @@ public class MenuPanel extends Panel implements EventListener
     
     private void init()
     {
-    	this.setWidth("100%");
-    	this.setHeight("100%");
+        ZKUpdateUtil.setVflex(this, "1");
+        ZKUpdateUtil.setHflex(this, "1");
+        //ZKUpdateUtil.setWidth(this, "100%");
+        //ZKUpdateUtil.setHeight(this, "100%");
     	
         menuTree = new Tree();
         menuTree.setMultiple(false);
+        menuTree.setNonselectableTags("");
         menuTree.setId("mnuMain");
-        menuTree.setWidth("100%");
-        menuTree.setVflex(true);
-        menuTree.setFixedLayout(false);
+        ZKUpdateUtil.setVflex(menuTree, true);
+        menuTree.setSizedByContent(true);
+        //ZKUpdateUtil.setWidth(menuTree, "100%");
         menuTree.setPageSize(-1); // Due to bug in the new paging functionality
-        
         menuTree.setStyle("border: none");
-        
         pnlSearch = new TreeSearchPanel(menuTree);
         
         Toolbar toolbar = new Toolbar();
+        toolbar.setStyle("padding: 0; border: 0;");
+        ZKUpdateUtil.setWidth(toolbar, "300px");
+        ZKUpdateUtil.setHeight(toolbar, "45px");
         toolbar.appendChild(pnlSearch);
         this.appendChild(toolbar);
         
@@ -221,7 +226,7 @@ public class MenuPanel extends Panel implements EventListener
     }
     
     protected void fireMenuSelectedEvent(Treeitem selectedItem) {
-    	int nodeId = Integer.parseInt((String)selectedItem.getValue());
+    	int nodeId = Integer.parseInt(selectedItem.getValue());
        
     	try
         {

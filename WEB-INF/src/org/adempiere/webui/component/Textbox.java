@@ -29,7 +29,7 @@ import org.zkoss.zk.ui.event.Events;
  * @date    Feb 25, 2007
  * @version $Revision: 0.10 $
  */
-public class Textbox extends org.zkoss.zul.Textbox implements EventListener
+public class Textbox extends org.zkoss.zul.Textbox implements EventListener<Event>
 {
     /**
 	 * 
@@ -77,7 +77,7 @@ public class Textbox extends org.zkoss.zul.Textbox implements EventListener
      * method to ease porting of swing form
      * @param listener
      */
-	public void addFocusListener(EventListener listener) {
+	public void addFocusListener(EventListener<Event> listener) {
 		addEventListener(Events.ON_FOCUS, listener);
 		addEventListener(Events.ON_BLUR, listener);
 	}
@@ -124,7 +124,6 @@ public class Textbox extends org.zkoss.zul.Textbox implements EventListener
 	/**
 	 * Set the old value of the field.  For use in future comparisons.
 	 * The old value must be explicitly set though this call.
-	 * @param m_oldValue
 	 */
 	public void set_oldValue() {
 		this.m_oldValue = getValue();

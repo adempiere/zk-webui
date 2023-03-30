@@ -17,12 +17,6 @@
 
 package org.adempiere.webui.editor;
 
-import java.awt.Color;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.VetoableChangeListener;
-import java.util.ArrayList;
-
 import org.adempiere.exceptions.ValueChangeEvent;
 import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.AdempiereIdGenerator;
@@ -33,6 +27,7 @@ import org.adempiere.webui.component.Datebox;
 import org.adempiere.webui.component.Label;
 import org.adempiere.webui.component.StringBox;
 import org.adempiere.webui.panel.IADTabPanel;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
 import org.compiere.swing.CEditor;
@@ -43,6 +38,12 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Image;
+
+import java.awt.Color;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.VetoableChangeListener;
+import java.util.ArrayList;
 
 /**
  *
@@ -55,7 +56,7 @@ import org.zkoss.zul.Image;
  * @date    Mar 11, 2007
  * @version $Revision: 0.10 $
  */
-public abstract class WEditor implements CEditor, EventListener, PropertyChangeListener
+public abstract class WEditor implements CEditor, EventListener<Event>, PropertyChangeListener
 {
     private static final String[] LISTENER_EVENTS = {};
 
@@ -365,7 +366,7 @@ public abstract class WEditor implements CEditor, EventListener, PropertyChangeL
                         || gridField.getDisplayType() == DisplayType.TextLong
                         || gridField.getDisplayType() == DisplayType.Memo) {
                     height = ((gridField.getFieldLength() + 200) / 100) * 24;
-                    ((HtmlBasedComponent) component).setHeight("60px");
+                    ZKUpdateUtil.setHeight( ((HtmlBasedComponent) component),height + "%");
                 }
 
                 if (gridField.isReadOnly() || !this.isReadWrite()) //|| !gridField.isEditable(false)
@@ -632,10 +633,11 @@ public abstract class WEditor implements CEditor, EventListener, PropertyChangeL
         			}
         		} else if (getComponent() instanceof Image) {
         			Image image = (Image) getComponent();
-        			image.setWidth("48px");
-        			image.setHeight("48px");
-        		} else {
-        			((HtmlBasedComponent)getComponent()).setWidth(width);
+                    ZKUpdateUtil.setWidth(image, "48px");
+                    ZKUpdateUtil.setHeight(image, "48px");
+
+                } else {
+                    ZKUpdateUtil.setWidth((HtmlBasedComponent)getComponent(), width);
         		}
         	}
         }

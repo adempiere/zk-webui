@@ -21,11 +21,6 @@
 
 package org.adempiere.webui.apps.form;
 
-import java.io.InputStream;
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.logging.Level;
-
 import org.adempiere.webui.component.Button;
 import org.adempiere.webui.component.Checkbox;
 import org.adempiere.webui.component.ConfirmPanel;
@@ -48,6 +43,7 @@ import org.adempiere.webui.panel.ADForm;
 import org.adempiere.webui.panel.CustomForm;
 import org.adempiere.webui.panel.IFormController;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.apps.form.Archive;
 import org.compiere.model.MArchive;
 import org.compiere.model.MLookup;
@@ -63,6 +59,11 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Iframe;
+
+import java.io.InputStream;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.logging.Level;
 
 /**
  * 	Archive Viewer
@@ -175,8 +176,8 @@ public class WArchiveViewer extends Archive implements IFormController, EventLis
 	
 	private void jbInit() throws Exception
 	{
-		tabbox.setWidth("100%");
-		tabbox.setHeight("90%");
+		ZKUpdateUtil.setWidth(tabbox, "100%");
+		ZKUpdateUtil.setHeight(tabbox, "99%");
 		tabbox.appendChild(tabs);
 		tabbox.appendChild(tabpanels);
 		tabbox.addEventListener(Events.ON_SELECT, this);
@@ -214,7 +215,7 @@ public class WArchiveViewer extends Archive implements IFormController, EventLis
 		reportField.addEventListener(Events.ON_CHECK, this);
 		
 		Grid gridQuery = new Grid();
-		gridQuery.setWidth("500px");
+		ZKUpdateUtil.setWidth(gridQuery, "500px");
 		gridQuery.setStyle("margin:0; padding:0;");
 		gridQuery.makeNoStrip();
 		gridQuery.setOddRowSclass("even");
@@ -236,7 +237,7 @@ public class WArchiveViewer extends Archive implements IFormController, EventLis
 		div.appendChild(processLabel);
 		row.appendChild(div);
 		row.appendChild(processField);
-		processField.setWidth("100%");
+		ZKUpdateUtil.setWidth(processField, "100%");
 		
 		row = new Row();
 		rows.appendChild(row);
@@ -255,7 +256,7 @@ public class WArchiveViewer extends Archive implements IFormController, EventLis
 		div.appendChild(tableLabel);
 		row.appendChild(div);
 		row.appendChild(tableField);
-		tableField.setWidth("100%");
+		ZKUpdateUtil.setWidth(tableField, "100%");
 		
 		row = new Row();
 		rows.appendChild(row);
@@ -265,7 +266,7 @@ public class WArchiveViewer extends Archive implements IFormController, EventLis
 		div.appendChild(nameQLabel);
 		row.appendChild(div);
 		row.appendChild(nameQField);
-		nameQField.setWidth("100%");
+		ZKUpdateUtil.setWidth(nameQField, "100%");
 		
 		row = new Row();
 		rows.appendChild(row);
@@ -275,8 +276,7 @@ public class WArchiveViewer extends Archive implements IFormController, EventLis
 		div.appendChild(descriptionQLabel);
 		row.appendChild(div);
 		row.appendChild(descriptionQField);
-		descriptionQField.setWidth("100%");
-		
+		ZKUpdateUtil.setWidth(descriptionQField, "100%");
 		row = new Row();
 		rows.appendChild(row);
 		row.setSpans("1, 2");
@@ -285,7 +285,7 @@ public class WArchiveViewer extends Archive implements IFormController, EventLis
 		div.appendChild(helpQLabel);
 		row.appendChild(div);
 		row.appendChild(helpQField);
-		helpQField.setWidth("100%");
+		ZKUpdateUtil.setWidth(helpQField, "100%");
 		
 		row = new Row();
 		rows.appendChild(row);
@@ -295,7 +295,7 @@ public class WArchiveViewer extends Archive implements IFormController, EventLis
 		div.appendChild(createdByQLabel);
 		row.appendChild(div);
 		row.appendChild(createdByQField);
-		createdByQField.setWidth("100%");
+		ZKUpdateUtil.setWidth(createdByQField, "100%");
 		
 		row = new Row();
 		rows.appendChild(row);
@@ -346,13 +346,13 @@ public class WArchiveViewer extends Archive implements IFormController, EventLis
 		rows.appendChild(row);
 		row.setSpans("4");
 		row.appendChild(createdByLabel);
-		createdByLabel.setWidth("100%");
+		ZKUpdateUtil.setWidth(createdByLabel, "100%");
 		
 		row = new Row();
 		rows.appendChild(row);
 		row.setSpans("4");
 		row.appendChild(createdByField);
-		createdByField.setWidth("100%");
+		ZKUpdateUtil.setWidth(createdByField, "100%");
 		
 		row = new Row();
 		rows.appendChild(row);
@@ -366,39 +366,39 @@ public class WArchiveViewer extends Archive implements IFormController, EventLis
 		rows.appendChild(row);
 		row.setSpans("4");
 		row.appendChild(nameLabel);
-		nameLabel.setWidth("100%");
+		ZKUpdateUtil.setWidth(nameLabel, "100%");
 		
 		row = new Row();
 		rows.appendChild(row);
 		row.setSpans("4");
 		row.appendChild(nameField);
-		nameField.setWidth("100%");
+		ZKUpdateUtil.setWidth(nameField, "100%");
 		
 		row = new Row();
 		rows.appendChild(row);
 		row.setSpans("4");
 		row.appendChild(descriptionLabel);
-		descriptionLabel.setWidth("100%");
+		ZKUpdateUtil.setWidth(descriptionLabel, "100%");
 		
 		row = new Row();
 		rows.appendChild(row);
 		row.setSpans("4");
 		row.appendChild(descriptionField);
 		descriptionField.setRows(3);
-		descriptionField.setWidth("100%");
+		ZKUpdateUtil.setWidth(descriptionField, "100%");
 		
 		row = new Row();
 		rows.appendChild(row);
 		row.setSpans("4");
 		row.appendChild(helpLabel);
-		helpLabel.setWidth("100%");
+		ZKUpdateUtil.setWidth(helpLabel, "100%");
 		
 		row = new Row();
 		rows.appendChild(row);
 		row.setSpans("4");
 		row.appendChild(helpField);
 		helpField.setRows(3);
-		helpField.setWidth("100%");
+		ZKUpdateUtil.setWidth(helpField, "100%");
 		
 		row = new Row();
 		rows.appendChild(row);
@@ -417,8 +417,8 @@ public class WArchiveViewer extends Archive implements IFormController, EventLis
 		
 		Tabpanel tabViewPanel = new Tabpanel();
 		Hbox boxViewSeparator = new Hbox();
-		boxViewSeparator.setWidth("100%");
-		boxViewSeparator.setHeight("100%");	
+		ZKUpdateUtil.setWidth(boxViewSeparator, "100%");
+		ZKUpdateUtil.setHeight(boxViewSeparator, "100%");
 		boxViewSeparator.setWidths("70%, 30%");		
 		boxViewSeparator.appendChild(iframe);
 		boxViewSeparator.appendChild(gridView);
@@ -433,12 +433,11 @@ public class WArchiveViewer extends Archive implements IFormController, EventLis
 		iframe.setId("reportFrame");
 		int height = Double.valueOf(SessionManager.getAppDesktop().getClientInfo().desktopHeight * 0.8).intValue();
 		height = height - 50;
-		iframe.setHeight(height + "px");
-		iframe.setWidth("100%");
+		ZKUpdateUtil.setWidth(iframe, "100%");
+		ZKUpdateUtil.setHeight(iframe, height + "px");
 		iframe.setAutohide(true);
-		
-		form.setWidth("100%");
-		form.setHeight("100%");
+		ZKUpdateUtil.setWidth(form, "100%");
+		ZKUpdateUtil.setWidth(form, "100%");
 		form.appendChild(tabbox);
 		form.appendChild(confirmPanel);
 	}

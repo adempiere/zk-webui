@@ -13,10 +13,7 @@
  *****************************************************************************/
 package org.adempiere.webui.component;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
+import org.zkoss.lang.Objects;
 import org.zkoss.zul.AbstractListModel;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
@@ -24,6 +21,13 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.ListitemRendererExt;
 import org.zkoss.zul.event.ListDataEvent;
+import org.zkoss.zul.ext.Sortable;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * 
@@ -33,7 +37,7 @@ import org.zkoss.zul.event.ListDataEvent;
  * 		@see FR [ 990 ] Sort Tab is not MVC</a>
  *
  */
-public class SimpleListModel extends AbstractListModel implements ListitemRenderer, ListitemRendererExt {
+public class SimpleListModel extends AbstractListModel<Object> implements ListitemRenderer<Object>, ListitemRendererExt , Sortable<Object> {
 
 	/**
 	 * 
@@ -41,7 +45,12 @@ public class SimpleListModel extends AbstractListModel implements ListitemRender
 	private static final long serialVersionUID = -572148106182756840L;
 
 	protected List list;
-	
+
+	private Comparator<Object> sorting;
+
+	private boolean sortDir;
+
+
 	private int[] maxLength;
 
 	public SimpleListModel() {
@@ -71,7 +80,7 @@ public class SimpleListModel extends AbstractListModel implements ListitemRender
 			.append(src.substring(0, j)).append("...");
 	}
 	
-	public void render(Listitem item, Object data) throws Exception {
+	public void render(Listitem item, Object data , int index) throws Exception {
 		if (data instanceof Object[]) {
 			renderArray(item, (Object[])data);
 		} else if (data instanceof Collection) {
@@ -167,5 +176,22 @@ public class SimpleListModel extends AbstractListModel implements ListitemRender
 	 */
 	public List getElements() {
 		return list;
+	}
+
+	public void sort(Comparator<Object> comparator, boolean ascending) {
+		sorting = comparator;
+		sortDir = ascending;
+		Collections.sort(list, comparator);
+		fireEvent(ListDataEvent.STRUCTURE_CHANGED, -1, -1);
+	}
+
+
+	@Override
+	public String getSortDirection(Comparator<Object> comparator) {
+		if (Objects.equals(sorting, comparator))
+			return sortDir ?
+					"ascending" : "descending";
+		return "natural";
+
 	}
 }

@@ -17,19 +17,6 @@
  *****************************************************************************/
 package org.adempiere.webui.apps.form;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Properties;
-import java.util.logging.Level;
-
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Borderlayout;
 import org.adempiere.webui.component.Button;
@@ -55,6 +42,7 @@ import org.adempiere.webui.panel.CustomForm;
 import org.adempiere.webui.panel.IFormController;
 import org.adempiere.webui.panel.StatusBarPanel;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.minigrid.ColumnInfo;
 import org.compiere.minigrid.IDColumn;
 import org.compiere.model.I_Fact_Reconciliation;
@@ -75,12 +63,25 @@ import org.compiere.util.Msg;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
-import org.zkoss.zkex.zul.West;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Hbox;
+import org.zkoss.zul.North;
+import org.zkoss.zul.South;
 import org.zkoss.zul.Space;
+import org.zkoss.zul.West;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Properties;
+import java.util.logging.Level;
 
 
 /**
@@ -262,14 +263,15 @@ public class WFactReconcile extends CustomForm
 		fieldBPartner.getComponent().setAttribute("zk_component_prefix", "Lookup_");
 		fieldBPartner.getComponent().setAttribute("IsDynamic", "False");
 		fieldBPartner.getComponent().setAttribute("fieldName", "fieldBPartner");
-		fieldBPartner.getComponent().setWidth("200px");
+		ZKUpdateUtil.setWidth(fieldBPartner.getComponent(), "200px");
+
 		//
 		// Product Fact_Acct.M_Product_ID AD_Column_ID = 2527;        
 		fieldProduct.getComponent().setAttribute("zk_component_ID", "Lookup_Criteria_M_Product_ID");
 		fieldProduct.getComponent().setAttribute("zk_component_prefix", "Lookup_");
 		fieldProduct.getComponent().setAttribute("IsDynamic", "False");
 		fieldProduct.getComponent().setAttribute("fieldName", "fieldProduct");
-		fieldProduct.getComponent().setWidth("200px");
+		ZKUpdateUtil.setWidth(fieldProduct.getComponent(), "200px");
 		//
 		// The Account combo.  A bit more involved if we try to filter out the summary accounts.
 		MLookup lookup;
@@ -343,12 +345,13 @@ public class WFactReconcile extends CustomForm
 	{
 		setAttribute(Window.MODE_KEY, Window.MODE_EMBEDDED);
 		setBorder("none");
-		setWidth("100%");
-		setHeight("100%");
+		ZKUpdateUtil.setWidth(this, "100%");
+		ZKUpdateUtil.setHeight(this, "100%");
 		setStyle("position: absolute");
 
-        miniTable.setAttribute("zk_component_ID", "Lookup_Data_SearchResults");        
-        miniTable.setVflex(true);
+        miniTable.setAttribute("zk_component_ID", "Lookup_Data_SearchResults");
+		ZKUpdateUtil.setVflex(miniTable, true);
+		miniTable.setSizedByContent(false);
 
         //  Define the criteria rows and grid  
 		Rows rows = new Rows();
@@ -395,13 +398,13 @@ public class WFactReconcile extends CustomForm
 		Hbox btnBox = new Hbox();
 		btnBox.setStyle("border-top: 2px; border-bottom: 2px; padding: 4px");
 		btnBox.appendChild(bRefresh);
-		btnBox.setHeight("100%");
+		ZKUpdateUtil.setHeight(btnBox,"100%");
 		West west = new West();
 		west.setBorder("0");
 		west.appendChild(btnBox);
 		parameterPanel.appendChild(center);
 		parameterPanel.appendChild(west);
-		parameterPanel.setHeight("100px");
+		ZKUpdateUtil.setHeight(parameterPanel,"100%");
 		//
 		North north = new North();
 		north.appendChild(parameterPanel);
@@ -432,18 +435,18 @@ public class WFactReconcile extends CustomForm
         //
         hboxBtnRight = new Hbox();
         hboxBtnRight.appendChild(pnlBtnRight);
-        hboxBtnRight.setWidth("100%");
+		ZKUpdateUtil.setWidth(hboxBtnRight, "100%");
         hboxBtnRight.setStyle("text-align:right");
         //
         hboxBtnLeft = new Hbox();
         hboxBtnLeft.appendChild(pnlBtnLeft);
-        hboxBtnLeft.setWidth("100%");
+		ZKUpdateUtil.setWidth(hboxBtnLeft, "100%");
         hboxBtnLeft.setStyle("text-align:left");
         //
         hboxTextCenter = new Hbox();
         hboxTextCenter.appendChild(pnlTextCenter);
-        hboxTextCenter.setWidth("100%");
-        hboxTextCenter.setHeight("100%");
+		ZKUpdateUtil.setWidth(hboxTextCenter, "100%");
+		ZKUpdateUtil.setHeight(hboxTextCenter, "100%");
         hboxTextCenter.setPack("center");
         hboxTextCenter.setStyle("text-align:Center");
         //
@@ -451,12 +454,12 @@ public class WFactReconcile extends CustomForm
         commandPane.appendChild(hboxBtnLeft);
         commandPane.appendChild(hboxTextCenter);
         commandPane.appendChild(hboxBtnRight);
-        commandPane.setWidth("100%");
+		ZKUpdateUtil.setWidth(commandPane, "100%");
         commandPane.setPack("center");        
         //
-		commandPanel.setHeight("70px");
+		ZKUpdateUtil.setHeight(commandPanel, "70px");
 		commandPanel.setStyle("border-top: 2px; border-bottom: 2px; padding: 4px");
-		commandPanel.setWidth("100%");
+		ZKUpdateUtil.setWidth(commandPanel, "100%");
 		center = new Center();
 		center.appendChild(commandPane);
 		center.setBorder("0");

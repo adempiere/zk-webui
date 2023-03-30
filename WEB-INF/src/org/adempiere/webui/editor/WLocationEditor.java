@@ -17,18 +17,15 @@
 
 package org.adempiere.webui.editor;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
+import org.adempiere.exceptions.ValueChangeEvent;
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Button;
 import org.adempiere.webui.component.Locationbox;
 import org.adempiere.webui.event.ContextMenuEvent;
 import org.adempiere.webui.event.ContextMenuListener;
-import org.adempiere.exceptions.ValueChangeEvent;
 import org.adempiere.webui.window.FDialog;
-import org.adempiere.webui.window.WRecordInfo;
 import org.adempiere.webui.window.WLocationDialog;
+import org.adempiere.webui.window.WRecordInfo;
 import org.compiere.model.GridField;
 import org.compiere.model.MLocation;
 import org.compiere.model.MLocationLookup;
@@ -39,6 +36,9 @@ import org.compiere.util.Msg;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * @author Sendy Yagambrum
@@ -59,7 +59,7 @@ import org.zkoss.zk.ui.event.Events;
  * 		@see FR [ 1158 ] Problems with location address: wrong region and not showing region field</a>
  * This class is based on VLocation written by Jorg Janke
  **/
-public class WLocationEditor extends WEditor implements EventListener, PropertyChangeListener, ContextMenuListener
+public class WLocationEditor extends WEditor implements EventListener<Event>, PropertyChangeListener, ContextMenuListener
 {
     private static final String[] LISTENER_EVENTS = {Events.ON_CLICK};
     
@@ -105,7 +105,7 @@ public class WLocationEditor extends WEditor implements EventListener, PropertyC
 		{
 			WRecordInfo.addMenu(popupMenu);
 		}
-    	getComponent().setContext(popupMenu.getId());
+    	getComponent().setContext(popupMenu);
     }
     
 	@Override

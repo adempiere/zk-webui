@@ -1,8 +1,5 @@
 package org.adempiere.webui.apps.graph;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.adempiere.model.IDocumentStatus;
 import org.adempiere.model.MDocumentStatus;
 import org.adempiere.webui.apps.AEnv;
@@ -10,12 +7,16 @@ import org.adempiere.webui.component.Grid;
 import org.adempiere.webui.component.Panel;
 import org.adempiere.webui.component.Row;
 import org.adempiere.webui.component.Rows;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.MQuery;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WDocumentStatusPanel extends Panel implements EventListener
 {
@@ -64,10 +65,11 @@ public class WDocumentStatusPanel extends Panel implements EventListener
 	{
 		Grid grid = new Grid();
 		appendChild(grid);
-		grid.setWidth("100%");
-		grid.setStyle("margin:0; padding:0; position: absolute;");
+		ZKUpdateUtil.setWidth(grid, "100%");
+		grid.setStyle("margin:0; padding:0");
 		grid.makeNoStrip();
 		grid.setOddRowSclass("even");
+		grid.setSclass("dp-doc-status-items");
 
 		Rows rows = new Rows();
 		grid.appendChild(rows);
@@ -76,7 +78,7 @@ public class WDocumentStatusPanel extends Panel implements EventListener
 		{
 			Row row = new Row();
 			rows.appendChild(row);
-			row.setWidth("100%");
+			//ZKUpdateUtil.setWidth(row, "100%");
 			
 			WDocumentStatusIndicator pi = new WDocumentStatusIndicator(m_indicators[i]);
 			row.appendChild(pi);

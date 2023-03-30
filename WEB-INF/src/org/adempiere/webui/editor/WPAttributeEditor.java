@@ -141,7 +141,7 @@ public class WPAttributeEditor extends WEditor implements ContextMenuListener
 
 		//	Popup
 		popupMenu = new WEditorPopupMenu(true, false, false);
-		getComponent().getTextbox().setContext(popupMenu.getId());
+		getComponent().getTextbox().setContext(popupMenu);
 		//  Don't allow direct entry in the text box
 		getComponent().setEnabled(this.isReadWrite);  //  Enable the control - sets the text box to read/write
 		getComponent().getTextbox().setReadonly(true); // Disable the text box

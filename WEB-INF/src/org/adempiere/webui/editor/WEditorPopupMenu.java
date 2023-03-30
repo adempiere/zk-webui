@@ -17,10 +17,6 @@
 
 package org.adempiere.webui.editor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.adempiere.webui.event.ContextMenuEvent;
 import org.adempiere.webui.event.ContextMenuListener;
 import org.compiere.model.GridField;
@@ -34,13 +30,17 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Menuitem;
 import org.zkoss.zul.Menupopup;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
  * @author  <a href="mailto:agramdass@gmail.com">Ashley G Ramdass</a>
  * @date    Mar 25, 2007
  * @version $Revision: 0.10 $
  */
-public class WEditorPopupMenu extends Menupopup implements EventListener
+public class WEditorPopupMenu extends Menupopup implements EventListener<Event>
 {
     /**
 	 * 

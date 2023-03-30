@@ -17,13 +17,7 @@
 
 package org.adempiere.webui.panel;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-
+import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Checkbox;
 import org.adempiere.webui.component.Datebox;
@@ -33,7 +27,7 @@ import org.adempiere.webui.component.Row;
 import org.adempiere.webui.component.Rows;
 import org.adempiere.webui.editor.WSearchEditor;
 import org.adempiere.webui.editor.WTableDirEditor;
-import org.adempiere.exceptions.ValueChangeListener;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.minigrid.ColumnInfo;
 import org.compiere.minigrid.IDColumn;
@@ -51,6 +45,14 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Hbox;
 
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Comparator;
+
 /**
 * Based on InfoCashLine written by Jorg Janke
 *  
@@ -65,7 +67,7 @@ import org.zkoss.zul.Hbox;
  * 	<li>https://adempiere.atlassian.net/browse/ADEMPIERE-72
 */
 
-public class InfoCashLinePanel extends InfoPanel implements ValueChangeListener, EventListener
+public class InfoCashLinePanel extends InfoPanel implements ValueChangeListener, EventListener<org.zkoss.zk.ui.event.Event>
 {
 	/**
 	 * 
@@ -208,10 +210,10 @@ public class InfoCashLinePanel extends InfoPanel implements ValueChangeListener,
 	private void statInit()
 	{		
 		// 	Format the dates and number boxes
-		fDateFrom.setWidth("97px");
-		fDateTo.setWidth("97px");
-		fAmtFrom.getDecimalbox().setWidth("90px");
-		fAmtTo.getDecimalbox().setWidth("90px");
+		ZKUpdateUtil.setWidth(fDateFrom, "97px");
+		ZKUpdateUtil.setWidth(fDateTo, "97px");
+		ZKUpdateUtil.setWidth(fAmtFrom.getDecimalbox(), "90px");
+		ZKUpdateUtil.setWidth(fAmtTo.getDecimalbox(), "90px");
 		
 		fDateFrom.setAttribute("zk_component_ID", "Lookup_Criteria_DateFrom");
 		fDateFrom.addEventListener(Events.ON_CHANGE, this);
@@ -254,7 +256,7 @@ public class InfoCashLinePanel extends InfoPanel implements ValueChangeListener,
 		//fCashBook_ID.addValueChangeListener(this);
 		fCashBook_ID.getComponent().setAttribute("zk_component_ID", "Lookup_Criteria_C_CashBook_ID");
 		//  Width is set in WTableDirEditor to 200px.  Make it more flexible;
-		fCashBook_ID.getComponent().setWidth("100%");
+		ZKUpdateUtil.setWidth(fCashBook_ID.getComponent(), "100%");
 		
 		// 5354 - C_CashLine.C_Invoice_ID
 		fInvoice_ID = new WSearchEditor(
@@ -283,8 +285,7 @@ public class InfoCashLinePanel extends InfoPanel implements ValueChangeListener,
 		//fBankAccount_ID.addValueChangeListener(this);
 		fBankAccount_ID.getComponent().setAttribute("zk_component_ID", "Lookup_Criteria_C_BankAccount_ID");
 		//  Width is set in WTableDirEditor to 200px.  Make it more flexible;
-		fBankAccount_ID.getComponent().setWidth("100%");
-		
+		ZKUpdateUtil.setWidth(fBankAccount_ID.getComponent(), "100%");
 		//	5296 - C_CashLine.C_Charge_ID
 		fCharge_ID = new WTableDirEditor(
 				MLookupFactory.get(Env.getCtx(), p_WindowNo, 0,
@@ -294,7 +295,7 @@ public class InfoCashLinePanel extends InfoPanel implements ValueChangeListener,
 		fCharge_ID.getComponent().addEventListener(Events.ON_CHANGE, this);
 		fCharge_ID.getComponent().setAttribute("zk_component_ID", "Lookup_Criteria_C_Charge_ID");
 		//  Width is set in WTableDirEditor to 200px.  Make it more flexible;
-		fCharge_ID.getComponent().setWidth("100%");
+		ZKUpdateUtil.setWidth(fCharge_ID.getComponent(), "100%");
 		
 		cbAbsolute.setLabel(Msg.translate(Env.getCtx(), "AbsoluteAmt"));
 		cbAbsolute.addEventListener(Events.ON_CHECK, this);
@@ -707,4 +708,8 @@ public class InfoCashLinePanel extends InfoPanel implements ValueChangeListener,
 		cbAbsolute.setChecked(false);
 	}
 
+	@Override
+	public String getSortDirection(Comparator comparator) {
+		return "natural";
+	}
 }

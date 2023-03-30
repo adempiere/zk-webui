@@ -42,6 +42,7 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -55,7 +56,7 @@ import java.util.Properties;
  *		<a href="https://github.com/adempiere/adempiere/issues/1347">
  * 		@see FR [ 1347 ] HTTP Status 500 when a ROLE is changed.</a>
  */
-public class LoginWindow extends FWindow implements EventListener
+public class LoginWindow extends FWindow implements EventListener<Event>
 {
     /**
 	 *
@@ -127,7 +128,7 @@ public class LoginWindow extends FWindow implements EventListener
 
     public void loginCompleted()
     {
-        SessionManager.getApplication().loginCompleted();
+        Objects.requireNonNull(SessionManager.getApplication()).loginCompleted();
     }
 
     public void loginCancelled()

@@ -17,15 +17,7 @@
 
 package org.adempiere.webui.panel;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.logging.Level;
-
+import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Checkbox;
 import org.adempiere.webui.component.Datebox;
@@ -36,7 +28,7 @@ import org.adempiere.webui.component.Rows;
 import org.adempiere.webui.component.Textbox;
 import org.adempiere.webui.component.WListbox;
 import org.adempiere.webui.editor.WSearchEditor;
-import org.adempiere.exceptions.ValueChangeListener;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.minigrid.ColumnInfo;
 import org.compiere.minigrid.IDColumn;
 import org.compiere.model.MColumn;
@@ -51,6 +43,16 @@ import org.compiere.util.Trx;
 import org.compiere.util.Util;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Hbox;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Comparator;
+import java.util.logging.Level;
 
 /**
  * Search Invoice and return selection
@@ -214,8 +216,8 @@ public class InfoInvoicePanel extends InfoPanel implements ValueChangeListener
 		// 	Format the dates and number boxes
         fDateFrom = new Datebox();
         fDateTo = new Datebox();
-		fDateFrom.setWidth("97px");
-		fDateTo.setWidth("97px");
+		ZKUpdateUtil.setWidth(fDateFrom, "97px");
+		ZKUpdateUtil.setWidth(fDateTo, "97px");
 		//
 		fDateFrom.setAttribute("zk_component_ID", "Lookup_Criteria_DateFrom");
 		fDateFrom.addEventListener(Events.ON_CHANGE, this);
@@ -228,13 +230,13 @@ public class InfoInvoicePanel extends InfoPanel implements ValueChangeListener
 		//
 		DecimalFormat format = DisplayType.getNumberFormat(DisplayType.Amount, AEnv.getLanguage(Env.getCtx()));
 		fAmtFrom = new NumberBox(false);
-		fAmtFrom.getDecimalbox().setWidth("90px");
+		ZKUpdateUtil.setWidth(fAmtFrom.getDecimalbox(), "90px");
 		fAmtFrom.getDecimalbox().setFormat(format.toPattern());
 		fAmtFrom.getDecimalbox().setStyle("text-align:right; " + fAmtFrom.getDecimalbox().getStyle());
 		fAmtFrom.setAttribute("zk_component_ID", "Lookup_Criteria_AmtFrom");
 		fAmtFrom.addEventListener(Events.ON_CHANGE, this);
 		fAmtTo = new NumberBox(false);
-		fAmtTo.getDecimalbox().setWidth("90px");
+		ZKUpdateUtil.setWidth(fAmtTo.getDecimalbox(), "90px");
 		fAmtTo.getDecimalbox().setFormat(format.toPattern());
 		fAmtTo.getDecimalbox().setStyle("text-align:right; " + fAmtTo.getDecimalbox().getStyle());
 		fAmtTo.setAttribute("zk_component_ID", "Lookup_Criteria_AmtTo");
@@ -270,13 +272,14 @@ public class InfoInvoicePanel extends InfoPanel implements ValueChangeListener
     private void statInit()
     {
     	initComponents();
-    	
-    	fDocumentNo.setWidth("100%");
-    	fDescription.setWidth("100%");
-    	fDateFrom.setWidth("165px");
-		fDateTo.setWidth("165px");
-		fAmtFrom.getDecimalbox().setWidth("155px");
-		fAmtTo.getDecimalbox().setWidth("155px");
+		ZKUpdateUtil.setWidth(fDocumentNo, "100%");
+		ZKUpdateUtil.setWidth(fDescription, "100%");
+
+		ZKUpdateUtil.setWidth(fDateFrom, "165px");
+		ZKUpdateUtil.setWidth(fDateTo, "165px");
+
+		ZKUpdateUtil.setWidth(fAmtFrom.getDecimalbox(), "155px");
+		ZKUpdateUtil.setWidth(fAmtTo.getDecimalbox(), "155px");
     			
 		Rows rows = new Rows();
 		
@@ -648,5 +651,10 @@ public class InfoInvoicePanel extends InfoPanel implements ValueChangeListener
 		{
 			Env.setContext(Env.getCtx(), p_WindowNo, Env.TAB_INFO, "C_InvoicePaySchedule_ID", C_InvoicePaySchedule_ID.toString());
 		}
+	}
+
+	@Override
+	public String getSortDirection(Comparator comparator) {
+		return "natural";
 	}
 }
