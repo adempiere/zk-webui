@@ -13,8 +13,6 @@
  *****************************************************************************/
 package org.adempiere.webui.window;
 
-import java.util.Vector;
-
 import org.adempiere.webui.component.Button;
 import org.adempiere.webui.component.Checkbox;
 import org.adempiere.webui.component.Label;
@@ -30,6 +28,7 @@ import org.adempiere.webui.component.Tabs;
 import org.adempiere.webui.component.ToolBarButton;
 import org.adempiere.webui.component.Window;
 import org.adempiere.webui.theme.ThemeManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.Adempiere;
 import org.compiere.model.MUser;
 import org.compiere.util.CLogErrorBuffer;
@@ -49,6 +48,8 @@ import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Separator;
 import org.zkoss.zul.Vbox;
+
+import java.util.Vector;
 
 /**
  *
@@ -78,8 +79,9 @@ public class AboutWindow extends Window implements EventListener {
 	}
 
 	private void init() {
-		this.setWidth("500px");
-		this.setHeight("490px");
+		ZKUpdateUtil.setWidth(this, "500px");
+		ZKUpdateUtil.setHeight(this, "490px");
+
 		this.setPosition("center");
 		this.setTitle(ThemeManager.getBrowserTitle());
 		this.setClosable(true);
@@ -88,19 +90,19 @@ public class AboutWindow extends Window implements EventListener {
 		this.addEventListener(Events.ON_SIZE, this);
 
 		Vbox layout = new Vbox();
-		layout.setWidth("100%");
+		ZKUpdateUtil.setWidth(layout, "100%");
 		layout.setParent(this);
 
 		tabbox = new Tabbox();
 		tabbox.setParent(layout);
-		tabbox.setWidth("480px");
-		tabbox.setHeight("420px");
+		ZKUpdateUtil.setWidth(tabbox, "480px");
+		ZKUpdateUtil.setHeight(tabbox, "420px");
 //		tabbox.setSclass("lite");
 		Tabs tabs = new Tabs();
 		tabs.setParent(tabbox);
 		tabPanels = new Tabpanels();
 		tabPanels.setParent(tabbox);
-		tabPanels.setWidth("480px");
+		ZKUpdateUtil.setWidth(tabPanels, "480px");
 
 		//about
 		Tab tab = new Tab();
@@ -134,7 +136,7 @@ public class AboutWindow extends Window implements EventListener {
 		Hbox hbox = new Hbox();
 		hbox.setParent(layout);
 		hbox.setPack("end");
-		hbox.setWidth("100%");
+		ZKUpdateUtil.setWidth(hbox, "100%");
 		Button btnOk = new Button();
 		btnOk.setImage("/images/Ok16.png");
 		btnOk.addEventListener(Events.ON_CLICK, this);
@@ -147,8 +149,8 @@ public class AboutWindow extends Window implements EventListener {
 		Tabpanel tabPanel = new Tabpanel();
 		Vbox vbox = new Vbox();
 		vbox.setParent(tabPanel);
-		vbox.setWidth("100%");
-		vbox.setHeight("100%");
+		ZKUpdateUtil.setWidth(vbox, "100%");
+		ZKUpdateUtil.setHeight(vbox, "100%");
 
 		Hbox hbox = new Hbox();
 		bErrorsOnly = new Checkbox();
@@ -173,17 +175,16 @@ public class AboutWindow extends Window implements EventListener {
 		listHead.setSizable(true);
 		for (Object obj : columnNames) {
 			ListHeader header = new ListHeader(obj.toString());
-			header.setWidth("100px");
+			ZKUpdateUtil.setWidth(header, "100%");
 			listHead.appendChild(header);
 		}
 
 		vbox.appendChild(logTable);
-		logTable.setWidth("480px");
-		logTable.setHeight("310px");
-		logTable.setVflex(false);
-
+		ZKUpdateUtil.setVflex(logTable, true);
+		vbox.setSizedByContent(false);
+		ZKUpdateUtil.setWidth(logTable, "480px");
+		ZKUpdateUtil.setHeight(logTable, "310px");
 		updateLogTable();
-
 		return tabPanel;
 	}
 
@@ -203,7 +204,7 @@ public class AboutWindow extends Window implements EventListener {
 		Tabpanel tabPanel = new Tabpanel();
 		Div div = new Div();
 		div.setParent(tabPanel);
-		div.setHeight("100%");
+		ZKUpdateUtil.setHeight(div,"100%");
 		div.setStyle("overflow: auto;");
 		Pre pre = new Pre();
 		pre.setParent(div);
@@ -217,7 +218,7 @@ public class AboutWindow extends Window implements EventListener {
 		Tabpanel tabPanel = new Tabpanel();
 		Vbox vbox = new Vbox();
 		vbox.setParent(tabPanel);
-		vbox.setWidth("100%");
+		ZKUpdateUtil.setWidth(vbox, "100%");
 		Hbox hbox = new Hbox();
 		hbox.setParent(vbox);
 		ToolBarButton link = new ToolBarButton();
@@ -233,7 +234,7 @@ public class AboutWindow extends Window implements EventListener {
 
 		Div div = new Div();
 		div.setParent(vbox);
-		div.setWidth("100%");
+		ZKUpdateUtil.setWidth(div, "100%");
 		Label caption = new Label("Sponsors");
 		caption.setStyle("font-weight: bold;");
 		div.appendChild(caption);
@@ -241,7 +242,7 @@ public class AboutWindow extends Window implements EventListener {
 		separator.setBar(true);
 		separator.setParent(div);
 		Vbox content = new Vbox();
-		content.setWidth("100%");
+		ZKUpdateUtil.setWidth(content, "100%");
 		content.setParent(div);
 		link = new ToolBarButton();
 		link = new ToolBarButton();
@@ -297,7 +298,7 @@ public class AboutWindow extends Window implements EventListener {
 
 		div = new Div();
 		div.setParent(vbox);
-		div.setWidth("100%");
+		ZKUpdateUtil.setWidth(div, "100%");
 		caption = new Label("Contributors");
 		caption.setStyle("font-weight: bold;");
 		div.appendChild(caption);
@@ -305,7 +306,7 @@ public class AboutWindow extends Window implements EventListener {
 		separator.setBar(true);
 		separator.setParent(div);
 		content = new Vbox();
-		content.setWidth("100%");
+		ZKUpdateUtil.setWidth(content, "100%");
 		content.setParent(div);
 
 		link = new ToolBarButton();
@@ -423,8 +424,8 @@ public class AboutWindow extends Window implements EventListener {
 		Tabpanel tabPanel = new Tabpanel();
 
 		Vbox vbox = new Vbox();
-		vbox.setWidth("100%");
-		vbox.setHeight("100%");
+		ZKUpdateUtil.setWidth(vbox, "100%");
+		ZKUpdateUtil.setHeight(vbox, "100%");
 		vbox.setAlign("center");
 		vbox.setPack("center");
 		vbox.setParent(tabPanel);
@@ -501,13 +502,12 @@ public class AboutWindow extends Window implements EventListener {
 		int width = Integer.parseInt(event.getWidth().substring(0, event.getWidth().length() - 2));
 		int height = Integer.parseInt(event.getHeight().substring(0, event.getHeight().length() - 2));
 
-		tabbox.setWidth((width - 20) + "px");
-		tabbox.setHeight((height - 70) + "px");
+		ZKUpdateUtil.setWidth(tabbox, (width - 20) + "px");
+		ZKUpdateUtil.setHeight(tabbox, (height - 70) + "px");
+		ZKUpdateUtil.setWidth(tabPanels, (width - 20) + "px");
+		ZKUpdateUtil.setWidth(logTable, (width - 30) + "px");
+		ZKUpdateUtil.setHeight(logTable, (height - 140) + "px");
 
-		tabPanels.setWidth((width - 20) + "px");
-
-		logTable.setHeight((height - 140) + "px");
-		logTable.setWidth((width - 30) + "px");
 	}
 
 	private void downloadLog() {

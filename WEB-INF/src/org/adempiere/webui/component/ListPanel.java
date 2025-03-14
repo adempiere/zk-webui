@@ -13,14 +13,9 @@
 package org.adempiere.webui.component;
 
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.table.AbstractTableModel;
-
 import org.adempiere.webui.LayoutUtils;
 import org.adempiere.webui.editor.WEditor;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
 import org.compiere.model.GridTable;
@@ -29,11 +24,16 @@ import org.compiere.util.DisplayType;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Paging;
+import org.zkoss.zul.South;
 import org.zkoss.zul.event.ZulEvents;
+
+import javax.swing.table.AbstractTableModel;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Grid view implemented using the Listbox component
@@ -272,7 +272,7 @@ public class ListPanel extends Borderlayout implements EventListener
 					l = MAX_COLUMN_WIDTH;
 				else if ( l < MIN_COLUMN_WIDTH)
 					l = MIN_COLUMN_WIDTH;
-				colHeader.setWidth(Integer.toString(l) + "px");
+				ZKUpdateUtil.setWidth(colHeader, Integer.toString(l) + "px");
 				header.appendChild(colHeader);
 			}
 		}		
@@ -282,11 +282,9 @@ public class ListPanel extends Borderlayout implements EventListener
 	private void render()
 	{
 		LayoutUtils.addSclass("adtab-grid-panel", this);
-		
-		listbox.setVflex(true);
-		listbox.setFixedLayout(true);
+		ZKUpdateUtil.setVflex(listbox, true);
+		listbox.setSizedByContent(false);
 		listbox.addEventListener(Events.ON_SELECT, this);
-		
 		LayoutUtils.addSclass("adtab-grid", listbox);
 		
 		updateModel();				

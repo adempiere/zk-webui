@@ -13,14 +13,10 @@
 
 package org.adempiere.webui.editor;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.logging.Level;
-
+import org.adempiere.exceptions.ValueChangeEvent;
 import org.adempiere.webui.component.Combinationbox;
 import org.adempiere.webui.event.ContextMenuEvent;
 import org.adempiere.webui.event.ContextMenuListener;
-import org.adempiere.exceptions.ValueChangeEvent;
 import org.adempiere.webui.window.WAccountDialog;
 import org.adempiere.webui.window.WRecordInfo;
 import org.compiere.model.GridField;
@@ -31,6 +27,10 @@ import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Level;
 
 /**
  *
@@ -65,7 +65,7 @@ public class WAccountEditor extends WEditor implements ContextMenuListener
 		{
 			WRecordInfo.addMenu(popupMenu);
 		}
-		getComponent().setContext(popupMenu.getId());
+		getComponent().setContext(popupMenu);
 	}
 
 	@Override

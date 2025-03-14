@@ -17,14 +17,6 @@
 
 package org.adempiere.webui.panel;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.TreeMap;
-import java.util.logging.Level;
-
 import org.adempiere.webui.WArchive;
 import org.adempiere.webui.WRequest;
 import org.adempiere.webui.WSearch;
@@ -83,11 +75,20 @@ import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.KeyEvent;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.North;
+import org.zkoss.zul.Borderlayout;
 import org.zkoss.zul.Menuitem;
 import org.zkoss.zul.Menupopup;
+import org.zkoss.zul.North;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.TreeMap;
+import java.util.logging.Level;
 
 /**
  *
@@ -132,7 +133,7 @@ import org.zkoss.zul.Menupopup;
  *		<li> BR [ 1059 ] Error when a process button deletes a record from the window
  */
 public abstract class AbstractADWindowPanel extends AbstractUIPart implements ToolbarListener,
-        EventListener, DataStatusListener, ActionListener, ASyncProcess
+        EventListener<Event>, DataStatusListener, ActionListener, ASyncProcess
 {
     private static final CLogger logger;
 
@@ -759,6 +760,12 @@ public abstract class AbstractADWindowPanel extends AbstractUIPart implements To
      */
     public void onFirst()
     {
+		if (currentTab.isIncluded() &&  toolbar.getCurrentPanel().isGridView())
+		{
+			KeyEvent event = new KeyEvent(Events.ON_CTRL_KEY, SessionManager.getApplication().getKeylistener(), KeyEvent.HOME, false, false, false);
+			Events.sendEvent(event);
+		}
+
     	GridTab currentTab = toolbar.getCurrentPanel().getGridTab();
         currentTab.navigate(0);
         focusToActivePanel();
@@ -769,6 +776,11 @@ public abstract class AbstractADWindowPanel extends AbstractUIPart implements To
      */
     public void onLast()
     {
+		if (currentTab.isIncluded() && toolbar.getCurrentPanel().isGridView())
+		{
+			KeyEvent event = new KeyEvent(Events.ON_CTRL_KEY, SessionManager.getApplication().getKeylistener(), KeyEvent.END, false, false, false);
+			Events.sendEvent(event);
+		}
     	GridTab currentTab = toolbar.getCurrentPanel().getGridTab();
         currentTab.navigate(currentTab.getRowCount() - 1);
         focusToActivePanel();
@@ -779,6 +791,12 @@ public abstract class AbstractADWindowPanel extends AbstractUIPart implements To
      */
     public void onNext()
     {
+		if (currentTab.isIncluded() && toolbar.getCurrentPanel().isGridView())
+		{
+			KeyEvent event = new KeyEvent(Events.ON_CTRL_KEY, SessionManager.getApplication().getKeylistener(), KeyEvent.DOWN, false, false, false);
+			Events.sendEvent(event);
+		}
+
     	GridTab currentTab = toolbar.getCurrentPanel().getGridTab();
         currentTab.navigateRelative(+1);
         focusToActivePanel();
@@ -789,6 +807,12 @@ public abstract class AbstractADWindowPanel extends AbstractUIPart implements To
      */
     public void onPrevious()
     {
+		if (currentTab.isIncluded() && toolbar.getCurrentPanel().isGridView())
+		{
+			KeyEvent event = new KeyEvent(Events.ON_CTRL_KEY, SessionManager.getApplication().getKeylistener(), KeyEvent.UP, false, false, false);
+			Events.sendEvent(event);
+		}
+
     	GridTab currentTab = toolbar.getCurrentPanel().getGridTab();
         currentTab.navigateRelative(-1);
         focusToActivePanel();
@@ -1781,7 +1805,7 @@ public abstract class AbstractADWindowPanel extends AbstractUIPart implements To
 				processModalDialog.setPage(this.getComponent().getPage());
 				processModalDialog.doModal();
 			}
-			catch (InterruptedException e) {
+			catch (Exception e) {
 			}
 		}
 		else
@@ -2337,14 +2361,14 @@ public abstract class AbstractADWindowPanel extends AbstractUIPart implements To
 		m_uiLocked = true;
 
 		if (Executions.getCurrent() != null)
-			Clients.showBusy(null, true);
+			Clients.showBusy(Msg.getMsg(Env.getCtx(), "Processing"));
 		else
 		{
 			try {
 				//get full control of desktop
 				Executions.activate(getComponent().getDesktop(), 2000);
 				try {
-					Clients.showBusy(null, true);
+					Clients.showBusy(Msg.getMsg(Env.getCtx(), "Processing"));
                 } catch(Error ex){
                 	throw ex;
                 } finally{
@@ -2377,7 +2401,7 @@ public abstract class AbstractADWindowPanel extends AbstractUIPart implements To
 			{
 				updateUI(pi);
 			} else {
-				Clients.showBusy(null, false);
+				Clients.clearBusy();
 			}
 		}
 		else
@@ -2390,7 +2414,7 @@ public abstract class AbstractADWindowPanel extends AbstractUIPart implements To
 					{
 						updateUI(pi);
 					} else {
-						Clients.showBusy(null, false);
+						Clients.clearBusy();
 					}
                 } catch(Error ex){
                 	throw ex;
@@ -2422,7 +2446,7 @@ public abstract class AbstractADWindowPanel extends AbstractUIPart implements To
 		ProcessInfoUtil.setLogFromDB(pi);
 		String logInfo = pi.getLogInfo();
 		//	
-		Clients.showBusy(null, false);
+		Clients.clearBusy();
 		if (logInfo.length() > 0)
 			FDialog.info(curWindowNo, this.getComponent(), Env.getHeader(ctx, curWindowNo),
 				pi.getTitle() + "<br>" + logInfo);
@@ -2505,6 +2529,11 @@ public abstract class AbstractADWindowPanel extends AbstractUIPart implements To
 	}
 	
 	private void showQuickGridPanel(MQuery query, ADTabPanel tabPanel, GridTab currentGrid, boolean isAutoNew) {
+		boolean isChangeView = false;
+		if(!curTabPanel.isGridView()) {
+			curTabPanel.switchRowPresentation();
+			isChangeView = true;
+		}
 		GridTab quickGridTab = new GridTab(tabPanel.getGridTab().getM_vo(), gridWindow);
 		quickGridTab.setLinkColumnName(tabPanel.getGridTab().getLinkColumnName());
 		quickGridTab.query(false);
@@ -2512,12 +2541,6 @@ public abstract class AbstractADWindowPanel extends AbstractUIPart implements To
 		quickGridTab.setQuickEntry(true);
 		curTabPanel.getListPanel().addKeyListener();
 		toolbar.enableHelp(false);
-		boolean isChangeView = false;
-		if(!((ADTabPanel)curTabPanel).isGridView()) {
-			curTabPanel.switchRowPresentation();
-			isChangeView = true;
-		}
-		
 		//quickGrid.init(quickGridTab);
 		WQuickEntrySheet form = new WQuickEntrySheet(curTabPanel.getListPanel(), quickGridTab, tabPanel, this, m_onlyCurrentDays, m_onlyCurrentRows);
 		if(isAutoNew)
@@ -2535,7 +2558,7 @@ public abstract class AbstractADWindowPanel extends AbstractUIPart implements To
 		curTabPanel.getListPanel().invalidate();
 		curTabPanel.appendChild(curTabPanel.getListPanel());
 		curTabPanel.invalidate();
-		if(!((ADTabPanel)curTabPanel).isGridView()) {
+		if(!curTabPanel.isGridView()) {
 			curTabPanel.getListPanel().addKeyListener();
 		}
 		m_popup = null;

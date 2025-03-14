@@ -36,6 +36,15 @@ import org.spin.queue.notification.DefaultNotifier;
 import org.spin.queue.util.QueueLoader;
 import org.zkoss.zk.ui.util.Clients;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+
 /**
  *	Print Invoices on Paperor send PDFs
  *
@@ -347,7 +356,7 @@ public class InvoicePrint extends SvrProcess
 				File outFile = File.createTempFile("InvoicePrint", ".pdf");					
 				AEnv.mergePdf(pdfList, outFile);
 
-				Clients.showBusy(null, false);
+				Clients.clearBusy();
 				Window win = new SimplePDFViewer(this.getName(), new FileInputStream(outFile));
 				win.setAttribute(Window.MODE_KEY, Window.MODE_HIGHLIGHTED);
 				SessionManager.getAppDesktop().showWindow(win, "center");
@@ -355,7 +364,7 @@ public class InvoicePrint extends SvrProcess
 				log.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
 		} else if (pdfList.size() > 0) {
-			Clients.showBusy(null, false);
+			Clients.clearBusy();
 			try {
 				Window win = new SimplePDFViewer(this.getName(), new FileInputStream(pdfList.get(0)));
 				win.setAttribute(Window.MODE_KEY, Window.MODE_HIGHLIGHTED);

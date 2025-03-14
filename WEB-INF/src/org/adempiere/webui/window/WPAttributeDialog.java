@@ -45,6 +45,7 @@ import org.adempiere.webui.component.Textbox;
 import org.adempiere.webui.component.Window;
 import org.adempiere.webui.panel.InfoPAttributeInstancePanel;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.MAttribute;
 import org.compiere.model.MAttributeInstance;
 import org.compiere.model.MAttributeSet;
@@ -69,12 +70,21 @@ import org.zkoss.zk.ui.HtmlBasedComponent;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Menuitem;
 import org.zkoss.zul.Menupopup;
+import org.zkoss.zul.South;
 import org.zkoss.zul.impl.InputElement;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
 
 /**
  *  Product Attribute Set Product/Instance Dialog Editor.
@@ -85,7 +95,7 @@ import org.zkoss.zul.impl.InputElement;
  *  ZK Port
  *  @author Low Heng Sin
  */
-public class WPAttributeDialog extends Window implements EventListener
+public class WPAttributeDialog extends Window implements EventListener<Event>
 {
 	/**
 	 * 
@@ -109,8 +119,8 @@ public class WPAttributeDialog extends Window implements EventListener
 		this.setTitle(Msg.translate(Env.getCtx(), "M_AttributeSetInstance_ID"));
 		this.setAttribute("modal", Boolean.TRUE);
 		this.setBorder("normal");
-		this.setWidth("500px");
-		this.setHeight("600px");
+		ZKUpdateUtil.setWidth(this, "500px");
+		ZKUpdateUtil.setHeight(this, "600px");
 		this.setSizable(true);
 		
 		log.config("M_AttributeSetInstance_ID=" + M_AttributeSetInstance_ID 
@@ -207,12 +217,12 @@ public class WPAttributeDialog extends Window implements EventListener
 	private void init () throws Exception
 	{
 		mainLayout.setParent(this);
-		mainLayout.setWidth("100%");
-		mainLayout.setHeight("100%");
+		ZKUpdateUtil.setWidth(mainLayout, "100%");
+		ZKUpdateUtil.setHeight(mainLayout, "100%");
 		
 		Center center = new Center();
 		center.setParent(mainLayout);
-		center.setFlex(true);
+		ZKUpdateUtil.setVflex(center, "flex");
 		center.appendChild(centerPanel);
 
 		South south = new South();

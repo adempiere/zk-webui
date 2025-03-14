@@ -12,17 +12,9 @@
  *****************************************************************************/
 package org.adempiere.webui.apps.wf;
 
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.util.Properties;
-import java.util.logging.Level;
-
-import javax.imageio.ImageIO;
-
 import org.adempiere.webui.exception.ApplicationException;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.apps.wf.WFLine;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
@@ -34,13 +26,21 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.MouseEvent;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.South;
 import org.zkoss.zul.Area;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Html;
 import org.zkoss.zul.Imagemap;
+import org.zkoss.zul.South;
+
+import javax.imageio.ImageIO;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  *	WorkFlow Panel
@@ -110,16 +110,16 @@ public class WFPanel extends Borderlayout implements EventListener
 		center.appendChild(contentPanel);
 		contentPanel.setStyle("width: 100%; heigh: 100%;");
 		center.setAutoscroll(true);
-		center.setFlex(true);
+		ZKUpdateUtil.setVflex(center, "flex");
 		
 		South south = new South();
 		this.appendChild(south);
 		south.appendChild(infoTextPane);
-		south.setHeight("15%");
+		ZKUpdateUtil.setHeight(south,"15%");
 		south.setSplittable(true);
 		south.setCollapsible(true);
 		south.setAutoscroll(true);
-		south.setFlex(true);		
+		ZKUpdateUtil.setVflex(south, "flex");
 	}	//	jbInit
 
 	/**
@@ -165,9 +165,9 @@ public class WFPanel extends Borderlayout implements EventListener
 		try {
 			ImageIO.write(bi, "png", os);
 			AImage imageContent = new AImage("workflow.png", os.toByteArray());
-			Imagemap image = new Imagemap();		
-			image.setWidth(dimension.width + "px");
-			image.setHeight(dimension.height + "px");
+			Imagemap image = new Imagemap();
+			ZKUpdateUtil.setWidth(image, dimension.width + "px");
+			ZKUpdateUtil.setHeight(image, dimension.height + "px");
 			image.setContent(imageContent);
 			contentPanel.appendChild(image);
 			

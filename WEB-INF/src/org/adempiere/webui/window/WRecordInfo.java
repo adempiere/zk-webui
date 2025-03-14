@@ -16,8 +16,6 @@
  *****************************************************************************/
 package org.adempiere.webui.window;
 
-import java.util.logging.Level;
-
 import org.adempiere.controller.RecordInfoController;
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.ConfirmPanel;
@@ -25,6 +23,7 @@ import org.adempiere.webui.component.Listbox;
 import org.adempiere.webui.component.SimpleListModel;
 import org.adempiere.webui.component.Window;
 import org.adempiere.webui.editor.WEditorPopupMenu;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.DataStatusEvent;
 import org.compiere.model.GridField;
 import org.compiere.util.CLogger;
@@ -35,14 +34,16 @@ import org.zkoss.zhtml.Text;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Listhead;
 import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Menuitem;
+import org.zkoss.zul.North;
+import org.zkoss.zul.South;
+
+import java.util.logging.Level;
 
 /**
  * Record Info (Who) With Change History
@@ -77,8 +78,9 @@ public class WRecordInfo extends RecordInfoController implements EventListener
 		v_Container = new Window();
 		v_Container.setTitle(title);
 		v_Container.setAttribute("modal", Boolean.TRUE);
-		v_Container.setWidth("800px");
-		v_Container.setHeight("400px");
+		ZKUpdateUtil.setWidth(v_Container, "800px");
+		ZKUpdateUtil.setHeight(v_Container, "400px");
+
 		v_Container.setBorder("normal");
 		v_Container.setSizable(true);
 		v_Container.setClosable(true);
@@ -138,12 +140,12 @@ public class WRecordInfo extends RecordInfoController implements EventListener
 		
 		Borderlayout layout = new Borderlayout();
 		layout.setParent(v_Container);
-		layout.setWidth("100%");
-		layout.setHeight("100%");
+		ZKUpdateUtil.setWidth(layout, "100%");
+		ZKUpdateUtil.setHeight(layout, "100%");
 		
 		Center center = new Center();
 		center.setParent(layout);
-		center.setFlex(true);
+		ZKUpdateUtil.setVflex(center, "flex");
 		if (isOk())
 		{
 			North north = new North();
@@ -151,8 +153,9 @@ public class WRecordInfo extends RecordInfoController implements EventListener
 			north.appendChild(div);
 						
 			center.appendChild(table);
-			table.setWidth("100%");
-			table.setVflex(true);
+			ZKUpdateUtil.setVflex(table,true);
+			table.setSizedByContent(false);
+			ZKUpdateUtil.setWidth(table, "100%");
 		}
 		else
 		{

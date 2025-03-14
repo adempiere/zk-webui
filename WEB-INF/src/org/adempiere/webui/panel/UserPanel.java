@@ -17,15 +17,13 @@
 
 package org.adempiere.webui.panel;
 
-import java.util.Objects;
-import java.util.Properties;
-
 import org.adempiere.webui.LayoutUtils;
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Label;
 import org.adempiere.webui.component.Messagebox;
 import org.adempiere.webui.component.ToolBarButton;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.WContext;
 import org.adempiere.webui.window.WPreference;
 import org.compiere.model.MClient;
@@ -42,6 +40,9 @@ import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Separator;
 import org.zkoss.zul.Vbox;
 
+import java.util.Objects;
+import java.util.Properties;
+
 /**
  *
  * @author  <a href="mailto:agramdass@gmail.com">Ashley G Ramdass</a>
@@ -51,7 +52,7 @@ import org.zkoss.zul.Vbox;
  * @author Michael Mckay
  * Add context viewer.  Configurable.
  */
-public class UserPanel extends Vbox  implements EventListener
+public class UserPanel extends Vbox  implements EventListener<Event>
 {
 
 	private static final long serialVersionUID = -45350536628290540L;
@@ -79,7 +80,7 @@ public class UserPanel extends Vbox  implements EventListener
     	this.setStyle("text-align:right");
 
     	// Elaine 2008/11/07 - fix the layout problem in IE7
-    	this.setWidth("100%");
+		ZKUpdateUtil.setWidth(this, "100%");
     	this.setAlign("right");
     	//
 

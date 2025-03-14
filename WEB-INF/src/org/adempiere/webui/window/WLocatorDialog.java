@@ -21,11 +21,6 @@
 
 package org.adempiere.webui.window;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-
 import org.adempiere.webui.component.Button;
 import org.adempiere.webui.component.Checkbox;
 import org.adempiere.webui.component.Label;
@@ -33,6 +28,7 @@ import org.adempiere.webui.component.ListItem;
 import org.adempiere.webui.component.Listbox;
 import org.adempiere.webui.component.Textbox;
 import org.adempiere.webui.component.Window;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.MLocator;
 import org.compiere.model.MLocatorLookup;
 import org.compiere.model.MRole;
@@ -47,6 +43,11 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Separator;
 import org.zkoss.zul.Vbox;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
 
 /**
  * Location Dialog : Based on VLocationDialog
@@ -145,10 +146,10 @@ public class WLocatorDialog extends Window implements EventListener
 		lblKey.setValue(Msg.translate(Env.getCtx(), "Value"));
 		
 		Hbox boxLocator = new Hbox();
-		boxLocator.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxLocator, "100%");
 		boxLocator.setWidths("30%, 70%");
-		
-		lstLocator.setWidth("150px"); // Elaine 2009/02/02 - fixed the locator width
+
+		ZKUpdateUtil.setWidth(lstLocator, "150px");
 		lstLocator.setMold("select");
 		lstLocator.setRows(0);
 		
@@ -156,7 +157,7 @@ public class WLocatorDialog extends Window implements EventListener
 		boxLocator.appendChild(lstLocator);
 		
 		Hbox boxCheckbox = new Hbox();
-		boxCheckbox.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxCheckbox, "100%");
 		boxCheckbox.setWidths("30%, 70%");
 		boxCheckbox.setStyle("text-align:left");
 		
@@ -166,10 +167,10 @@ public class WLocatorDialog extends Window implements EventListener
 		boxCheckbox.appendChild(chkCreateNew);
 		
 		Hbox boxWarehouse = new Hbox();
-		boxWarehouse.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxWarehouse, "100%");
 		boxWarehouse.setWidths("30%, 70%");
-		
-		lstWarehouse.setWidth("100px");
+
+		ZKUpdateUtil.setWidth(lstWarehouse, "100px");
 		lstWarehouse.setMold("select");
 		lstWarehouse.setRows(0);
 		
@@ -178,35 +179,35 @@ public class WLocatorDialog extends Window implements EventListener
 		boxWarehouse.appendChild(txtWarehouse);
 		
 		Hbox boxAisle = new Hbox();
-		boxAisle.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxAisle, "100%");
 		boxAisle.setWidths("30%, 70%");
 		
 		boxAisle.appendChild(lblAisleX);
 		boxAisle.appendChild(txtAisleX);
 		
 		Hbox boxBin = new Hbox();
-		boxBin.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxBin, "100%");
 		boxBin.setWidths("30%, 70%");
 
 		boxBin.appendChild(lblBinY);
 		boxBin.appendChild(txtBinY);
 		
 		Hbox boxLevel = new Hbox();
-		boxLevel.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxLevel, "100%");
 		boxLevel.setWidths("30%, 70%");
 
 		boxLevel.appendChild(lblLevelZ);
 		boxLevel.appendChild(txtLevelZ);
 		
 		Hbox boxKey = new Hbox();
-		boxKey.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxKey, "100%");
 		boxKey.setWidths("30%, 70%");
 		
 		boxKey.appendChild(lblKey);
 		boxKey.appendChild(txtKey);
 		
 		Hbox boxButtons = new Hbox();
-		boxButtons.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxButtons, "100%");
 		boxButtons.setWidths("80%, 10%, 10%");
 		boxButtons.setStyle("text-align:right");
 		
@@ -219,8 +220,7 @@ public class WLocatorDialog extends Window implements EventListener
 		boxButtons.appendChild(new Label());
 		boxButtons.appendChild(btnCancel);
 		boxButtons.appendChild(btnOk);
-		
-		mainBox.setWidth("250px");
+		ZKUpdateUtil.setWidth(mainBox, "250px");
 		mainBox.setStyle("text-align:right");
 		mainBox.appendChild(boxLocator);
 		mainBox.appendChild(new Separator());
@@ -238,7 +238,7 @@ public class WLocatorDialog extends Window implements EventListener
 		this.setTitle(title);
 		this.setClosable(true);
 		this.setBorder("normal");
-		this.setWidth("260Px");
+		ZKUpdateUtil.setWidth(this, "260px");
 		this.setAttribute("mode","modal");
 		this.setSizable(true); // Elaine 2009/02/02 - window set to resizable
 	}

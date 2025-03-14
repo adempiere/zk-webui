@@ -17,32 +17,38 @@
 
 package org.adempiere.webui.panel;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.logging.Level;
-
 import org.adempiere.core.domains.models.X_AD_FieldGroup;
 import org.adempiere.webui.LayoutUtils;
-import org.adempiere.webui.component.*;
 import org.adempiere.webui.component.Column;
 import org.adempiere.webui.component.Columns;
 import org.adempiere.webui.component.Grid;
 import org.adempiere.webui.component.Label;
 import org.adempiere.webui.component.Rows;
-import org.adempiere.webui.component.SimpleTreeModel;
 import org.adempiere.webui.component.Tab;
 import org.adempiere.webui.component.Tabbox;
 import org.adempiere.webui.component.Tabpanel;
 import org.adempiere.webui.component.Tabpanels;
 import org.adempiere.webui.component.Tabs;
-import org.adempiere.webui.editor.*;
+import org.adempiere.webui.component.*;
+import org.adempiere.webui.editor.IZoomableEditor;
+import org.adempiere.webui.editor.WButtonEditor;
+import org.adempiere.webui.editor.WEditor;
+import org.adempiere.webui.editor.WEditorPopupMenu;
+import org.adempiere.webui.editor.WebEditorFactory;
 import org.adempiere.webui.event.ContextMenuListener;
 import org.adempiere.webui.util.GridTabDataBinder;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
-import org.compiere.model.*;
+import org.compiere.model.DataStatusEvent;
+import org.compiere.model.DataStatusListener;
+import org.compiere.model.GridField;
+import org.compiere.model.GridTab;
+import org.compiere.model.GridTable;
+import org.compiere.model.GridWindow;
+import org.compiere.model.MLookup;
+import org.compiere.model.MSysConfig;
+import org.compiere.model.MTree;
+import org.compiere.model.MTreeNode;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.compiere.util.Evaluatee;
@@ -55,12 +61,32 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.West;
-import org.zkoss.zul.*;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
+import org.zkoss.zul.DefaultTreeNode;
+import org.zkoss.zul.Div;
+import org.zkoss.zul.Group;
+import org.zkoss.zul.Groupfoot;
 import org.zkoss.zul.Panel;
+import org.zkoss.zul.Panelchildren;
 import org.zkoss.zul.Row;
+import org.zkoss.zul.Separator;
+import org.zkoss.zul.Space;
+import org.zkoss.zul.TreeModel;
+import org.zkoss.zul.Treeitem;
+import org.zkoss.zul.West;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  *
@@ -85,7 +111,7 @@ import org.zkoss.zul.Row;
  *		<a href="https://github.com/adempiere/adempiere/issues/1063">
  * 		@see BR [ 1063 ] Null pointer exception in field type Account zk</a>
  */
-public class ADTabPanel extends Div implements Evaluatee, EventListener, DataStatusListener, IADTabPanel, VetoableChangeListener
+public class ADTabPanel extends Div implements Evaluatee, EventListener<Event>, DataStatusListener, IADTabPanel, VetoableChangeListener
 {
 	/**
 	 * generated serial version ID
@@ -177,8 +203,8 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener, DataSta
     	LayoutUtils.addSclass("adtab-content", this);
         grid = new Grid();
         //have problem moving the following out as css class
-        grid.setWidth("100%");
-        grid.setHeight("100%");
+		ZKUpdateUtil.setWidth(grid, "100%");
+		ZKUpdateUtil.setHeight(grid, "100%");
         grid.setVflex(true);
         grid.setStyle("margin:0; padding:0; position: absolute");
         grid.makeNoStrip();
@@ -227,14 +253,16 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener, DataSta
 
 			West west = new West();
 			west.appendChild(treePanel);
-			west.setWidth("300px");
+			//west.setWidth("300px");
+			ZKUpdateUtil.setWidth(west, "300px");
 			west.setCollapsible(true);
 			west.setSplittable(true);
 			west.setAutoscroll(true);
 			layout.appendChild(west);
 
 			Center center = new Center();
-			center.setFlex(true);
+			center.setStyle("height:100%;");
+			ZKUpdateUtil.setVflex(center, "flex");
 			center.appendChild(grid);
 			layout.appendChild(center);
 
@@ -267,19 +295,19 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener, DataSta
     	Columns columns = new Columns();
     	grid.appendChild(columns);
     	Column col = new Column();
-    	col.setWidth("14%");
+		ZKUpdateUtil.setWidth(col, "14%");
     	columns.appendChild(col);
     	col = new Column();
-    	col.setWidth("35%");
+		ZKUpdateUtil.setWidth(col, "35%");
     	columns.appendChild(col);
     	col = new Column();
-    	col.setWidth("14%");
+		ZKUpdateUtil.setWidth(col, "14%");
     	columns.appendChild(col);
     	col = new Column();
-    	col.setWidth("35%");
+		ZKUpdateUtil.setWidth(col, "35%");
     	columns.appendChild(col);
     	col = new Column();
-    	col.setWidth("2%");
+		ZKUpdateUtil.setWidth(col, "2%");
     	columns.appendChild(col);
 
     	Rows rows = grid.newRows();
@@ -330,7 +358,7 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener, DataSta
                     includedTab.put(field.getIncluded_Tab_ID(), (Group)row);
 
     				org.zkoss.zul.Div div = new Div();
-                    div.setWidth("100%");
+					ZKUpdateUtil.setWidth(div, "100%");
                     row = new org.adempiere.webui.component.Row();
                     row.setSpans("5");
                     row.appendChild(div);
@@ -839,30 +867,31 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener, DataSta
 		{
 			Grid gridCurrent = getGrid();
 			((HtmlBasedComponent)gridCurrent).setStyle("border-left: 3px solid #009bde; "); //border-top: 1px solid #fa962f; border-bottom: 1px solid #fa962f; border-right: 1px solid #fa962f;");
-	    	gridCurrent.setWidth("99.1%");
-
+			ZKUpdateUtil.setWidth(gridCurrent, "100%");
+			ZKUpdateUtil.setHeight(gridCurrent, "100%");
 		}
     	else if (getGrid() != null && !activate)
     	{
     		Grid gridtPrevious = getGrid();
 			((HtmlBasedComponent)gridtPrevious).setStyle("border:none;");
-			gridtPrevious.setWidth("100%");
-			gridtPrevious.setHeight("100%");
-    	}
+			ZKUpdateUtil.setWidth(gridtPrevious, "100%");
+			ZKUpdateUtil.setHeight(gridtPrevious, "100%");
+		}
 		if (getListPanel() != null && activate)
 		{
 			GridPanel gridPanel = getListPanel();
 			//gridPanel.setHeight("95%");
 			((HtmlBasedComponent)gridPanel).setStyle("border-left: 3px solid #009bde; "); //border-top: 1px solid #fa962f; border-bottom: 1px solid #fa962f; border-right: 1px solid #fa962f;");
-			gridPanel.setWidth("99.1%");
+			ZKUpdateUtil.setWidth(gridPanel, "100%");
+			ZKUpdateUtil.setHeight(gridPanel, "100%");
 			//gridPanel.setHeight("95%");
 		}
 		else if (getListPanel() != null && !activate)
 		{
 			GridPanel gridPanel = getListPanel();
 		    ((HtmlBasedComponent)gridPanel).setStyle("border:none;");
-		    gridPanel.setWidth("100%");
-		    gridPanel.setHeight("100%");
+			ZKUpdateUtil.setWidth(gridPanel, "100%");
+			ZKUpdateUtil.setHeight(gridPanel, "100%");
 		}
 
         //activate embedded panel
@@ -990,7 +1019,7 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener, DataSta
 
     	else if (event.getTarget() == treePanel.getTree()) {
     		Treeitem item =  treePanel.getTree().getSelectedItem();
-    		navigateTo((SimpleTreeNode)item.getValue());
+    		navigateTo((DefaultTreeNode)item.getValue());
     	}
     }
 
@@ -1005,7 +1034,7 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener, DataSta
 	    		if(isGridView())
 	    		{
 	    			int size = MSysConfig.getIntValue("TAB_INCLUDING_HEIGHT", 400);
-		    		window.setHeight(size + "px");
+					ZKUpdateUtil.setWindowHeightX(window, size);
 					listPanel.resize();
 	    			window.resize();
 	    		}
@@ -1035,14 +1064,15 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener, DataSta
                         size += 25; // 25 = statusbar
 		    			size += addSize;
 		    			size += doAutoSize();
-						window.setHeight(size + "px");
+						//window.setHeight(size + "px");
+						ZKUpdateUtil.setWindowHeightX(window, size);
 		    			window.resize();
 	    			}
 	    			catch(Exception e)
 	    			{
 	    				e.printStackTrace();
 	    				//nothing to do, just ignore
-	    				window.setHeight( "61px");
+						ZKUpdateUtil.setWindowHeightX(window, 61);
                         window.resize();
 	    			}
 
@@ -1078,7 +1108,7 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener, DataSta
     		editor.repaintComponent(isRow);
     }
 
-    private void navigateTo(SimpleTreeNode value) {
+    private void navigateTo(DefaultTreeNode<Object> value) {
     	MTreeNode treeNode = (MTreeNode) value.getData();
     	//  We Have a TreeNode
 		int nodeID = treeNode.getNode_ID();
@@ -1196,10 +1226,10 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener, DataSta
     private void deleteNode(int recordId) {
 		if (recordId <= 0) return;
 
-		SimpleTreeModel model = (SimpleTreeModel) treePanel.getTree().getModel();
+		SimpleTreeModel model = (SimpleTreeModel) ((TreeModel<?>)treePanel.getTree().getModel());
 
 		if (treePanel.getTree().getSelectedItem() != null) {
-			SimpleTreeNode treeNode = (SimpleTreeNode) treePanel.getTree().getSelectedItem().getValue();
+			DefaultTreeNode<Object> treeNode = treePanel.getTree().getSelectedItem().getValue();
 			MTreeNode data = (MTreeNode) treeNode.getData();
 			if (data.getNode_ID() == recordId) {
 				model.removeNode(treeNode);
@@ -1207,7 +1237,7 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener, DataSta
 			}
 		}
 
-		SimpleTreeNode treeNode = model.find(null, recordId);
+		DefaultTreeNode<Object> treeNode = model.find(null, recordId);
 		if (treeNode != null) {
 			model.removeNode(treeNode);
 		}
@@ -1220,14 +1250,14 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener, DataSta
 			boolean summary = gridTab.getValueAsBoolean("IsSummary");
 			String imageIndicator = (String)gridTab.getValue("Action");  //  Menu - Action
 			//
-			SimpleTreeModel model = (SimpleTreeModel) treePanel.getTree().getModel();
-			SimpleTreeNode treeNode = model.getRoot();
+			SimpleTreeModel model = (SimpleTreeModel) ((TreeModel<?>)  treePanel.getTree().getModel());
+			DefaultTreeNode<Object> treeNode = model.getRoot();
 			MTreeNode root = (MTreeNode) treeNode.getData();
 			MTreeNode node = new MTreeNode (gridTab.getRecord_ID(), 0, name, description,
 					root.getNode_ID(), summary, imageIndicator, false, null);
-			SimpleTreeNode newNode = new SimpleTreeNode(node, new ArrayList<Object>());
+			DefaultTreeNode<Object> newNode = new DefaultTreeNode(node, new ArrayList<Object>());
 			model.addNode(newNode);
-			int[] path = model.getPath(model.getRoot(), newNode);
+			int[] path = model.getPath(model.getRoot());
 			Treeitem ti = treePanel.getTree().renderItemByPath(path);
 			treePanel.getTree().setSelectedItem(ti);
     	}
@@ -1237,15 +1267,15 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener, DataSta
 		if (recordId <= 0) return;
 
 		if (treePanel.getTree().getSelectedItem() != null) {
-			SimpleTreeNode treeNode = (SimpleTreeNode) treePanel.getTree().getSelectedItem().getValue();
+			DefaultTreeNode<Object> treeNode = treePanel.getTree().getSelectedItem().getValue();
 			MTreeNode data = (MTreeNode) treeNode.getData();
 			if (data.getNode_ID() == recordId) return;
 		}
 
-		SimpleTreeModel model = (SimpleTreeModel) treePanel.getTree().getModel();
-		SimpleTreeNode treeNode = model.find(null, recordId);
+		SimpleTreeModel model = (SimpleTreeModel) ((TreeModel<?>) treePanel.getTree().getModel());
+		DefaultTreeNode<Object>  treeNode = model.find(null, recordId);
 		if (treeNode != null) {
-			int[] path = model.getPath(model.getRoot(), treeNode);
+			int[] path = model.getPath(model.getRoot());
 			Treeitem ti = treePanel.getTree().renderItemByPath(path);
 			treePanel.getTree().setSelectedItem(ti);
 		} else {
@@ -1407,7 +1437,8 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener, DataSta
 
 		grid.getRows().insertBefore(row, includedTabFooter.get(ep.adTabId));
 		ep.windowPanel.createPart(row);
-		ep.windowPanel.getComponent().setWidth("100%");
+		ZKUpdateUtil.setWidth(ep.windowPanel.getComponent(), "100%");
+		ZKUpdateUtil.setHeight(ep.windowPanel.getComponent(), "350px");
 		ep.windowPanel.getComponent().setStyle("position: relative");
 		//ep.windowPanel.getComponent().setHeight(400 + "px");
 
@@ -1587,8 +1618,7 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener, DataSta
 			    				}
 			    			}
 	    				}
-
-					    window.setHeight(size + "px");
+						ZKUpdateUtil.setWindowHeightX(window, size);
 	    			    window.resize();
 	    			    return size;
 	    			}
@@ -1646,8 +1676,7 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener, DataSta
                             }
                         }
                     }
-
-                    window.setHeight(size + "px");
+					ZKUpdateUtil.setWindowHeightX(window, size);
                     window.resize();
                     return size;
                 }
@@ -1669,7 +1698,7 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener, DataSta
 
 		for (Object o : ((Row) row).getChildren()) {
 
-			if(o instanceof org.zkoss.zkex.zul.Borderlayout)
+			if(o instanceof org.zkoss.zul.Borderlayout)
 			{
 				return 0;
 			}
@@ -1843,10 +1872,9 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener, DataSta
         org.zkoss.zul.Row ChildRow = createHorizontalPanelForEmbedded(ep.divComponent, includedTabFooter.get(ep.adTabId), ep);
 
         ep.windowPanel.createPart(ChildRow);
-        ep.windowPanel.getComponent().setWidth("100%");
+		ZKUpdateUtil.setWidth(ep.windowPanel.getComponent(), "300px");
         //ep.windowPanel.getComponent().setStyle("position: relative");
-        ep.windowPanel.getComponent().setHeight("600px");
-
+		ZKUpdateUtil.setHeight(ep.windowPanel.getComponent(), "600px");
         FToolbar bar = ep.windowPanel.getToolbar();
         bar.setAlign("start");
         bar.setStyle("background-color: transparent; height: 20%; ");
@@ -1858,15 +1886,15 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener, DataSta
 
     private org.zkoss.zul.Row createHorizontalPanelForEmbedded(org.zkoss.zul.Div divComponent, org.zkoss.zul.Row footer , HorizontalEmbeddedPanel ep ) {
         //Setting Properties to Div Component
-        divComponent.setHeight("100%");
-        divComponent.setWidth("100%");
+		ZKUpdateUtil.setWidth(divComponent, "100%");
+		ZKUpdateUtil.setHeight(divComponent, "100%");
         // Create a Panel Object
         Panel panel = new Panel();
         //Setting Properties to Panel
         panel.setFramable(true);
     	//panel.setStyle("overflow:auto");
-        panel.setWidth("100%");
-        panel.setHeight("100%");
+		ZKUpdateUtil.setWidth(panel, "100%");
+		ZKUpdateUtil.setHeight(panel, "100%");
         panel.setMaximizable(true);
 
 
@@ -1874,11 +1902,12 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener, DataSta
         ep.panelChildren = new Panelchildren();
         // Creating a Object to Grid And Apply Properties
         Grid newGrid = new Grid();
-        newGrid.setVflex(true);
+		ZKUpdateUtil.setVflex(newGrid, true);
+		newGrid.setSizedByContent(false);
         newGrid.setStyle("margin:0; padding:0; position: absolute; border: none;");
         newGrid.makeNoStrip();
-        newGrid.setWidth("100%");
-        newGrid.setHeight("100%");
+		ZKUpdateUtil.setWidth(newGrid, "100%");
+		ZKUpdateUtil.setHeight(newGrid, "100%");
         // Grid append to Panel Children
         ep.panelChildren.appendChild( newGrid );
         // Panel Children Append to Panel
@@ -1890,8 +1919,8 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener, DataSta
         ep.embeddedGrid = newGrid;
         //Creating Rows based on the Grid
         Rows newRows = newGrid.newRows();
-        newRows.setWidth("100%");
-        newRows.setHeight("100%");
+		ZKUpdateUtil.setWidth(newRows, "100%");
+		ZKUpdateUtil.setHeight(newRows, "100%");
         org.zkoss.zul.Row newRow = new Group();
         // Create a Row For ToolBar
         org.zkoss.zul.Row toolbarRow = new org.adempiere.webui.component.Row();
@@ -1900,8 +1929,8 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener, DataSta
         //Create a Row For All Widgets
         org.zkoss.zul.Row panelRow = new org.adempiere.webui.component.Row();
         panelRow.setSpans("5");
-        panelRow.setWidth("100%");
-        panelRow.setHeight("100%");
+		ZKUpdateUtil.setWidth(panelRow, "100%");
+		ZKUpdateUtil.setHeight(panelRow, "100%");
         // Added to Group
         newRows.appendChild( newRow );
         // Added to tool-bar Row
@@ -1919,10 +1948,10 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener, DataSta
         // For One Tab We created only one TabBox
         if (null == tabBox && null == tabPanels) {
             tabBox = new Tabbox();
-            tabBox.setHeight("100%");
+			ZKUpdateUtil.setHeight(tabBox,"100%");
             //tabBox.setStyle("height: 100%; width: 100%; position: relative;");
             tabPanels = new Tabpanels();
-            tabPanels.setHeight("600px");
+			ZKUpdateUtil.setHeight(tabPanels,"600px");
             tabBox.appendChild(tabPanels);
             tabs = new Tabs();
             tabBox.appendChild(tabs);

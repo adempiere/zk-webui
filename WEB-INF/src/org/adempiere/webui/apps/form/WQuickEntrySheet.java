@@ -1,8 +1,6 @@
 package org.adempiere.webui.apps.form;
 
 
-import java.util.ArrayList;
-
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Button;
@@ -15,6 +13,8 @@ import org.adempiere.webui.component.Window;
 import org.adempiere.webui.panel.ADTabPanel;
 import org.adempiere.webui.panel.AbstractADWindowPanel;
 import org.adempiere.webui.panel.StatusBarPanel;
+import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.model.DataStatusEvent;
 import org.compiere.model.DataStatusListener;
@@ -30,11 +30,13 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.KeyEvent;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
+import org.zkoss.zul.North;
 import org.zkoss.zul.Separator;
+import org.zkoss.zul.South;
+
+import java.util.ArrayList;
 
 /**
  * Quick sheet window
@@ -43,7 +45,7 @@ import org.zkoss.zul.Separator;
  * @author <a href="mailto:sachin.bhimani89@gmail.com">Sachin Bhimani</a>
  * @since 2016-06-30
  */
-public class WQuickEntrySheet extends Window implements EventListener, DataStatusListener
+public class WQuickEntrySheet extends Window implements EventListener<Event>, DataStatusListener
 {
 
 	/**
@@ -75,7 +77,7 @@ public class WQuickEntrySheet extends Window implements EventListener, DataStatu
 	private static final int KEYBOARD_KEY_RETURN = 13;
 	private static final int KEYBOARD_KEY_Q = 81;
 	private Keylistener	keyListener;
-	
+
 
 	public WQuickEntrySheet(GridPanel grid, GridTab gTab, ADTabPanel tPanel, AbstractADWindowPanel abstractPanel,
 			int onlyCurrentDays, boolean onlyCurrentRows)
@@ -102,6 +104,7 @@ public class WQuickEntrySheet extends Window implements EventListener, DataStatu
 		gridTab.getMTable().setTrxName(trx.getTrxName());
 
 		gridPanel.init(gridTab);
+		gridPanel.showGrid(true);
 
 		keyListener = new Keylistener();
 			appendChild(keyListener);
@@ -109,8 +112,12 @@ public class WQuickEntrySheet extends Window implements EventListener, DataStatu
 		keyListener.addEventListener(Events.ON_CTRL_KEY, this);
 		
 		initForm();
-		setWidth("70%");
-		setHeight("80%");
+
+		int width = SessionManager.getAppDesktop().getClientInfo().desktopWidth * 80 / 100;
+		int height = SessionManager.getAppDesktop().getClientInfo().desktopHeight * 90 / 100;
+		this.setVisible(true);
+		ZKUpdateUtil.setWindowWidthX(this,width);
+		ZKUpdateUtil.setWindowHeightX(this,height);
 	}
 
 	protected void initForm()
@@ -150,11 +157,11 @@ public class WQuickEntrySheet extends Window implements EventListener, DataStatu
 
 	private void initZk()
 	{
-		selPanel.setWidth("99%");
-		selPanel.setHeight("99%");
+		ZKUpdateUtil.setWidth(selPanel, "99%");
+		ZKUpdateUtil.setHeight(selPanel, "99%");
 
 		North north = new North();
-		north.setFlex(true);
+		ZKUpdateUtil.setVflex(north, "flex");
 		north.setStyle("border: none");
 		north.appendChild(selNorthPanel);
 		selPanel.appendChild(north);
@@ -162,7 +169,7 @@ public class WQuickEntrySheet extends Window implements EventListener, DataStatu
 		Center center = new Center();
 
 		center.appendChild(gridPanel);
-		center.setFlex(true);
+		ZKUpdateUtil.setVflex(center, "flex");
 		selPanel.appendChild(center);
 
 		selSouthPanel.addActionListener(this);
@@ -195,8 +202,10 @@ public class WQuickEntrySheet extends Window implements EventListener, DataStatu
 		setMaximized(false);
 		setClosable(true);
 		this.appendChild(selPanel);
-		setWidth("70%");
-		setHeight("80%");
+		int width = SessionManager.getAppDesktop().getClientInfo().desktopWidth * 80 / 100;
+		int height = SessionManager.getAppDesktop().getClientInfo().desktopHeight * 90 / 100;
+		ZKUpdateUtil.setWindowWidthX(this,width);
+		ZKUpdateUtil.setWindowHeightX(this,height);
 		setPosition("center");
 	}
 
@@ -331,7 +340,7 @@ public class WQuickEntrySheet extends Window implements EventListener, DataStatu
 		gridPanel.addKeyListener();
 		tabPanel.getListPanel().addKeyListener();
 		keyListener = null;
-		
+
 		tabPanel.setGridTab(formGridTab);
 //		abstractADWindowPanel.getADTab().getSelectedTabpanel().refresh();
 //		SessionManager.closeTab(gridTab.getAD_Tab_ID());

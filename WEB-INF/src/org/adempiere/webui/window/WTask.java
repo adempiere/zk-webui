@@ -16,13 +16,12 @@
  *****************************************************************************/
 package org.adempiere.webui.window;
 
-import java.util.logging.Level;
-
 import org.adempiere.webui.LayoutUtils;
 import org.adempiere.webui.component.ConfirmPanel;
 import org.adempiere.webui.component.Window;
 import org.adempiere.webui.session.SessionManager;
 import org.adempiere.webui.util.OSTask;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.MTask;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
@@ -32,11 +31,13 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Html;
+import org.zkoss.zul.South;
+
+import java.util.logging.Level;
 
 /**
  *  Application Task
@@ -46,7 +47,7 @@ import org.zkoss.zul.Html;
  *
  *  @author Low Heng Sin
  */
-public class WTask extends Window implements EventListener
+public class WTask extends Window implements EventListener<Event>
 {
 	/**
 	 *
@@ -162,11 +163,11 @@ public class WTask extends Window implements EventListener
 	private void zkInit() throws Exception
 	{
 		Borderlayout layout = new Borderlayout();
-		layout.setWidth("100%");
-		layout.setHeight("100%");
+		ZKUpdateUtil.setWidth(layout, "100%");
+		ZKUpdateUtil.setHeight(layout, "100%");
 		layout.setStyle("position: absolute;");
-		this.setHeight("100%");
-		this.setWidth("100%");
+		ZKUpdateUtil.setWidth(this, "100%");
+		ZKUpdateUtil.setHeight(this, "100%");
 		appendChild(layout);
 		Center center = new Center();
 		layout.appendChild(center);
@@ -174,7 +175,7 @@ public class WTask extends Window implements EventListener
 		div.setStyle("width: 100%; height:100%; overflow: auto");
 		div.appendChild(info);
 		center.appendChild(div);
-		center.setFlex(true);
+		ZKUpdateUtil.setVflex(center, "flex");
 
 		South south = new South();
 		layout.appendChild(south);

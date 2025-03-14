@@ -16,22 +16,15 @@
  *****************************************************************************/
 package org.adempiere.webui.apps.form;
 
-import java.util.logging.Level;
-
 import org.adempiere.webui.apps.BusyDialog;
-import org.adempiere.webui.component.ConfirmPanel;
-import org.adempiere.webui.component.Grid;
-import org.adempiere.webui.component.GridFactory;
-import org.adempiere.webui.component.Label;
-import org.adempiere.webui.component.Panel;
-import org.adempiere.webui.component.Row;
-import org.adempiere.webui.component.Rows;
+import org.adempiere.webui.component.*;
 import org.adempiere.webui.editor.WEditor;
 import org.adempiere.webui.editor.WSearchEditor;
 import org.adempiere.webui.editor.WTableDirEditor;
 import org.adempiere.webui.panel.ADForm;
 import org.adempiere.webui.panel.IFormController;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.apps.form.Merge;
 import org.compiere.model.Lookup;
@@ -43,9 +36,11 @@ import org.zkoss.zk.au.out.AuEcho;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
+import org.zkoss.zul.South;
+
+import java.util.logging.Level;
 
 /**
  *	Merge Dialog.
@@ -148,8 +143,8 @@ public class WMerge extends Merge implements IFormController, EventListener
 	{
 		form = new WMergeUI(this);		
 		form.appendChild (mainLayout);
-		mainLayout.setHeight("100%");
-		mainLayout.setWidth("100%");
+		ZKUpdateUtil.setWidth(mainLayout, "100%");
+		ZKUpdateUtil.setHeight(mainLayout, "100%");
 		//
 		South south = new South();
 		mainLayout.appendChild(south);
@@ -265,7 +260,7 @@ public class WMerge extends Merge implements IFormController, EventListener
 				m_success = merge (columnName, from_ID, to_ID);
 				postMerge(columnName, to_ID);
 			} finally{
-				Clients.showBusy(null, false);
+				Clients.clearBusy();
 				Clients.response(new AuEcho(form, "onAfterProcess", null));
 			}
 		}		

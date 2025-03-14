@@ -21,13 +21,6 @@
 
 package org.adempiere.webui.window;
 
-import java.math.BigDecimal;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.StringTokenizer;
-import java.util.logging.Level;
-
 import org.adempiere.webui.component.Button;
 import org.adempiere.webui.component.Grid;
 import org.adempiere.webui.component.GridFactory;
@@ -39,6 +32,7 @@ import org.adempiere.webui.component.Panel;
 import org.adempiere.webui.component.Row;
 import org.adempiere.webui.component.Textbox;
 import org.adempiere.webui.component.Window;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.MCountry;
 import org.compiere.model.MLocation;
 import org.compiere.model.MOrgInfo;
@@ -49,6 +43,13 @@ import org.compiere.util.Msg;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+
+import java.math.BigDecimal;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
 
 /**
  * @author Sendy Yagambrum
@@ -199,8 +200,7 @@ public class WLocationDialog extends Window implements EventListener
 
 		setRegion();
 		initLocation();
-		//               
-		this.setWidth("290px");
+		ZKUpdateUtil.setWidth(this, "600px");
 		this.setClosable(true);
 		this.setBorder("normal");
 		this.setAttribute("mode","modal");
@@ -262,12 +262,12 @@ public class WLocationDialog extends Window implements EventListener
 
 		lstRegion    = new Listbox();
 		lstRegion.setMold("select");
-		lstRegion.setWidth("154px");
+		ZKUpdateUtil.setWidth(lstRegion, "154px");
 		lstRegion.setRows(0);
 
 		lstCountry  = new Listbox();
 		lstCountry.setMold("select");
-		lstCountry.setWidth("154px");
+		ZKUpdateUtil.setWidth(lstCountry, "154px");
 		lstCountry.setRows(0);
 
 		fieldLatitude = new NumberBox(false);
@@ -356,13 +356,14 @@ public class WLocationDialog extends Window implements EventListener
 		pnlLinks.appendChild(toRoute);
 		if (MLocation.LOCATION_MAPS_ROUTE_PREFIX == null)
 			toRoute.setVisible(false);
-		pnlLinks.setWidth("100%");
+
+		ZKUpdateUtil.setWidth(pnlLinks, "100%");
 		pnlLinks.setStyle("text-align:left");
 
 		Panel pnlButton   = new Panel();
 		pnlButton.appendChild(btnOk);
 		pnlButton.appendChild(btnCancel);
-		pnlButton.setWidth("100%");
+		ZKUpdateUtil.setWidth(pnlButton, "100%");
 		pnlButton.setStyle("text-align:right");
 
 		this.appendChild(mainPanel);
@@ -623,7 +624,7 @@ public class WLocationDialog extends Window implements EventListener
 			if (orgId != 0){
 				MOrgInfo orgInfo = 	MOrgInfo.get(Env.getCtx(), orgId,null);
 				MLocation orgLocation = new MLocation(Env.getCtx(),orgInfo.getC_Location_ID(),null);
-				String urlString =MLocation.getRouteUrl(orgLocation, location);
+				String urlString = MLocation.getRouteUrl(orgLocation, location);
 				String message = null;
 				try {
 					Env.startBrowser(urlString+"&output=embed");

@@ -12,17 +12,18 @@
  *****************************************************************************/
 package org.adempiere.webui.component;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-
 import org.adempiere.webui.LayoutUtils;
 import org.adempiere.webui.apps.AEnv;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.zkoss.zhtml.Table;
 import org.zkoss.zhtml.Td;
 import org.zkoss.zhtml.Tr;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Div;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 /**
  * @author Low Heng Sin
@@ -60,7 +61,7 @@ public class EditorBox extends Div {
 	private void initComponents() {
 		Table grid = new Table();
 		appendChild(grid);
-		this.setWidth("100%");
+		ZKUpdateUtil.setWidth(this, "100%");
 		grid.setStyle("border: none; padding: 0px; margin: 0px;");
 		grid.setDynamicProperty("width", "100%");
 		grid.setDynamicProperty("border", "0");
@@ -76,6 +77,7 @@ public class EditorBox extends Div {
 		td.setStyle("border: none; padding: 0px; margin: 0px;");
 		txt = new Textbox();
 		txt.setStyle("display: inline; width: 99%;");
+		ZKUpdateUtil.setHflex(txt, "1");
 		td.appendChild(txt);
 
 		btnColumn = new Td();

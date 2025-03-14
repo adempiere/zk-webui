@@ -25,6 +25,7 @@ import org.adempiere.webui.panel.MenuPanel;
 import org.adempiere.webui.theme.ITheme;
 import org.adempiere.webui.util.TreeItemAction;
 import org.adempiere.webui.util.TreeUtils;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.MTreeFavorite;
 import org.compiere.model.MTreeNode;
 import org.compiere.util.Env;
@@ -36,15 +37,16 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.MouseEvent;
 import org.zkoss.zul.Box;
+import org.zkoss.zul.DefaultTreeNode;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Menuitem;
 import org.zkoss.zul.Menupopup;
 import org.zkoss.zul.Panel;
 import org.zkoss.zul.Panelchildren;
-import org.zkoss.zul.SimpleTreeNode;
 import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Tree;
+import org.zkoss.zul.TreeModel;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Vbox;
@@ -63,7 +65,7 @@ import org.zkoss.zul.event.TreeDataListener;
  *   <li><a href="https://github.com/adempiere/adempiere/issues/2324">#2324 User Favorites will not accept entry without folder</a> 
  *
  */
-public class DPUserFavorites extends DashboardPanel implements EventListener, TreeDataListener
+public class DPUserFavorites extends DashboardPanel implements EventListener<Event>, TreeDataListener
 {
 	private static final long		serialVersionUID	= 1L;
 	private Box						bxFav;
@@ -136,7 +138,7 @@ public class DPUserFavorites extends DashboardPanel implements EventListener, Tr
 		
 		this.setTooltiptext(Msg.getMsg(Env.getCtx(), "DPUserFavorites.tooltip"));
 
-		int childCount = ((SimpleFavoriteTreeModel) tree.getModel()).getRoot().getChildCount();
+		int childCount = ((DefaultTreeNode<?>)((TreeModel<?>) tree.getModel()).getRoot()).getChildCount();
 		if (childCount == 0)  //Root node only. Add a hint to the user.
 		{
 			showHint();
@@ -184,9 +186,8 @@ public class DPUserFavorites extends DashboardPanel implements EventListener, Tr
 	private Box createFavouritesPanel()
 	{
 		bxFav = new Vbox();
-		bxFav.setWidth("100%");
-		bxFav.setHeight("100%");
-
+		ZKUpdateUtil.setWidth(bxFav, "100%");
+		ZKUpdateUtil.setHeight(bxFav, "100%");
 		bxFav.appendChild(tree);
 		return bxFav;
 	}
@@ -243,8 +244,8 @@ public class DPUserFavorites extends DashboardPanel implements EventListener, Tr
 		{
 			tree = new Tree();
 			tree.setMultiple(false);
-			tree.setWidth("100%");
-			tree.setFixedLayout(false);
+			ZKUpdateUtil.setWidth(tree, "100%");
+			tree.setSizedByContent(true);
 			tree.setStyle("border:none");
 			tree.setClass("menu-tree");
 		}
@@ -258,8 +259,8 @@ public class DPUserFavorites extends DashboardPanel implements EventListener, Tr
 
 				public void run(Treeitem treeItem)
 				{
-					SimpleTreeNode simpleTreeNode = (SimpleTreeNode) treeItem.getValue();
-					MTreeNode mtn = (MTreeNode) simpleTreeNode.getData();
+					DefaultTreeNode<Object>  DefaultTreeNode = treeItem.getValue();
+					MTreeNode mtn = (MTreeNode) DefaultTreeNode.getData();
 					if (mtn.IsCollapsible())
 						treeItem.setOpen(false);
 					else
@@ -319,7 +320,7 @@ public class DPUserFavorites extends DashboardPanel implements EventListener, Tr
 			Treerow tr = (Treerow) de.getDragged();
 			
 			// From the Main Menu. src.getValue is the ID.
-			// From the UserFavorites, src.getValue is the SimpleTreeNode
+			// From the UserFavorites, src.getValue is the DefaultTreeNode
 			Treeitem src = (Treeitem) tr.getParent();  			
 			
 			if (comp.equals(hint))
@@ -335,7 +336,7 @@ public class DPUserFavorites extends DashboardPanel implements EventListener, Tr
         	else if(comp.equals(trashCan))
         	{
         		
-    			SimpleTreeNode sourceNode = (SimpleTreeNode) src.getValue();
+    			DefaultTreeNode<Object> sourceNode = src.getValue();
 				ADTreeFavoriteOnDropListener.deleteNodeMenu(sourceNode);
         		
         	}
@@ -381,7 +382,7 @@ public class DPUserFavorites extends DashboardPanel implements EventListener, Tr
 		if (event.getType() == TreeDataEvent.INTERVAL_ADDED 
 			 || event.getType() == TreeDataEvent.INTERVAL_REMOVED)
 		{
-			int childCount = ((SimpleFavoriteTreeModel) tree.getModel()).getRoot().getChildCount();
+			int childCount = ((DefaultTreeNode<?>)((TreeModel<?>) tree.getModel()).getRoot()).getChildCount();
 			if (childCount == 0)  
 			{
 				// The tree is empty and won't occupy screen space so it can't serve as a drop target.

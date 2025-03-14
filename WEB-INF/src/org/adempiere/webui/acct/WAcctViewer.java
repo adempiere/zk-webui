@@ -45,6 +45,7 @@ import org.adempiere.webui.component.WListbox;
 import org.adempiere.webui.component.Window;
 import org.adempiere.webui.panel.InfoPanel;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.model.MAcctSchema;
 import org.compiere.model.MAcctSchemaElement;
@@ -66,10 +67,9 @@ import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
 import org.zkoss.zul.Caption;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Groupbox;
 import org.zkoss.zul.Hbox;
@@ -79,6 +79,14 @@ import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Paging;
 import org.zkoss.zul.Separator;
+import org.zkoss.zul.South;
+
+import java.io.File;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
 
 /**
  *  Account Viewer : Based on class AcctViewer
@@ -286,8 +294,9 @@ public class WAcctViewer extends Window implements EventListener
 			setClosable(true);
 			int height = SessionManager.getAppDesktop().getClientInfo().desktopHeight * 85 / 100;
     		int width = SessionManager.getAppDesktop().getClientInfo().desktopWidth * 80 / 100;
-    		setWidth(width + "px");
-    		setHeight(height + "px");
+			ZKUpdateUtil.setWidth(this, width + "px");
+			ZKUpdateUtil.setHeight(this, height + "px");
+
     		setContentStyle("overflow: auto");
 			setSizable(true);
 			setMaximizable(true);
@@ -297,8 +306,8 @@ public class WAcctViewer extends Window implements EventListener
 			setTitle(Msg.getMsg(Env.getCtx(), "InfoAccount"));
 			setAttribute(Window.MODE_KEY, Window.MODE_EMBEDDED);
 			setBorder("none");
-			setWidth("100%");
-			setHeight("100%");
+			ZKUpdateUtil.setWidth(this, "100%");
+			ZKUpdateUtil.setHeight(this, "100%");
 			setStyle("position: absolute");
 		}
 
@@ -308,7 +317,7 @@ public class WAcctViewer extends Window implements EventListener
 		// Accounting Schema
 
 		Hbox boxAcctSchema = new Hbox();
-		boxAcctSchema.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxAcctSchema, "100%");
 		boxAcctSchema.setWidths("30%, 70%");
 
 		lacctSchema.setValue(Msg.translate(Env.getCtx(), "C_AcctSchema_ID"));
@@ -322,7 +331,7 @@ public class WAcctViewer extends Window implements EventListener
 		boxAcctSchema.appendChild(selAcctSchema);
 
 		Hbox boxSelDoc = new Hbox();
-		boxSelDoc.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxSelDoc, "100%");
 		boxSelDoc.setWidths("30%, 50%, 20%");
 
 		selDocument.setLabel(Msg.getMsg(Env.getCtx(), "SelectDocument"));
@@ -342,7 +351,7 @@ public class WAcctViewer extends Window implements EventListener
 			// Posting Type
 
 		Hbox boxPostingType = new Hbox();
-		boxPostingType.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxPostingType, "100%");
 		boxPostingType.setWidths("30%, 70%");
 
 		lpostingType.setValue(Msg.translate(Env.getCtx(), "PostingType"));
@@ -357,7 +366,7 @@ public class WAcctViewer extends Window implements EventListener
 			// Date
 
 		Hbox boxDate = new Hbox();
-		boxDate.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxDate, "100%");
 		boxDate.setWidths("30%, 35%, 35%");
 
 		lDate.setValue(Msg.translate(Env.getCtx(), "DateAcct"));
@@ -372,7 +381,7 @@ public class WAcctViewer extends Window implements EventListener
 			// Organization
 
 		Hbox boxOrg = new Hbox();
-		boxOrg.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxOrg, "100%");
 		boxOrg.setWidths("30%, 70%");
 
 		lOrg.setValue(Msg.translate(Env.getCtx(), "AD_Org_ID"));
@@ -388,7 +397,7 @@ public class WAcctViewer extends Window implements EventListener
 			// Account
 
 		Hbox boxAcct = new Hbox();
-		boxAcct.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxAcct, "100%");
 		boxAcct.setWidths("30%, 70%");
 
 		lAcct.setValue(Msg.translate(Env.getCtx(), "Account_ID"));
@@ -399,63 +408,63 @@ public class WAcctViewer extends Window implements EventListener
 		boxAcct.appendChild(selAcct);
 
 		Hbox boxSel1 = new Hbox();
-		boxSel1.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxSel1, "100%");
 		boxSel1.setWidths("30%, 70%");
 
 		boxSel1.appendChild(lsel1);
 		boxSel1.appendChild(sel1);
 
 		Hbox boxSel2 = new Hbox();
-		boxSel2.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxSel2, "100%");
 		boxSel2.setWidths("30%, 70%");
 
 		boxSel2.appendChild(lsel2);
 		boxSel2.appendChild(sel2);
 
 		Hbox boxSel3 = new Hbox();
-		boxSel3.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxSel3, "100%");
 		boxSel3.setWidths("30%, 70%");
 
 		boxSel3.appendChild(lsel3);
 		boxSel3.appendChild(sel3);
 
 		Hbox boxSel4 = new Hbox();
-		boxSel4.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxSel4, "100%");
 		boxSel4.setWidths("30%, 70%");
 
 		boxSel4.appendChild(lsel4);
 		boxSel4.appendChild(sel4);
 
 		Hbox boxSel5 = new Hbox();
-		boxSel5.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxSel5, "100%");
 		boxSel5.setWidths("30%, 70%");
 
 		boxSel5.appendChild(lsel5);
 		boxSel5.appendChild(sel5);
 
 		Hbox boxSel6 = new Hbox();
-		boxSel6.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxSel6, "100%");
 		boxSel6.setWidths("30%, 70%");
 
 		boxSel6.appendChild(lsel6);
 		boxSel6.appendChild(sel6);
 
 		Hbox boxSel7 = new Hbox();
-		boxSel7.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxSel7, "100%");
 		boxSel7.setWidths("30%, 70%");
 
 		boxSel7.appendChild(lsel7);
 		boxSel7.appendChild(sel7);
 
 		Hbox boxSel8 = new Hbox();
-		boxSel8.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxSel8, "100%");
 		boxSel8.setWidths("30%, 70%");
 
 		boxSel8.appendChild(lsel8);
 		boxSel8.appendChild(sel8);
 
 		Hbox boxSel9 = new Hbox();
-		boxSel9.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxSel9, "100%");
 		boxSel9.setWidths("30%, 70%");
 
 		boxSel9.appendChild(lsel9);
@@ -464,7 +473,7 @@ public class WAcctViewer extends Window implements EventListener
 
 
 		Hbox boxSel10 = new Hbox();
-		boxSel10.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxSel10, "100%");
 		boxSel10.setWidths("30%, 70%");
 
 		boxSel10.appendChild(lsel10);
@@ -472,7 +481,7 @@ public class WAcctViewer extends Window implements EventListener
 
 
 		Hbox boxSel11 = new Hbox();
-		boxSel11.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxSel11, "100%");
 		boxSel11.setWidths("30%, 70%");
 
 		boxSel11.appendChild(lsel11);
@@ -480,20 +489,20 @@ public class WAcctViewer extends Window implements EventListener
 
 
 		Hbox boxSel12 = new Hbox();
-		boxSel12.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxSel12, "100%");
 		boxSel12.setWidths("30%, 70%");
 
 		boxSel12.appendChild(lsel12);
 		boxSel12.appendChild(sel12);
 
 		Hbox boxSel13 = new Hbox();
-		boxSel13.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxSel13, "100%");
 		boxSel13.setWidths("30%, 70%");
 
 		boxSel13.appendChild(lsel13);
 		boxSel13.appendChild(sel13);
 
-		selectionPanel.setWidth("100%");
+		ZKUpdateUtil.setWidth(selectionPanel, "100%");
 		selectionPanel.appendChild(boxAcctSchema);
 		selectionPanel.appendChild(boxSelDoc);
 		selectionPanel.appendChild(boxPostingType);
@@ -532,7 +541,7 @@ public class WAcctViewer extends Window implements EventListener
 		displayQty.addEventListener(Events.ON_CHECK, this);
 
 		Hbox boxSortDisplay = new Hbox();
-		boxSortDisplay.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxSortDisplay, "100%");
 		boxSortDisplay.setWidths("70%, 30%");
 
 		lSort.setValue(Util.cleanAmp(Msg.getMsg(Env.getCtx(), "SortBy")));
@@ -542,7 +551,7 @@ public class WAcctViewer extends Window implements EventListener
 		boxSortDisplay.appendChild(lGroup);
 
 		Hbox boxSort1 = new Hbox();
-		boxSort1.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxSort1, "100%");
 		boxSort1.setWidths("70%, 30%");
 
 		sortBy1.setMold("select");
@@ -552,7 +561,7 @@ public class WAcctViewer extends Window implements EventListener
 		boxSort1.appendChild(group1);
 
 		Hbox boxSort2 = new Hbox();
-		boxSort2.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxSort2, "100%");
 		boxSort2.setWidths("70%, 30%");
 
 		sortBy2.setMold("select");
@@ -562,7 +571,7 @@ public class WAcctViewer extends Window implements EventListener
 		boxSort2.appendChild(group2);
 
 		Hbox boxSort3 = new Hbox();
-		boxSort3.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxSort3, "100%");
 		boxSort3.setWidths("70%, 30%");
 
 		sortBy3.setMold("select");
@@ -572,7 +581,7 @@ public class WAcctViewer extends Window implements EventListener
 		boxSort3.appendChild(group3);
 
 		Hbox boxSort4 = new Hbox();
-		boxSort4.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxSort4, "100%");
 		boxSort4.setWidths("70%, 30%");
 
 		sortBy4.setMold("select");
@@ -581,7 +590,7 @@ public class WAcctViewer extends Window implements EventListener
 		boxSort4.appendChild(sortBy4);
 		boxSort4.appendChild(group4);
 
-		displayPanel.setWidth("100%");
+		ZKUpdateUtil.setWidth(displayPanel, "100%");
 		displayPanel.appendChild(displayDocumentInfo);
 		displayPanel.appendChild(displaySourceAmt);
 		displayPanel.appendChild(displayQty);
@@ -604,8 +613,7 @@ public class WAcctViewer extends Window implements EventListener
 		groupSelection.appendChild(selectionPanel);
 
 		Hbox boxQueryPanel = new Hbox();
-
-		boxQueryPanel.setWidth("98%");
+		ZKUpdateUtil.setWidth(boxQueryPanel, "98%");
 		boxQueryPanel.setWidths("63%,1%,36%");
 
 		boxQueryPanel.appendChild(groupSelection);
@@ -641,8 +649,8 @@ public class WAcctViewer extends Window implements EventListener
 		bPrint.setImage("/images/Print16.png");
 		bPrint.setTooltiptext(Util.cleanAmp(Msg.getMsg(Env.getCtx(), "Print")));
 		bPrint.addEventListener(Events.ON_CLICK, this);
-		
-		southPanel.setWidth("100%");
+
+		ZKUpdateUtil.setWidth(southPanel, "100%");
 		southPanel.setWidths("2%, 12%, 82%, 2% , 2%, 2%");
 		southPanel.appendChild(bRePost);
 		southPanel.appendChild(forcePost);
@@ -656,16 +664,17 @@ public class WAcctViewer extends Window implements EventListener
 
 		resultPanel = new Borderlayout();
 		resultPanel.setStyle("position: absolute");
-		resultPanel.setWidth("99%");
-		resultPanel.setHeight("99%");
+		ZKUpdateUtil.setWidth(resultPanel, "99%");
+		ZKUpdateUtil.setHeight(resultPanel, "99%");
 		result.appendChild(resultPanel);
 
 		Center resultCenter = new Center();
-		resultCenter.setFlex(true);
+		ZKUpdateUtil.setVflex(resultCenter, "flex");
 		resultPanel.appendChild(resultCenter);
-		table.setWidth("96%");
-		table.setHeight("98%");
-		table.setVflex(true);
+		ZKUpdateUtil.setVflex(table, true);
+		table.setSizedByContent(false);
+		ZKUpdateUtil.setWidth(table, "96%");
+		ZKUpdateUtil.setHeight(table, "98%");
 		table.setStyle("overflow: auto; position: absolute;");
 		resultCenter.appendChild(table);
 
@@ -673,8 +682,8 @@ public class WAcctViewer extends Window implements EventListener
 		resultPanel.appendChild(pagingPanel);
 		pagingPanel.appendChild(paging);
 
-		result.setWidth("100%");
-		result.setHeight("100%");
+		ZKUpdateUtil.setWidth(result, "97%");
+		ZKUpdateUtil.setHeight(result, "96%");
 		result.setStyle("position: relative");
 
 		paging.addEventListener("onPaging", this);
@@ -682,8 +691,7 @@ public class WAcctViewer extends Window implements EventListener
 		paging.setDetailed(true);
 
 		// Query Tab
-
-		query.setWidth("100%");
+		ZKUpdateUtil.setWidth(query, "100%");
 		query.appendChild(boxQueryPanel);
 
 		// Tabbox
@@ -697,30 +705,31 @@ public class WAcctViewer extends Window implements EventListener
 		tabs.appendChild(tabQuery);
 		tabs.appendChild(tabResult);
 
-		tabpanels.setWidth("100%");
+		ZKUpdateUtil.setWidth(tabpanels, "100%");
 		tabpanels.appendChild(query);
 		tabpanels.appendChild(result);
 
-		tabbedPane.setWidth("100%");
-		tabbedPane.setHeight("100%");
+		ZKUpdateUtil.setWidth(tabbedPane, "100%");
+		ZKUpdateUtil.setHeight(tabbedPane, "100%");
 		tabbedPane.appendChild(tabs);
 		tabbedPane.appendChild(tabpanels);
 
 		Borderlayout layout = new Borderlayout();
 		layout.setParent(this);
-		layout.setHeight("100%");
-		layout.setWidth("100%");
+		ZKUpdateUtil.setWidth(layout, "100%");
+		ZKUpdateUtil.setHeight(layout, "100%");
 		layout.setStyle("background-color: transparent");
 
 		Center center = new Center();
 		center.setParent(layout);
-		center.setFlex(true);
+		ZKUpdateUtil.setVflex(center, "flex");
+
 		center.setStyle("background-color: transparent");
 		tabbedPane.setParent(center);
 
 		South south = new South();
 		south.setParent(layout);
-		south.setFlex(true);
+		ZKUpdateUtil.setVflex(south, "flex");
 		south.setStyle("background-color: transparent");
 		southPanel.setParent(south);
 

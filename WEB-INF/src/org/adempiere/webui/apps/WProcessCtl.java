@@ -17,6 +17,7 @@
 package org.adempiere.webui.apps;
 
 import org.adempiere.webui.component.Window;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.apps.ProcessController;
 import org.compiere.apps.ProcessCtl;
 import org.compiere.model.MPInstance;
@@ -95,7 +96,7 @@ public class WProcessCtl {
 		ProcessModalDialog processModalDialog = new ProcessModalDialog(asyncProcess, windowNo, pi);
 		if (processModalDialog.isValidDialog())
 		{
-			processModalDialog.setWidth("500px");
+			ZKUpdateUtil.setWidth(processModalDialog, "500px");
 			processModalDialog.setVisible(true);
 			processModalDialog.setPosition("center");
 			processModalDialog.setAttribute(Window.MODE_KEY, Window.MODE_MODAL);

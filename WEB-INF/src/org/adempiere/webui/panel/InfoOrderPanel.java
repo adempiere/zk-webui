@@ -17,14 +17,7 @@
 
 package org.adempiere.webui.panel;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-
+import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Checkbox;
 import org.adempiere.webui.component.Datebox;
@@ -34,7 +27,7 @@ import org.adempiere.webui.component.Row;
 import org.adempiere.webui.component.Rows;
 import org.adempiere.webui.component.Textbox;
 import org.adempiere.webui.editor.WSearchEditor;
-import org.adempiere.exceptions.ValueChangeListener;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.minigrid.IDColumn;
 import org.compiere.model.MColumn;
@@ -50,6 +43,15 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Hbox;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Search Order info and return selection
@@ -156,12 +158,12 @@ public class InfoOrderPanel extends InfoPanel implements ValueChangeListener
         fPOReference.setAttribute("zk_component_ID", "Lookup_Criteria_POReference");
 		// 	Format the dates and number boxes
 		fDateFrom = new Datebox();
-		fDateFrom.setWidth("97px");
+		ZKUpdateUtil.setWidth(fDateFrom, "97px");
 		fDateFrom.setAttribute("zk_component_ID", "Lookup_Criteria_DateFrom");
 		fDateFrom.addEventListener(Events.ON_CHANGE, this);
 		//
 		fDateTo = new Datebox();
-		fDateTo.setWidth("97px");
+		ZKUpdateUtil.setWidth(fDateTo, "97px");
 		fDateTo.setAttribute("zk_component_ID", "Lookup_Criteria_DateTo");
 		fDateTo.addEventListener(Events.ON_CHANGE, this);
 		//
@@ -170,12 +172,12 @@ public class InfoOrderPanel extends InfoPanel implements ValueChangeListener
 		fDateTo.setFormat(dateFormat.toPattern());
 		//
 		fAmtFrom = new NumberBox(false);
-		fAmtFrom.getDecimalbox().setWidth("90px");
+		ZKUpdateUtil.setWidth(fAmtFrom.getDecimalbox(), "90px");
 		fAmtFrom.setAttribute("zk_component_ID", "Lookup_Criteria_AmtFrom");
 		fAmtFrom.addEventListener(Events.ON_CHANGE, this);
 		//
 		fAmtTo = new NumberBox(false);
-		fAmtTo.getDecimalbox().setWidth("90px");
+		ZKUpdateUtil.setWidth(fAmtTo.getDecimalbox(), "90px");
 		fAmtTo.setAttribute("zk_component_ID", "Lookup_Criteria_AmtTo");
 		fAmtTo.addEventListener(Events.ON_CHANGE, this);		
 		//
@@ -210,14 +212,14 @@ public class InfoOrderPanel extends InfoPanel implements ValueChangeListener
     public void statInit()
     {
     	initComponents();
-    	
-    	fDocumentNo.setWidth("100%");
-    	fDescription.setWidth("100%");
-    	fPOReference.setWidth("100%");
-    	fDateFrom.setWidth("165px");
-		fDateTo.setWidth("165px");
-		fAmtFrom.getDecimalbox().setWidth("155px");
-		fAmtTo.getDecimalbox().setWidth("155px");
+
+		ZKUpdateUtil.setWidth(fDocumentNo, "100%");
+		ZKUpdateUtil.setWidth(fDescription, "100%");
+		ZKUpdateUtil.setWidth(fPOReference, "100%");
+		ZKUpdateUtil.setWidth(fDateFrom, "165px");
+		ZKUpdateUtil.setWidth(fDateTo, "165px");
+		ZKUpdateUtil.setWidth(fAmtFrom.getDecimalbox() ,"155px");
+		ZKUpdateUtil.setWidth(fAmtTo.getDecimalbox(), "155px");
 		
 		Rows rows = new Rows();
 		
@@ -572,4 +574,8 @@ public class InfoOrderPanel extends InfoPanel implements ValueChangeListener
 		return;
 	}
 
+	@Override
+	public String getSortDirection(Comparator comparator) {
+		return "natural";
+	}
 }

@@ -17,10 +17,10 @@
 
 package org.adempiere.webui.panel;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-
+import org.adempiere.core.domains.models.I_A_Asset;
+import org.adempiere.core.domains.models.I_C_BPartner;
+import org.adempiere.core.domains.models.I_M_Product;
+import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Label;
 import org.adempiere.webui.component.Row;
@@ -28,10 +28,7 @@ import org.adempiere.webui.component.Rows;
 import org.adempiere.webui.component.Textbox;
 import org.adempiere.webui.editor.WEditor;
 import org.adempiere.webui.editor.WSearchEditor;
-import org.adempiere.core.domains.models.I_A_Asset;
-import org.adempiere.core.domains.models.I_C_BPartner;
-import org.adempiere.core.domains.models.I_M_Product;
-import org.adempiere.exceptions.ValueChangeListener;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.minigrid.ColumnInfo;
 import org.compiere.minigrid.IDColumn;
 import org.compiere.model.MColumn;
@@ -42,6 +39,11 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Comparator;
 
 /**
 * Based on InfoPayment written by Jorg Janke
@@ -58,7 +60,7 @@ import org.zkoss.zk.ui.event.Events;
  * 	<li>https://adempiere.atlassian.net/browse/ADEMPIERE-72
 */
 
-public class InfoAssetPanel extends InfoPanel implements ValueChangeListener, EventListener
+public class InfoAssetPanel extends InfoPanel implements ValueChangeListener, EventListener<org.zkoss.zk.ui.event.Event>
 {
 	/**
 	 * 
@@ -152,9 +154,9 @@ public class InfoAssetPanel extends InfoPanel implements ValueChangeListener, Ev
 	
 	private void statInit()
 	{
-		fieldValue.setWidth("100%");
-		fieldName.setWidth("100%");
-		
+		ZKUpdateUtil.setWidth(fieldValue, "100%");
+		ZKUpdateUtil.setWidth(fieldName, "100%");
+
 		labelValue.setValue(Msg.getMsg(Env.getCtx(), "Value"));
 		fieldValue.addEventListener(Events.ON_CHANGE, this);
 		fieldValue.setAttribute("zk_component_ID", "Lookup_Criteria_fieldValue");
@@ -362,4 +364,8 @@ public class InfoAssetPanel extends InfoPanel implements ValueChangeListener, Ev
 		return true;
 	} // hasZoom
 
+	@Override
+	public String getSortDirection(Comparator comparator) {
+		return "natural";
+	}
 }

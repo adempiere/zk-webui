@@ -12,28 +12,18 @@
  *****************************************************************************/
 package org.adempiere.webui.panel;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
-
 import org.adempiere.webui.apps.AEnv;
-import org.adempiere.webui.component.ConfirmPanel;
 import org.adempiere.webui.component.Datebox;
 import org.adempiere.webui.component.Grid;
 import org.adempiere.webui.component.Label;
-import org.adempiere.webui.component.ListItem;
 import org.adempiere.webui.component.Listbox;
-import org.adempiere.webui.component.NumberBox;
 import org.adempiere.webui.component.Row;
 import org.adempiere.webui.component.Rows;
 import org.adempiere.webui.component.Window;
+import org.adempiere.webui.component.*;
 import org.adempiere.webui.editor.WNumberEditor;
 import org.adempiere.webui.editor.WStringEditor;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.MAttribute;
 import org.compiere.model.MAttributeSet;
 import org.compiere.model.MLot;
@@ -47,12 +37,21 @@ import org.compiere.util.Msg;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Separator;
+import org.zkoss.zul.South;
 import org.zkoss.zul.Textbox;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 /**
  * Search by Product Attribute.
@@ -62,7 +61,7 @@ import org.zkoss.zul.Textbox;
  * @author Michael McKay, ADEMPIERE-72 VLookup and Info Window improvements
  * 	<li>https://adempiere.atlassian.net/browse/ADEMPIERE-72
  */
-public class InfoPAttributePanel extends Window implements EventListener
+public class InfoPAttributePanel extends Window implements EventListener<Event>
 {
 	/**
 	 * 
@@ -132,14 +131,13 @@ public class InfoPAttributePanel extends Window implements EventListener
 	 */
 	private void jbInit() throws Exception
 	{
-
-		setWidth("410px");
-		setHeight("410px");
+		ZKUpdateUtil.setWidth(this, "410px");
+		ZKUpdateUtil.setHeight(this, "410px");
 		
 		Borderlayout layout = new Borderlayout();
 		Center center = new Center();
 		layout.appendChild(center);
-		center.setFlex(true);
+		ZKUpdateUtil.setVflex(center, "flex");
 		center.setAutoscroll(true);
 		center.setStyle("border: none");
 		this.appendChild(layout);
@@ -148,7 +146,7 @@ public class InfoPAttributePanel extends Window implements EventListener
 		layout.appendChild(south);
 
 		Grid grid = new Grid();
-		grid.setWidth("400px");
+		ZKUpdateUtil.setWidth(grid, "400px");
 		grid.setStyle("margin:0; padding:0;");
 		grid.makeNoStrip();
 		grid.setOddRowSclass("even");
@@ -184,7 +182,7 @@ public class InfoPAttributePanel extends Window implements EventListener
 		guaranteeDateSelection.setRows(0);
 		guaranteeDateSelection.setMultiple(false);
 		guaranteeDateSelection.setMold("select");
-		guaranteeDateSelection.setWidth("150px");
+		ZKUpdateUtil.setWidth(guaranteeDateSelection, "150px");
 		guaranteeDateSelection.appendItem(s + " <", s + " <");
 		guaranteeDateSelection.appendItem(s + " =", s + " =");
 		guaranteeDateSelection.appendItem(s + " >", s + " >");
@@ -202,7 +200,7 @@ public class InfoPAttributePanel extends Window implements EventListener
 			div.appendChild(serNoLabel);
 			row.appendChild(div);
 			row.appendChild(serNoField.getComponent());
-			serNoField.getComponent().setWidth("150px");
+			ZKUpdateUtil.setWidth(serNoField.getComponent(), "150px");
 			serNoField.getComponent().setAttribute("zk_component_ID", "InfoPAttributePanel_serNoField");
 		}
 		
@@ -214,7 +212,7 @@ public class InfoPAttributePanel extends Window implements EventListener
 			div.appendChild(lotLabel);
 			row.appendChild(div);
 			row.appendChild(lotField.getComponent());
-			lotField.getComponent().setWidth("150px");
+			ZKUpdateUtil.setWidth(lotField.getComponent(), "150px");
 			lotField.getComponent().setAttribute("zk_component_ID", "InfoPAttributePanel_lotField");
 
 			row = new Row();
@@ -332,7 +330,7 @@ public class InfoPAttributePanel extends Window implements EventListener
 					((Listbox) field).setRows(0);
 					((Listbox) field).setMultiple(false);
 					((Listbox) field).setMold("select");
-					((Listbox) field).setWidth("150px");
+					ZKUpdateUtil.setWidth((Listbox) field, "150px");
 					KeyNamePair[] knp = getAttributeList(attribute_ID);
 					for(int i = 0; i < knp.length; i++)
 						((Listbox) field).appendItem(knp[i].getName(), knp[i]);
@@ -340,12 +338,12 @@ public class InfoPAttributePanel extends Window implements EventListener
 				else if (MAttribute.ATTRIBUTEVALUETYPE_Number.equals(attributeValueType))
 				{
 					field = new WNumberEditor(name, false, false, true, DisplayType.Number, name).getComponent();
-					((NumberBox) field).setWidth("150px");
+					ZKUpdateUtil.setWidth((NumberBox) field, "150px");
 				}
 				else
 				{
 					field = new WStringEditor(name, false, false, true, 10, 40, null, null).getComponent();
-					((Textbox) field).setWidth("150px");
+					ZKUpdateUtil.setWidth((Textbox) field, "150px");
 				}
 				row.appendChild(field);
 				//
@@ -362,7 +360,7 @@ public class InfoPAttributePanel extends Window implements EventListener
 				if (MAttribute.ATTRIBUTEVALUETYPE_Number.equals(attributeValueType))
 				{
 					fieldTo = new WNumberEditor(name, false, false, true, DisplayType.Number, name).getComponent();
-					((NumberBox) fieldTo).setWidth("150px");
+					ZKUpdateUtil.setWidth((NumberBox) fieldTo, "150px");
 					row = new Row();
 					rows.appendChild(row);
 					div = new Div();
@@ -472,7 +470,7 @@ public class InfoPAttributePanel extends Window implements EventListener
 		lotSelection.setRows(0);
 		lotSelection.setMultiple(false);
 		lotSelection.setMold("select");
-		lotSelection.setWidth("150px");
+		ZKUpdateUtil.setWidth(lotSelection, "150px");
 		lotSelection.setAttribute("zk_component_ID", "InfoPAttributePanel_lotSelection");
 		List<KeyNamePair> keyNamePairLotList = MLot.getByAttributeSetId(Env.getCtx(), attributeSetId, null)
 				.stream()

@@ -17,14 +17,6 @@
 
 package org.adempiere.webui.panel;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.logging.Level;
-
 import org.adempiere.webui.component.Label;
 import org.adempiere.webui.component.Row;
 import org.adempiere.webui.component.Rows;
@@ -40,6 +32,15 @@ import org.compiere.util.Util;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.logging.Level;
+
 /**
  * Zk Port
  * @author Elaine
@@ -48,7 +49,7 @@ import org.zkoss.zk.ui.event.Events;
  * @author Michael McKay, ADEMPIERE-72 VLookup and Info Window improvements
  * 	<li>https://adempiere.atlassian.net/browse/ADEMPIERE-72
  */
-public class InfoGeneralPanel extends InfoPanel implements EventListener
+public class InfoGeneralPanel extends InfoPanel implements EventListener<org.zkoss.zk.ui.event.Event>
 {
 	/**
 	 * 
@@ -502,5 +503,10 @@ public class InfoGeneralPanel extends InfoPanel implements EventListener
 		txt3.set_oldValue();
 		txt4.set_oldValue();
 		return;
+	}
+
+	@Override
+	public String getSortDirection(Comparator comparator) {
+		return "natural";
 	}
 }

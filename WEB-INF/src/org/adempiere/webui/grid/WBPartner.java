@@ -17,8 +17,8 @@
 
 package org.adempiere.webui.grid;
 
-import java.util.logging.Level;
-
+import org.adempiere.exceptions.ValueChangeEvent;
+import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.component.ConfirmPanel;
 import org.adempiere.webui.component.Label;
 import org.adempiere.webui.component.ListItem;
@@ -27,8 +27,7 @@ import org.adempiere.webui.component.Textbox;
 import org.adempiere.webui.component.VerticalBox;
 import org.adempiere.webui.component.Window;
 import org.adempiere.webui.editor.WLocationEditor;
-import org.adempiere.exceptions.ValueChangeEvent;
-import org.adempiere.exceptions.ValueChangeListener;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
@@ -48,6 +47,8 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Separator;
+
+import java.util.logging.Level;
 
 /**
  * Business Partner : Based on VBPartner
@@ -140,7 +141,7 @@ public class WBPartner extends Window implements EventListener, ValueChangeListe
 	
 	void jbInit() throws Exception
 	{
-		this.setWidth("350px");
+		ZKUpdateUtil.setWidth(this, "350px");
 		this.setBorder("normal");
 		this.setClosable(true);
 		this.setTitle("Business Partner");
@@ -247,9 +248,8 @@ public class WBPartner extends Window implements EventListener, ValueChangeListe
 	
 	private Label createLine (Component field, String title, boolean addSpace)
 	{
-		Hbox hbox = new Hbox(); 
-		
-		hbox.setWidth("100%");
+		Hbox hbox = new Hbox();
+		ZKUpdateUtil.setWidth(hbox, "100%");
 		hbox.setWidths("30%, 70%");
 		
 		Label label = new Label(Msg.translate(Env.getCtx(), title));

@@ -17,20 +17,13 @@
 
 package org.adempiere.webui.editor;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-
+import org.adempiere.exceptions.ValueChangeEvent;
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.EditorBox;
 import org.adempiere.webui.event.ContextMenuEvent;
 import org.adempiere.webui.event.ContextMenuListener;
-import org.adempiere.exceptions.ValueChangeEvent;
-import org.adempiere.webui.window.WRecordInfo;
 import org.adempiere.webui.window.WLocatorDialog;
+import org.adempiere.webui.window.WRecordInfo;
 import org.compiere.model.GridField;
 import org.compiere.model.MLocator;
 import org.compiere.model.MLocatorLookup;
@@ -46,6 +39,13 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+
 /**
  * Locator Editor : Based on VLocator
  * 
@@ -56,7 +56,7 @@ import org.zkoss.zk.ui.event.Events;
  *		@see https://github.com/adempiere/adempiere/issues/146
  */
 
-public class WLocatorEditor extends WEditor implements EventListener, PropertyChangeListener, ContextMenuListener, IZoomableEditor
+public class WLocatorEditor extends WEditor implements EventListener<Event>, PropertyChangeListener, ContextMenuListener, IZoomableEditor
 {
 	private static final String[] LISTENER_EVENTS = {Events.ON_CLICK};
     
@@ -122,7 +122,7 @@ public class WLocatorEditor extends WEditor implements EventListener, PropertyCh
     		{
     			WRecordInfo.addMenu(popupMenu);
     		}
-        	getComponent().setContext(popupMenu.getId());
+        	getComponent().setContext(popupMenu);
         }			
 	}
 

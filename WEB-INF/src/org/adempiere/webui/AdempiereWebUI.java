@@ -18,12 +18,8 @@
 package org.adempiere.webui;
 
 import org.adempiere.webui.apps.AEnv;
-import org.adempiere.webui.component.DrillCommand;
-import org.adempiere.webui.component.TokenCommand;
-import org.adempiere.webui.component.ZoomCommand;
 import org.adempiere.webui.desktop.DefaultDesktop;
 import org.adempiere.webui.desktop.IDesktop;
-import org.adempiere.webui.event.TokenEvent;
 import org.adempiere.webui.session.ServerContext;
 import org.adempiere.webui.session.SessionContextListener;
 import org.adempiere.webui.session.SessionManager;
@@ -40,7 +36,6 @@ import org.compiere.util.Env;
 import org.compiere.util.Language;
 import org.spin.authentication.services.OpenIDUtil;
 import org.zkforge.keylistener.Keylistener;
-import org.zkoss.zk.au.Command;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.Executions;
@@ -64,6 +59,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Properties;
@@ -80,14 +76,14 @@ import java.util.concurrent.atomic.AtomicReference;
  * @see  [ 1258 ]The change role throw exception  </a>
  *         <a href="https://github.com/adempiere/adempiere/issues/1258">
  */
-public class AdempiereWebUI extends Window implements EventListener, IWebClient
+public class AdempiereWebUI extends Window implements EventListener<Event>, IWebClient
 {
 
 	private static final long serialVersionUID = 3744725245132180915L;
 
 	public static final String APP_NAME = "ADempiere";
 
-    public static final String UID          = "3.5";
+    public static final String UID          = "3.9.4";
 
     private WLogin             loginDesktop;
 
@@ -117,10 +113,10 @@ public class AdempiereWebUI extends Window implements EventListener, IWebClient
 		langSession = Env.getContext(Env.getCtx(), Env.LANGUAGE);
 		SessionManager.setApplication(httpSession.getId(), this);
 		int userId = Env.getAD_User_ID(Env.getCtx());
-		
+
 		if (externalAuthentication())
 			userId = Env.getAD_User_ID(Env.getCtx());
-		
+
 		if (userId > 0 && !SessionManager.existsExecutionCarryOver(httpSession.getId())) {
 			onChangeRole(userId);
 			return;
@@ -135,7 +131,11 @@ public class AdempiereWebUI extends Window implements EventListener, IWebClient
         {
             loginCompleted();
         }
-    }
+
+		Executions.getCurrent().getDesktop().addListener(new org.adempiere.webui.component.ZoomCommand());
+		Executions.getCurrent().getDesktop().addListener(new org.adempiere.webui.component.DrillCommand());
+		Executions.getCurrent().getDesktop().addListener(new org.adempiere.webui.component.TokenCommand());
+	}
 
     public void onOk()
     {
@@ -147,6 +147,7 @@ public class AdempiereWebUI extends Window implements EventListener, IWebClient
 
 	private void onChangeRole(int userId)
 	{
+		clearKeyListener();
 		loginDesktop = new WLogin();
 		loginDesktop.createPart(this.getPage());
 		loginDesktop.setTypedPassword(SessionManager.getUserAuthentication(getId()));
@@ -387,14 +388,6 @@ public class AdempiereWebUI extends Window implements EventListener, IWebClient
 
 	}
 
-	//global command
-	static {
-		new ZoomCommand("onZoom", Command.IGNORE_OLD_EQUIV);
-		new DrillCommand("onDrillAcross", Command.IGNORE_OLD_EQUIV);
-		new DrillCommand("onDrillDown", Command.IGNORE_OLD_EQUIV);
-		new TokenCommand(TokenEvent.ON_USER_TOKEN, Command.IGNORE_OLD_EQUIV);
-	}
-
 	@Override
 	public void changeRole(MUser user)
 	{
@@ -420,34 +413,28 @@ public class AdempiereWebUI extends Window implements EventListener, IWebClient
 		Executions.sendRedirect("index.zul");
 	}
 
+	@Override
+	public List getChildren() {
+		return super.getChildren();
+	}
+
 	public void changeRole(Locale locale, Properties properties)
 	{
 		loginDesktop.changeRole(locale, properties);
 	}
 
+	public void clearKeyListener(){
+		if (keyListener != null) {
+			keyListener.detach();
+			keyListener = null;
+		}
+	}
+
 	public void clearDesktop(){
-		//Reset the password
-		keyListener = null;
+		clearKeyListener();
 		clientInfo = null;
 		loginDesktop = null;
 		applicationDesktop = null;
-
-		//stop key listener
-		/*if (keyListener != null) {
-			//keyListener.detach();
-			keyListener = null;
-		}
-
-		if (clientInfo != null) {
-			clientInfo = null;
-		}
-
-		if (loginDesktop != null){
-			loginDesktop.cleanup();
-			loginDesktop = null;
-		}
-
-		desktop = null;*/
 	}
 	
 	/**

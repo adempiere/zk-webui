@@ -14,13 +14,11 @@
 
 package org.adempiere.webui;
 
-import java.util.Locale;
-import java.util.Properties;
-
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.part.AbstractUIPart;
 import org.adempiere.webui.theme.ITheme;
 import org.adempiere.webui.theme.ThemeManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.LoginWindow;
 import org.compiere.model.MUser;
 import org.zkoss.zhtml.Text;
@@ -28,15 +26,18 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.UiException;
 import org.zkoss.zk.ui.metainfo.PageDefinition;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.East;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
-import org.zkoss.zkex.zul.West;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
+import org.zkoss.zul.East;
+import org.zkoss.zul.North;
+import org.zkoss.zul.South;
 import org.zkoss.zul.Vbox;
+import org.zkoss.zul.West;
 import org.zkoss.zul.Window;
+
+import java.util.Locale;
+import java.util.Properties;
 
 /**
  *
@@ -67,14 +68,14 @@ public class WLogin extends AbstractUIPart
         Center center = new Center();
         center.setParent(layout);
         center.setBorder("none");
-        center.setFlex(true);
+		ZKUpdateUtil.setVflex(center, "flex");
         center.setAutoscroll(true);
         center.setStyle("border: none; background-color: transparent;");
 
         Vbox vb = new Vbox();
         vb.setParent(center);
-        vb.setHeight("100%");
-        vb.setWidth("100%");
+		ZKUpdateUtil.setHeight(vb, "100%");
+		ZKUpdateUtil.setWidth(vb, "100%");
         vb.setPack("center");
         vb.setAlign("center");
         vb.setStyle("background-color: transparent;");
@@ -92,7 +93,7 @@ public class WLogin extends AbstractUIPart
         	div.appendChild(new Text(msg));
         	browserWarningWindow.appendChild(div);
         	browserWarningWindow.setPosition("top,right");
-        	browserWarningWindow.setWidth("550px");
+			ZKUpdateUtil.setWidth(browserWarningWindow, "550px");
         	browserWarningWindow.setPage(page);
         	browserWarningWindow.doOverlapped();
         }

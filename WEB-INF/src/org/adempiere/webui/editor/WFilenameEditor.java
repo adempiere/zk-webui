@@ -14,21 +14,21 @@
 package org.adempiere.webui.editor;
 
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.logging.Level;
-
-import org.adempiere.webui.component.FilenameBox;
 import org.adempiere.exceptions.ValueChangeEvent;
+import org.adempiere.webui.component.FilenameBox;
 import org.compiere.model.GridField;
 import org.compiere.util.CLogger;
 import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Fileupload;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
 
 /**
  *
@@ -124,18 +124,10 @@ public class WFilenameEditor extends WEditor
 		//  Show File Open Dialog
 		Media file = null;
 
-		try
-		{
-			file = Fileupload.get(true);
+		file = Fileupload.get(true);
 
-			if (file == null)
+		if (file == null)
 				return;
-		}
-		catch (InterruptedException e)
-		{
-			log.warning(e.getLocalizedMessage());
-			return;
-		}
 
 		// String fileName = System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") + ;
 		// File tempFile = new File(fileName);

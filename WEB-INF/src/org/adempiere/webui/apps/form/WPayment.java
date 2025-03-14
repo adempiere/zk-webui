@@ -16,13 +16,6 @@
  *****************************************************************************/
 package org.adempiere.webui.apps.form;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.logging.Level;
-
 import org.adempiere.controller.PaymentFormController;
 import org.adempiere.controller.ed.CPaymentEditor;
 import org.adempiere.webui.LayoutUtils;
@@ -43,6 +36,7 @@ import org.adempiere.webui.component.Window;
 import org.adempiere.webui.editor.WButtonEditor;
 import org.adempiere.webui.editor.WDateEditor;
 import org.adempiere.webui.editor.WNumberEditor;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.model.GridTab;
 import org.compiere.util.CLogger;
@@ -59,11 +53,18 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.KeyEvent;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
+import org.zkoss.zul.North;
+import org.zkoss.zul.South;
 import org.zkoss.zul.Space;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.logging.Level;
 
 /**
  *	Display (and process) Payment Options.
@@ -215,7 +216,7 @@ public class WPayment extends Window
 	private BusyDialog progressWindow;
 
 	private Keylistener keyListener;
-	
+
 	private static final int KEYBOARD_KEY_RETURN = 13;
 	
 
@@ -229,8 +230,8 @@ public class WPayment extends Window
 		this.appendChild(mainPanel);
 		mainPanel.appendChild(mainLayout);
 		mainPanel.setStyle("width: 100%; height: 100%; padding: 0; margin: 0");
-		mainLayout.setHeight("100%");
-		mainLayout.setWidth("100%");
+		ZKUpdateUtil.setWidth(mainLayout, "100%");
+		ZKUpdateUtil.setHeight(mainLayout, "100%");
 		Center center = new Center();
 		mainLayout.appendChild(center);
 		center.appendChild(centerPanel);
@@ -256,9 +257,9 @@ public class WPayment extends Window
 		
 		//      CreditCard
 		kPanel.appendChild(kLayout);
-		kNumberField.setWidth("160pt");
-		kExpField.setWidth("40pt");
-		kApprovalField.setWidth("120pt");
+		ZKUpdateUtil.setWidth(kNumberField, "160pt");
+		ZKUpdateUtil.setWidth(kExpField, "40pt");
+		ZKUpdateUtil.setWidth(kApprovalField, "120pt");
 		kTypeLabel.setText(Msg.translate(Env.getCtx(), "CreditCardType"));
 		kNameLabel.setText(Util.cleanAmp(Msg.translate(Env.getCtx(), "Name")));
 		kNumberLabel.setText(Msg.translate(Env.getCtx(), "CreditCardNumber"));
@@ -353,8 +354,8 @@ public class WPayment extends Window
 		sCheckNumberLabel.setText(Msg.translate(Env.getCtx(), "CheckNo"));
 		sCheckNumberField.setCols(8);
 		sCurrencyLabel.setText(Msg.translate(Env.getCtx(), "C_Currency_ID"));
-		sAccountNumberField.setWidth("100pt");
-		sRoutingField.setWidth("70pt");
+		ZKUpdateUtil.setWidth(sAccountNumberField, "100pt");
+		ZKUpdateUtil.setWidth(sRoutingField, "70pt");
 		sStatus.setText(" ");
 		sOnline.setLabel(Msg.getMsg(Env.getCtx(), "Online"));
 		sOnline.addActionListener(this);
@@ -743,28 +744,28 @@ public class WPayment extends Window
 		}
 		if (controller.isOnlyChangePaymentRule() || s.equals("pPanel"))
 		{
-			this.setWidth("420px");
-			this.setHeight("150px");
+			ZKUpdateUtil.setWidth(this, "420px");
+			ZKUpdateUtil.setHeight(this, "150px");
 		}
 		else if (s.equals("bPanel"))
 		{
-			this.setWidth("420px");
-			this.setHeight("200px");
+			ZKUpdateUtil.setWidth(this, "420px");
+			ZKUpdateUtil.setHeight(this, "200px");
 		}
 		else if (s.equals("sPanel"))
 		{
-			this.setWidth("470px");
-			this.setHeight("300px");
+			ZKUpdateUtil.setWidth(this, "470px");
+			ZKUpdateUtil.setHeight(this, "300px");
 		}
 		else if (s.equals("tPanel"))
 		{
-			this.setWidth("470px");
-			this.setHeight("215px");
+			ZKUpdateUtil.setWidth(this, "470px");
+			ZKUpdateUtil.setHeight(this, "215px");
 		}
 		else if (s.equals("kPanel"))
 		{
-			this.setWidth("500px");
-			this.setHeight("300px");
+			ZKUpdateUtil.setWidth(this, "500px");
+			ZKUpdateUtil.setHeight(this, "500px");
 		}
 	}
 

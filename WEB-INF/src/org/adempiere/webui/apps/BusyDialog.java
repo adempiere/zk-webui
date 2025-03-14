@@ -15,6 +15,7 @@ package org.adempiere.webui.apps;
 
 import org.adempiere.webui.component.Label;
 import org.adempiere.webui.component.Window;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.zkoss.zul.Hbox;
@@ -37,8 +38,8 @@ public class BusyDialog extends Window {
 		box.appendChild(new Label(Msg.getMsg(Env.getCtx(), "Processing")));
 		Image image = new Image();
 		box.appendChild(image);
-		image.setHeight("16px");
-		image.setWidth("16px");
+		ZKUpdateUtil.setHeight(image, "16px");
+		ZKUpdateUtil.setWidth(image, "16px");
 		image.setSrc("~./zk/img/progress3.gif");
 		setPosition("center");
 		setShadow(true);		

@@ -17,15 +17,17 @@
 
 package org.adempiere.webui.component;
 
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.IdSpace;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Express;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zk.ui.event.Express;
 
 /**
  *
@@ -33,7 +35,7 @@ import org.zkoss.zk.ui.event.Express;
  * @date    Feb 25, 2007
  * @version $Revision: 0.10 $
  */
-public class Grid extends org.zkoss.zul.Grid
+public class Grid extends org.zkoss.zul.Grid implements IdSpace
 {
 	private static final long serialVersionUID = -4483759833677794926L;
 	private boolean noStrip = false;
@@ -57,7 +59,7 @@ public class Grid extends org.zkoss.zul.Grid
 	public Rows newRows() {
 		Rows rows = new Rows();
 		appendChild(rows);
-		
+
 		return rows;
 	}    
 	
@@ -91,17 +93,15 @@ public class Grid extends org.zkoss.zul.Grid
 		return addEventListener((listener instanceof Express) ? 1000 : 0, evtnm, listener);
 	}
 	
-	public boolean addEventListener(int priority, String evtnm, EventListener listener)
+	public boolean addEventListener(int priority, String evtnm, EventListener<? extends Event> listener)
 	{
-		boolean b = super.addEventListener(evtnm, listener);
+		boolean b = super.addEventListener(priority , evtnm, listener);
 		if (b)
 		{
 			final EventListenerInfo listenerInfo = new EventListenerInfo(priority, listener);
 			List<EventListenerInfo> list = listeners.get(evtnm);
-			if (list != null)
-			{
-				for (Iterator<EventListenerInfo> it = list.iterator(); it.hasNext();)
-				{
+			if (list != null) {
+				for (Iterator<EventListenerInfo> it = list.iterator(); it.hasNext();) {
 					final EventListenerInfo li = it.next();
 					if (li.listener.equals(listener))
 					{
@@ -123,19 +123,16 @@ public class Grid extends org.zkoss.zul.Grid
 		return b;
 	}
 
-	public boolean removeEventListener(String evtnm, EventListener listener)
+	public boolean removeEventListener(String evtnm, EventListener<? extends Event> listener)
 	{
 		boolean b = super.removeEventListener(evtnm, listener);
 		if (b)
 		{
 			List<EventListenerInfo> list = listeners.get(evtnm);
-			if (list != null)
-			{
-				for (Iterator<EventListenerInfo> it = list.iterator(); it.hasNext();)
-				{
+			if (list != null) {
+				for (Iterator<EventListenerInfo> it = list.iterator(); it.hasNext();) {
 					final EventListenerInfo li = it.next();
-					if (li.listener.equals(listener))
-					{
+					if (li.listener.equals(listener)) {
 						it.remove();
 						break;
 					}
@@ -168,9 +165,9 @@ public class Grid extends org.zkoss.zul.Grid
 	private static class EventListenerInfo
 	{
 		private final int			priority;
-		private final EventListener	listener;
+		private final EventListener<? extends Event>	listener;
 
-		private EventListenerInfo(int priority, EventListener listener)
+		private EventListenerInfo(int priority, EventListener<? extends Event> listener)
 		{
 			this.priority = priority;
 			this.listener = listener;

@@ -13,13 +13,11 @@
  *****************************************************************************/
 package org.adempiere.webui.dashboard;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.session.SessionManager;
 import org.adempiere.webui.theme.ITheme;
 import org.adempiere.webui.util.ServerPushTemplate;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.MMenu;
 import org.compiere.model.MQuery;
 import org.compiere.model.MRecentItem;
@@ -32,18 +30,22 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Box;
+import org.zkoss.zul.DefaultTreeModel;
+import org.zkoss.zul.DefaultTreeNode;
 import org.zkoss.zul.Panel;
 import org.zkoss.zul.Panelchildren;
-import org.zkoss.zul.SimpleTreeModel;
-import org.zkoss.zul.SimpleTreeNode;
 import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Tree;
+import org.zkoss.zul.TreeNode;
 import org.zkoss.zul.Treecell;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.TreeitemRenderer;
 import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Vbox;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Dashboard item: Recent Items
@@ -56,15 +58,15 @@ import org.zkoss.zul.Vbox;
  * 		<li> <a href="https://github.com/adempiere/adempiere/pull/2390">Pull Request #2390</a> Add a specific icon for smart browse
  * 			Also changed the look and feel to match the menu tree - replacing tool bar buttons with a flat tree.
  */
-public class DPRecentItems extends DashboardPanel implements EventListener, TreeitemRenderer {
+public class DPRecentItems extends DashboardPanel implements EventListener<Event>, TreeitemRenderer {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 662950038476166515L;
 
 	public static final String DELETE_RECENTITEMS_DROPPABLE = "deleteRecentItems";
-	
+
 	// Messages
 	private static final String MSG_RecentItemsTooltip = "@DPRecentItems_RecentItemsTooltip@";
 	private static final String MSG_ItemTooltip = "@DPRecentItems_ItemTooltip@";
@@ -72,8 +74,8 @@ public class DPRecentItems extends DashboardPanel implements EventListener, Tree
 	private static final String MSG_RefreshTooltip = "@DPRecentItems_RefreshToolTip@";
 
 	public Tree				tree = null;
-	private SimpleTreeModel	tModel;
-	private SimpleTreeNode	mroot = null;
+	private DefaultTreeModel<Object> tModel;
+	private DefaultTreeNode<Object>	mroot = null;
 
 	private Box				bxRecentItems;
 
@@ -89,9 +91,9 @@ public class DPRecentItems extends DashboardPanel implements EventListener, Tree
 	}
 
 	private void initCoponents() {
-		
+
 		String tooltiptext = Msg.parseTranslation(Env.getCtx(), MSG_RecentItemsTooltip);
-		
+
 		this.setTooltiptext(tooltiptext);
 		Panel panel = new Panel();
 		panel.setTooltiptext(tooltiptext);
@@ -101,15 +103,15 @@ public class DPRecentItems extends DashboardPanel implements EventListener, Tree
 		panel.appendChild(recentItemContent);
 
 		bxRecentItems = new Vbox();
-		bxRecentItems.setWidth("100%");
-		bxRecentItems.setHeight("100%");
+		ZKUpdateUtil.setWidth(bxRecentItems, "100%");
+		ZKUpdateUtil.setHeight(bxRecentItems, "100%");
 		bxRecentItems.setTooltiptext(tooltiptext);
 
 		recentItemContent.appendChild(bxRecentItems);
 
 		Toolbar recentItemsToolbar = new Toolbar("horizontal");  // Align start (left) is the default
 		recentItemsToolbar.setTooltiptext(tooltiptext);
-		recentItemsToolbar.setHeight("18px");
+		ZKUpdateUtil.setHeight(recentItemsToolbar,"18px");
 		this.appendChild(recentItemsToolbar);
 
 		trashCan = new Toolbarbutton(null, ITheme.DASHBOARD_DELETE_IMAGE);
@@ -137,8 +139,8 @@ public class DPRecentItems extends DashboardPanel implements EventListener, Tree
 		{
 			tree = new Tree();
 			tree.setMultiple(false);
-			tree.setWidth("100%");
-			tree.setFixedLayout(false);
+			ZKUpdateUtil.setWidth(tree, "100%");
+			tree.setSizedByContent(true);
 			tree.setStyle("border:none");
 			tree.setClass("menu-tree");
 			tree.setTreeitemRenderer(this);
@@ -149,9 +151,9 @@ public class DPRecentItems extends DashboardPanel implements EventListener, Tree
 		tree.clear();
 		if (tree.getChildren().size() > 0)
 			tree.removeChild((Component) tree.getChildren().get(0));
-		
-		mroot = new SimpleTreeNode(null, new ArrayList<SimpleTreeNode>());
-		tModel = new SimpleTreeModel(mroot);
+
+		mroot = new DefaultTreeNode<>(null, new ArrayList<DefaultTreeNode<Object>>());
+		tModel = new DefaultTreeModel<>(mroot);
 		tree.setModel(tModel);
 		
 	}
@@ -178,8 +180,8 @@ public class DPRecentItems extends DashboardPanel implements EventListener, Tree
 					recentItem.deleteEx(true);
 					continue; // record could have been deleted
 				}
-				SimpleTreeNode treeNode = new SimpleTreeNode(recentItem, new ArrayList<SimpleTreeNode>());
-				((List<SimpleTreeNode>) mroot.getChildren()).add(treeNode);
+				DefaultTreeNode<Object> treeNode = new DefaultTreeNode<Object>(recentItem, new ArrayList<DefaultTreeNode<Object>>());
+				((List<TreeNode<Object>>) mroot.getChildren()).add(treeNode);
 			}
 		}
 		
@@ -204,9 +206,7 @@ public class DPRecentItems extends DashboardPanel implements EventListener, Tree
 			{
 				Treerow treerow = (Treerow) comp;
 				Treeitem treeitem = (Treeitem) treerow.getParent();
-				Object value = treeitem.getValue();
-
-				SimpleTreeNode stn = (SimpleTreeNode) value;
+				DefaultTreeNode<Object> stn =  treeitem.getValue();
 				MRecentItem recentItem = (MRecentItem) stn.getData(); 
             	//	Open
             	if (recentItem != null) {
@@ -234,23 +234,23 @@ public class DPRecentItems extends DashboardPanel implements EventListener, Tree
 			DropEvent de = (DropEvent) event;
 			Treerow tr = (Treerow) de.getDragged();
 			
-			// src.getValue is the SimpleTreeNode
+			// src.getValue is the DefaultTreeNode
 			Treeitem src = (Treeitem) tr.getParent();  			
 			
         	if(comp.equals(trashCan))
         	{
         		
-    			SimpleTreeNode sourceNode = (SimpleTreeNode) src.getValue();
+    			DefaultTreeNode<Object> sourceNode = src.getValue();
     			
-				int path[] = tModel.getPath(getRoot(), sourceNode);
+				int path[] = tModel.getPath(sourceNode);
 
 				if (path != null && path.length > 0)
 				{
-					SimpleTreeNode parentNode = (SimpleTreeNode) tModel.getRoot();
+					DefaultTreeNode<Object> parentNode = (DefaultTreeNode<Object>) tModel.getRoot();
 					int index = path.length - 1;
 					for (int i = 0; i < index; i++)
 					{
-						parentNode = (SimpleTreeNode) tModel.getChild(parentNode, path[i]);
+						parentNode = (DefaultTreeNode<Object>) tModel.getChild(parentNode, path[i]);
 					}
 					parentNode.getChildren().remove(path[index]);
 				}
@@ -281,14 +281,15 @@ public class DPRecentItems extends DashboardPanel implements EventListener, Tree
 	 * @see org.zkoss.zul.TreeitemRenderer#render(org.zkoss.zul.Treeitem, java.lang.Object)
 	 */
 	@Override
-	public void render(Treeitem ti, Object node) throws Exception
+	public void render(Treeitem ti, Object node, int index) throws Exception
 	{
-		SimpleTreeNode stn = (SimpleTreeNode) node;
+		DefaultTreeNode<Object> stn = (DefaultTreeNode<Object>) node;
 		MRecentItem recentItem = (MRecentItem) stn.getData();
 		String label = recentItem.getLabel();
 		String action = "";
 		if(recentItem.getAD_Menu_ID() != 0) {
 			MMenu menu = MMenu.getFromId(Env.getCtx(), recentItem.getAD_Menu_ID());
+			assert menu != null;
 			action = menu.getAction();
 		}
 		String image = AEnv.getMenuIconFile(action);

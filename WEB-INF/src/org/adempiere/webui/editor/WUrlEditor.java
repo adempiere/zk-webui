@@ -50,7 +50,7 @@ public class WUrlEditor extends WEditor implements ContextMenuListener
 		{
 			WRecordInfo.addMenu(popupMenu);
 		}
-		getComponent().setContext(popupMenu.getId());
+		getComponent().setContext(popupMenu);
 	}
 
 

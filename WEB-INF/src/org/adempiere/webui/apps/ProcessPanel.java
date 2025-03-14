@@ -15,10 +15,6 @@
 package org.adempiere.webui.apps;
 
 
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.adempiere.controller.SmallViewEditable;
 import org.adempiere.webui.component.Borderlayout;
 import org.adempiere.webui.component.Button;
@@ -39,6 +35,7 @@ import org.adempiere.webui.editor.WEditorPopupMenu;
 import org.adempiere.webui.editor.WTableDirEditor;
 import org.adempiere.webui.editor.WebEditorFactory;
 import org.adempiere.webui.event.ContextMenuListener;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.apps.ProcessController;
 import org.compiere.apps.ProcessCtl;
@@ -63,13 +60,16 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Html;
+import org.zkoss.zul.North;
+import org.zkoss.zul.South;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *	Process Parameter Panel, based on existing ProcessParameter dialog.
@@ -98,7 +98,7 @@ import org.zkoss.zul.Html;
  *			have been removed. Instead use the bOK.setFocus() method to capture the enter key.
  * 	@version 	2006-12-01
  */
-public class ProcessPanel extends ProcessController implements SmallViewEditable, EventListener, ASyncProcess {
+public class ProcessPanel extends ProcessController implements SmallViewEditable, EventListener<Event>, ASyncProcess {
 	/**
 	 *	Dynamic generated Parameter panel.
 	 *  @param WindowNo window
@@ -191,9 +191,9 @@ public class ProcessPanel extends ProcessController implements SmallViewEditable
     		int percent = 99 / colN;
     		for(int i = 0; i < colN; i++) {
     			Column col = new Column();
-	        	col.setWidth((i == 0
-	        			? ((int) percent / 2)
-	        			: percent) + "%");
+				ZKUpdateUtil.setHeight(col, (i == 0
+						? ((int) percent / 2)
+						: percent) + "%");
 	        	columns.appendChild(col);
 	    	}
     	}
@@ -219,7 +219,7 @@ public class ProcessPanel extends ProcessController implements SmallViewEditable
 		centerPanel = new Center();
 		mainLayout.appendChild(centerPanel);
 		centerPanel.appendChild(parameterPanel);
-		centerPanel.setFlex(false);
+		ZKUpdateUtil.setVflex(centerPanel, "flex");
 		//	FR [ 1051 ]
 		centerPanel.setStyle("border: none; overflow-y:auto;width:98%");
 		
@@ -321,8 +321,8 @@ public class ProcessPanel extends ProcessController implements SmallViewEditable
 		mainPanel.appendChild(mainLayout);
 		
 		//mainPanel.setHeight("100%");
-		mainPanel.setWidth("100%");
-		parameterPanel.setWidth("97%");
+		ZKUpdateUtil.setHeight(mainPanel, "100%");
+		ZKUpdateUtil.setWidth(mainPanel, "97%");
 		mainPanel.invalidate();
 		mainPanel.setStyle("height:100%");
 		mainPanel.invalidate();

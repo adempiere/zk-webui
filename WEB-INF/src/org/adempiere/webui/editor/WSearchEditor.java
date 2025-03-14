@@ -62,6 +62,13 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.KeyEvent;
 
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+
 /**
  * Search Editor for web UI.
  * Web UI port of search type VLookup

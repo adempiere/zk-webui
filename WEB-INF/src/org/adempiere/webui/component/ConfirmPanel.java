@@ -17,28 +17,32 @@
 
 package org.adempiere.webui.component;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.adempiere.webui.AdempiereIdGenerator;
 import org.adempiere.webui.LayoutUtils;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.Util;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Div;
 import org.zkoss.zul.Hbox;
+import org.zkoss.zul.Hlayout;
 import org.zkoss.zul.Messagebox;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 /**
  * Application Confirm Panel
  * Web UI port of the rich client's ConfirmPanel by Jorg Janke
  * @author Sendy Yagambrum
  * @date July 25, 2007
  **/
-public final class ConfirmPanel extends Hbox
+public final class ConfirmPanel extends Div
 {
 	/**
 	 * 
@@ -89,7 +93,7 @@ public final class ConfirmPanel extends Hbox
     /**
      * Creates a button of the specified id
      *
-     * @param id button id
+     * @param name button
      * @return  button
      *
      * <p>The string can be any of the following and the corresponding button will be created: </p>
@@ -258,38 +262,45 @@ public final class ConfirmPanel extends Hbox
     private Hbox hboxBtnLeft;
     private Hbox hboxBtnRight;
     //
-    private Panel pnlBtnRight;
-    private Panel pnlBtnLeft;
-    private Panel pnlBtnCenter;
+    private Hlayout pnlBtnRight;
+    private Hlayout pnlBtnLeft;
+    private Hlayout pnlBtnCenter;
 
     /**
      * initialise components
      */
     private void init()
     {
-        pnlBtnLeft = new Panel();
-        pnlBtnLeft.setAlign("left");
+        pnlBtnLeft = new Hlayout();
+        pnlBtnLeft.setSclass("confirm-panel-left");
+        //pnlBtnLeft.setAlign("left");
 
-        pnlBtnRight = new Panel();
-        pnlBtnRight.setAlign("right");
+        pnlBtnRight = new Hlayout();
+        pnlBtnRight.setSclass("confirm-panel-right");
+        //pnlBtnRight.setAlign("right");
         
-        pnlBtnCenter = new Panel();
-        pnlBtnCenter.setAlign("center");
+        pnlBtnCenter = new Hlayout();
+        //pnlBtnCenter.setAlign("center");
+        pnlBtnCenter.setSclass("confirm-panel-center");
 
         hboxBtnRight = new Hbox();
+        hboxBtnRight.setAlign("end");
         hboxBtnRight.appendChild(pnlBtnRight);
-        hboxBtnRight.setWidth("100%");
+        ZKUpdateUtil.setWidth(hboxBtnRight, "100%");
         hboxBtnRight.setStyle("text-align:right");
 
         hboxBtnLeft = new Hbox();
+        hboxBtnLeft.setAlign("end");
         hboxBtnLeft.appendChild(pnlBtnLeft);
-        hboxBtnLeft.setWidth("100%");
+        ZKUpdateUtil.setWidth(hboxBtnLeft, "100%");
         hboxBtnLeft.setStyle("text-align:left");
 
         this.appendChild(hboxBtnLeft);
         this.appendChild(pnlBtnCenter);
         this.appendChild(hboxBtnRight);
-        this.setWidth("100%");
+
+        ZKUpdateUtil.setWidth(this, "100%");
+        this.setSclass("confirm-panel");
     }
 
 	/**
@@ -391,7 +402,7 @@ public final class ConfirmPanel extends Hbox
 
     /**
      * sets the visibility of the specified button
-     * @param btnName   button name
+     * @param id   button name
      * @param visible   visibility
      * <p> The button name can be any of the following
      * <dl>
@@ -521,7 +532,7 @@ public final class ConfirmPanel extends Hbox
      * @param event event
      * @param listener listener
      */
-    public void addActionListener(String event, EventListener listener)
+    public void addActionListener(String event, EventListener<Event> listener)
     {
         List<?> list1 = pnlBtnLeft.getChildren();
         List<?> list2 = pnlBtnRight.getChildren();
@@ -551,13 +562,13 @@ public final class ConfirmPanel extends Hbox
      * added to ease porting of swing form
      * @param listener
      */
-	public void addActionListener(EventListener listener) {
+	public void addActionListener(EventListener<Event> listener) {
 		addActionListener(Events.ON_CLICK, listener);
 	}
 
 	/**
 	 * alias for addComponentsLeft for ease of porting swing form
-	 * @param selectAllButton
+	 * @param button
 	 */
 	public void addButton(Button button) {
 		addComponentsLeft(button);

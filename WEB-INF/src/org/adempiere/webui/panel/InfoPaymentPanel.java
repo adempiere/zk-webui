@@ -17,13 +17,7 @@
 
 package org.adempiere.webui.panel;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-
+import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Checkbox;
 import org.adempiere.webui.component.Datebox;
@@ -34,7 +28,7 @@ import org.adempiere.webui.component.Rows;
 import org.adempiere.webui.component.Textbox;
 import org.adempiere.webui.editor.WEditor;
 import org.adempiere.webui.editor.WSearchEditor;
-import org.adempiere.exceptions.ValueChangeListener;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.minigrid.ColumnInfo;
 import org.compiere.minigrid.IDColumn;
@@ -53,6 +47,14 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Hbox;
 
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Comparator;
+
 /**
 * Based on InfoPayment written by Jorg Janke
 *  
@@ -68,7 +70,7 @@ import org.zkoss.zul.Hbox;
 * 
 */
 
-public class InfoPaymentPanel extends InfoPanel implements ValueChangeListener, EventListener
+public class InfoPaymentPanel extends InfoPanel implements ValueChangeListener, EventListener<org.zkoss.zk.ui.event.Event>
 {
 	/**
 	 * 
@@ -187,19 +189,19 @@ public class InfoPaymentPanel extends InfoPanel implements ValueChangeListener, 
 	private void statInit()
 	{
 		fDocumentNo = new Textbox();
-		fDocumentNo.setWidth("100%");
+		ZKUpdateUtil.setWidth(fDocumentNo, "100%");
         fDocumentNo.addEventListener(Events.ON_CHANGE, this);
         fDocumentNo.setAttribute("zk_component_ID", "Lookup_Criteria_fDocumentNo");
 		fDocumentNo.addEventListener(Events.ON_CHANGE, this);
 		
 		// 	Format the dates and number boxes
 		fDateFrom = new Datebox();
-		fDateFrom.setWidth("97px");
+		ZKUpdateUtil.setWidth(fDateFrom, "97px");
 		fDateFrom.setAttribute("zk_component_ID", "Lookup_Criteria_DateFrom");
 		fDateFrom.addEventListener(Events.ON_CHANGE, this);
 		//
 		fDateTo = new Datebox();
-		fDateTo.setWidth("97px");
+		ZKUpdateUtil.setWidth(fDateTo, "97px");
 		fDateTo.setAttribute("zk_component_ID", "Lookup_Criteria_DateTo");
 		fDateTo.addEventListener(Events.ON_CHANGE, this);
 		//
@@ -208,12 +210,12 @@ public class InfoPaymentPanel extends InfoPanel implements ValueChangeListener, 
 		fDateTo.setFormat(dateFormat.toPattern());
 		//
 		fAmtFrom = new NumberBox(false);
-		fAmtFrom.getDecimalbox().setWidth("90px");
+		ZKUpdateUtil.setWidth(fAmtFrom, "90px");
 		fAmtFrom.setAttribute("zk_component_ID", "Lookup_Criteria_AmtFrom");
 		fAmtFrom.addEventListener(Events.ON_CHANGE, this);
 		//
 		fAmtTo = new NumberBox(false);
-		fAmtTo.getDecimalbox().setWidth("90px");
+		ZKUpdateUtil.setWidth(fAmtTo.getDecimalbox(), "90px");
 		fAmtTo.setAttribute("zk_component_ID", "Lookup_Criteria_AmtTo");
 		fAmtTo.addEventListener(Events.ON_CHANGE, this);		
 		//
@@ -598,4 +600,8 @@ public class InfoPaymentPanel extends InfoPanel implements ValueChangeListener, 
 		return;
 	}
 
+	@Override
+	public String getSortDirection(Comparator comparator) {
+		return "natural";
+	}
 }

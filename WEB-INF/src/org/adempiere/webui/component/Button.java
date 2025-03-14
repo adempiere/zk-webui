@@ -17,6 +17,7 @@
 
 package org.adempiere.webui.component;
 
+import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 
@@ -37,11 +38,13 @@ public class Button extends org.zkoss.zul.Button
     public Button()
     {
         super();
+        setAutodisable("self");
     }
     
     public Button(String label)
     {
         super(label);
+        setAutodisable("self");
     }
     
     public void setName(String name)
@@ -68,7 +71,7 @@ public class Button extends org.zkoss.zul.Button
      * shortcut for addEventListener(Events.ON_CLICK, listener) to ease porting of swing form
      * @param listener
      */
-	public void addActionListener(EventListener listener) {
+	public void addActionListener(EventListener<Event> listener) {
 		addEventListener(Events.ON_CLICK, listener);
 	}	
 }

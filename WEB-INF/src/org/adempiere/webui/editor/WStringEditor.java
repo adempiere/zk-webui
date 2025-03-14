@@ -17,8 +17,6 @@
 
 package org.adempiere.webui.editor;
 
-import java.util.List;
-
 import org.adempiere.exceptions.ValueChangeEvent;
 import org.adempiere.webui.ValuePreference;
 import org.adempiere.webui.component.Combobox;
@@ -27,6 +25,7 @@ import org.adempiere.webui.component.Window;
 import org.adempiere.webui.event.ContextMenuEvent;
 import org.adempiere.webui.event.ContextMenuListener;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.WRecordInfo;
 import org.adempiere.webui.window.WTextEditorDialog;
 import org.compiere.model.GridField;
@@ -38,6 +37,9 @@ import org.zkoss.zk.ui.HtmlBasedComponent;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Menuitem;
+import org.zkoss.zul.Textbox;
+
+import java.util.List;
 
 /**
  *
@@ -105,12 +107,12 @@ public class WStringEditor extends WEditor implements ContextMenuListener
     }
 
     @Override
-    public org.zkoss.zul.Textbox getComponent() {
+    public Textbox getComponent() {
     	// BR [ 640 ]
     	if(gridField != null && gridField.isAutocomplete())
-    		return (org.zkoss.zul.Textbox) (((Combobox)component));
+    		return (Textbox) (((Combobox)component));
     	else
-    		return (org.zkoss.zul.Textbox) (((StringBox)component).getTextBox());
+    		return (Textbox) (((StringBox)component).getTextBox());
     }
 
     @Override
@@ -125,6 +127,7 @@ public class WStringEditor extends WEditor implements ContextMenuListener
 
 	private void init(String obscureType)
     {
+		ZKUpdateUtil.setHflex(getComponent(), "1");
 		if (gridField != null)
 		{
 	        //remove can cause throws an exception org.zkoss.zk.ui.WrongValueException.
@@ -139,19 +142,16 @@ public class WStringEditor extends WEditor implements ContextMenuListener
 	        if (gridField.getDisplayType() == DisplayType.Text)
 	        {
 	            getComponent().setMultiline(true);
-	            getComponent().setRows(3);
 	            ((HtmlBasedComponent) getComponent()).setSclass("field-text");
 	        }
 	        else if (gridField.getDisplayType() == DisplayType.TextLong)
 	        {
 	            getComponent().setMultiline(true);
-	            getComponent().setRows(5);
 	            ((HtmlBasedComponent)getComponent()).setSclass("field-textlong");
 	        }
 	        else if (gridField.getDisplayType() == DisplayType.Memo)
 	        {
 	            getComponent().setMultiline(true);
-	            getComponent().setRows(8);
 	            ((HtmlBasedComponent)getComponent()).setSclass("field-memo");
 	        }
 
@@ -171,7 +171,7 @@ public class WStringEditor extends WEditor implements ContextMenuListener
 				WRecordInfo.addMenu(popupMenu);
 			}
 
-	        getComponent().setContext(popupMenu.getId());
+	        getComponent().setContext(popupMenu);
 
 	        if (gridField.isAutocomplete()) {
 	        	Combobox combo = (Combobox)getComponent();
@@ -184,7 +184,7 @@ public class WStringEditor extends WEditor implements ContextMenuListener
 	        	}
 	        }
 	        //	BR [ 640 ]
-	        else  if (getComponent() instanceof org.zkoss.zul.api.Textbox)
+	        else  if (getComponent() instanceof Textbox)
 	        	((StringBox)component).setObscureType(obscureType);
 		}
     }

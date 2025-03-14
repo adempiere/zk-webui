@@ -16,17 +16,13 @@
  *****************************************************************************/
 package org.adempiere.webui.window;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.logging.Level;
-
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Checkbox;
 import org.adempiere.webui.component.ConfirmPanel;
 import org.adempiere.webui.component.Panel;
 import org.adempiere.webui.component.WListbox;
 import org.adempiere.webui.component.Window;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.minigrid.ColumnInfo;
 import org.compiere.minigrid.IDColumn;
 import org.compiere.util.CLogger;
@@ -37,11 +33,16 @@ import org.compiere.util.Msg;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Hbox;
+import org.zkoss.zul.North;
+import org.zkoss.zul.South;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.logging.Level;
 
 
 /**
@@ -74,8 +75,8 @@ public class WPAttributeInstance extends Window implements EventListener
 		this.setTitle(Msg.getMsg(Env.getCtx(), "PAttributeInstance") + title);
 		this.setAttribute("modal", Boolean.TRUE);
 		this.setBorder("normal");
-		this.setWidth("500px");
-		this.setHeight("550px");
+		ZKUpdateUtil.setWidth(this, "500px");
+		ZKUpdateUtil.setHeight(this, "550px");
 		
 		init (M_Warehouse_ID, M_Locator_ID, M_Product_ID, C_BPartner_ID);
 		AEnv.showCenterScreen(this);
@@ -148,7 +149,7 @@ public class WPAttributeInstance extends Window implements EventListener
 		//	Center
 		Center center = new Center();
 		center.setParent(mainLayout);
-		center.setFlex(true);
+		ZKUpdateUtil.setVflex(center, "flex");
 		center.appendChild(m_table);
 		
 		//	South

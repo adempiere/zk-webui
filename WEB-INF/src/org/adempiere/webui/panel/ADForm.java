@@ -17,12 +17,11 @@
 
 package org.adempiere.webui.panel;
 
-import java.util.logging.Level;
-
 import org.adempiere.webui.component.Window;
 import org.adempiere.webui.exception.ApplicationException;
 import org.adempiere.webui.session.SessionManager;
 import org.adempiere.webui.util.ADClassNameMap;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.MForm;
 import org.compiere.process.ProcessInfo;
 import org.compiere.util.CLogger;
@@ -30,6 +29,8 @@ import org.compiere.util.Env;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
+
+import java.util.logging.Level;
 
 /**
  * Adempiere Web UI custom form.
@@ -76,9 +77,8 @@ public abstract class ADForm extends Window implements EventListener
     protected ADForm()
     {
          m_WindowNo = SessionManager.getAppDesktop().registerWindow(this);
-
-         this.setWidth("100%");
-         this.setHeight("100%");
+		 ZKUpdateUtil.setWidth(this, "100%");
+		 ZKUpdateUtil.setHeight(this, "100%");
          this.setStyle("position:absolute");
          this.setContentSclass("adform-content");
     }

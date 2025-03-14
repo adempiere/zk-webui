@@ -17,15 +17,6 @@
  *****************************************************************************/
 package org.eevolution.form;
 
-import java.io.File;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map.Entry;
-import java.util.logging.Level;
-
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.model.MBrowse;
 import org.adempiere.model.MViewDefinition;
@@ -48,6 +39,7 @@ import org.adempiere.webui.panel.CustomForm;
 import org.adempiere.webui.panel.IFormController;
 import org.adempiere.webui.panel.StatusBarPanel;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.apps.ProcessCtl;
 import org.compiere.minigrid.IDColumn;
@@ -66,14 +58,23 @@ import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Hbox;
+import org.zkoss.zul.North;
 import org.zkoss.zul.Separator;
+import org.zkoss.zul.South;
 import org.zkoss.zul.Vbox;
+
+import java.io.File;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
+import java.util.logging.Level;
 
 /**
  * Implementation Smart Browser for ZK
@@ -221,15 +222,15 @@ public class WBrowser extends Browser implements IFormController,
 			//	If don't have parameters then don'show collapsible panel
 			if(parameterPanel.hasParameters()) {
 				Panel panel = parameterPanel.getPanel();
-				panel.setWidth("100%");
-				panel.setHeight("100%");
+				ZKUpdateUtil.setWidth(panel, "100%");
+				ZKUpdateUtil.setHeight(panel, "100%");
 				panel.setStyle("overflow-y:auto");
 				
 				South south = new South();
 				south.setBorder("none");
 				
 				south.setAutoscroll(true);
-				south.setFlex(true);
+				ZKUpdateUtil.setVflex(south, "flex");
 				south.setCollapsible(true);
 				south.setTitle(Msg.getMsg(Env.getCtx(),("Parameter")));
 				south.setCollapsible(true);
@@ -237,7 +238,7 @@ public class WBrowser extends Browser implements IFormController,
 				south.appendChild(panel);
 				south.setStyle("background-color: transparent");
 				south.setStyle("border: none");
-				south.setHeight("40%");
+				ZKUpdateUtil.setHeight(south,"40%");
 				//	
 				detailPanel.appendChild(south);
 			}
@@ -507,13 +508,12 @@ public class WBrowser extends Browser implements IFormController,
 		if(isUpdateable()) {
 			toolsBar.appendChild(bUpdate);
 		}
-
-		m_frame.setWidth("100%");
-		m_frame.setHeight("100%");
+		ZKUpdateUtil.setWidth(m_frame, "100%");
+		ZKUpdateUtil.setHeight(m_frame, "100%");
 		m_frame.setStyle("position: absolute; padding: 0; margin: 0");
 		m_frame.appendChild(mainLayout);
-		mainLayout.setWidth("100%");
-		mainLayout.setHeight("100%");
+		ZKUpdateUtil.setWidth(mainLayout, "100%");
+		ZKUpdateUtil.setHeight(mainLayout, "100%");
 		mainLayout.setStyle("position: absolute");
 
 		North north = new North();
@@ -521,8 +521,8 @@ public class WBrowser extends Browser implements IFormController,
 		mainLayout.appendChild(north);
 
 		searchTab = new Borderlayout();
-		searchTab.setWidth("99.4%");
-		searchTab.setHeight("99.4%");
+		ZKUpdateUtil.setWidth(searchTab, "99.4%");
+		ZKUpdateUtil.setHeight(searchTab, "99.4%");
 		searchTab.setStyle("background-color: transparent");
 
 		topPanel = new Hbox();
@@ -540,13 +540,13 @@ public class WBrowser extends Browser implements IFormController,
 		vbox.appendChild(topPanel);
 		vbox.appendChild(bSearch);
 		vbox.setAlign("center");
-		vbox.setWidth("100%");
+		ZKUpdateUtil.setWidth(vbox, "100%");
 		vbox.setStyle("background-color: transparent");
 		
 		Div div = new Div();
 		div.appendChild(vbox);
-		div.setWidth("100%");
-		div.setHeight("100%");
+		ZKUpdateUtil.setWidth(div, "100%");
+		ZKUpdateUtil.setHeight(div, "100%");
 
 		collapsibleSeach.setTitle(Msg.getMsg(Env.getCtx(),("SearchCriteria")));
 		collapsibleSeach.setCollapsible(true);
@@ -556,25 +556,23 @@ public class WBrowser extends Browser implements IFormController,
 		collapsibleSeach.setStyle("background-color: transparent");
 		collapsibleSeach.setStyle("border: none");
 		searchTab.appendChild(collapsibleSeach);
-
-		detail.setWidth("100%");
-		detail.setHeight("100%");
+		ZKUpdateUtil.setVflex(detail,true);
+		detail.setSizedByContent(false);
+		ZKUpdateUtil.setWidth(detail, "100%");
+		ZKUpdateUtil.setHeight(detail, "100%");
 		Center dCenter = new Center();
 		dCenter.appendChild(detail);
 		dCenter.setBorder("none");
-		detail.setVflex(true);
-		detail.setFixedLayout(true);
-		dCenter.setFlex(true);
+		ZKUpdateUtil.setVflex(dCenter,"flex");
 		dCenter.setAutoscroll(true);
-		
-		detailPanel.setHeight("100%");
-		detailPanel.setWidth("100%");
+		ZKUpdateUtil.setWidth(detailPanel, "100%");
+		ZKUpdateUtil.setHeight(detailPanel, "100%");
 		detailPanel.appendCenter(detail);
 		
 //		Div dv = new Div();
 		div.appendChild(detailPanel);
-		div.setHeight("100%");
-		div.setWidth("100%");
+		ZKUpdateUtil.setWidth(div, "100%");
+		ZKUpdateUtil.setHeight(div, "100%");
 
 		searchTab.appendCenter(detailPanel);
 
@@ -611,7 +609,7 @@ public class WBrowser extends Browser implements IFormController,
 		searchTab.getSouth().setBorder("none");
 
 		Tabpanel search = new Tabpanel();
-		search.setWidth("100%");
+		ZKUpdateUtil.setWidth(search, "100%");
 		search.appendChild(searchTab);
 
 		Tab tabSearch = new Tab();
@@ -623,7 +621,7 @@ public class WBrowser extends Browser implements IFormController,
 		tabs.appendChild(tabSearch);
 
 		Tabpanels tabPanels = new Tabpanels();
-		tabPanels.setWidth("100%");
+		ZKUpdateUtil.setWidth(tabPanels, "100%");
 		tabPanels.appendChild(search);
 
 		//graphPanel = new Borderlayout();
@@ -638,9 +636,8 @@ public class WBrowser extends Browser implements IFormController,
 		//		""));
 		//tabs.appendChild(tabGraph);
 		//tabPanels.appendChild(graph);
-
-		tabsPanel.setWidth("100%");
-		tabsPanel.setHeight("100%");
+		ZKUpdateUtil.setWidth(tabsPanel, "100%");
+		ZKUpdateUtil.setHeight(tabsPanel, "100%");
 		tabsPanel.appendChild(tabs);
 		tabsPanel.appendChild(tabPanels);
 

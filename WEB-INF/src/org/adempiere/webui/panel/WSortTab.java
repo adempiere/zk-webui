@@ -16,12 +16,6 @@
  *****************************************************************************/
 package org.adempiere.webui.panel;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-
 import org.adempiere.controller.SortTabController;
 import org.adempiere.util.ListElement;
 import org.adempiere.webui.component.Button;
@@ -37,6 +31,7 @@ import org.adempiere.webui.component.Panel;
 import org.adempiere.webui.component.SimpleListModel;
 import org.adempiere.webui.panel.ADTabPanel.EmbeddedPanel;
 import org.adempiere.webui.panel.ADTabPanel.HorizontalEmbeddedPanel;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.model.GridTab;
 import org.compiere.util.CLogger;
@@ -52,6 +47,12 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Vbox;
 import org.zkoss.zul.event.ListDataEvent;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
 
 /**
  *	Tab to maintain Order/Sequence
@@ -89,7 +90,7 @@ public class WSortTab extends Panel implements IADTabPanel {
 		log.config("SortOrder=" + gridTab.getAD_ColumnSortOrder_ID() + ", SortYesNo=" + gridTab.getAD_ColumnSortYesNo_ID());
 		windowNo = WindowNo;
 		this.gridTab = gridTab;
-		this.setHeight("100%");
+		ZKUpdateUtil.setHeight(this,"100%");
 	}	//	VSortTab
 
 	/**	Logger			*/
@@ -151,10 +152,12 @@ public class WSortTab extends Panel implements IADTabPanel {
 		noLabel.setStyle("text-align:center; display: block;");
 		yesLabel.setStyle("text-align:center; display: block;");
 		//	For List
-		yesList.setHeight("100%");
-		noList.setHeight("100%");
-		yesList.setVflex(true);
-		noList.setVflex(true);
+		ZKUpdateUtil.setHeight(yesList,"100%");
+		ZKUpdateUtil.setHeight(noList,"100%");
+		ZKUpdateUtil.setVflex(yesList, true);
+		ZKUpdateUtil.setVflex(noList, true);
+		yesList.setSizedByContent(true);
+		noList.setSizedByContent(true);
 
 		EventListener mouseListener = new EventListener()
 		{
@@ -595,18 +598,17 @@ public class WSortTab extends Panel implements IADTabPanel {
 	public void setUnselected(IADTabPanel panel)
     {
     	((HtmlBasedComponent)this).setStyle("border:none;");
-		
-		this.setWidth("100%");
-		this.setHeight("100%");
+		ZKUpdateUtil.setWidth(this, "100%");
+		ZKUpdateUtil.setHeight(this, "100%");
 		
     }
     
     public void setSelected(IADTabPanel panel)
     {
     	getGlobalToolbar().setCurrentPanel(panel);
-    	((HtmlBasedComponent)this).setStyle("border-left: 7px solid #fa962f; border-top: 1px solid #fa962f; border-bottom: 1px solid #fa962f; border-right: 1px solid #fa962f;");		
-		this.setWidth("99%");
-		this.setHeight("98%");
+    	((HtmlBasedComponent)this).setStyle("border-left: 7px solid #fa962f; border-top: 1px solid #fa962f; border-bottom: 1px solid #fa962f; border-right: 1px solid #fa962f;");
+		ZKUpdateUtil.setWidth(this, "99%");
+		ZKUpdateUtil.setHeight(this, "99%");
     }
 
 	@Override

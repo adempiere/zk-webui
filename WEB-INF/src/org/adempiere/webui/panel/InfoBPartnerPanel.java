@@ -17,13 +17,6 @@
 
 package org.adempiere.webui.panel;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.logging.Level;
-
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Checkbox;
 import org.adempiere.webui.component.Label;
@@ -38,6 +31,7 @@ import org.adempiere.webui.component.Tabs;
 import org.adempiere.webui.component.Textbox;
 import org.adempiere.webui.component.WListbox;
 import org.adempiere.webui.event.WTableModelListener;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.minigrid.ColumnInfo;
 import org.compiere.minigrid.IDColumn;
@@ -53,9 +47,17 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
+import org.zkoss.zul.North;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.logging.Level;
 
 /**
 *	Search Business Partner and return selection
@@ -71,7 +73,7 @@ import org.zkoss.zkex.zul.North;
 */
 
 
-public class InfoBPartnerPanel extends InfoPanel implements EventListener, WTableModelListener
+public class InfoBPartnerPanel extends InfoPanel implements EventListener<Event>, WTableModelListener
 {
 	/**
 	 * 
@@ -266,13 +268,12 @@ public class InfoBPartnerPanel extends InfoPanel implements EventListener, WTabl
 	{
 		initComponents();
 
-		fieldValue.setWidth("100%");
-		fieldContact.setWidth("100%");
-		fieldPhone.setWidth("100%");
-		fieldName.setWidth("100%");
-		fieldEMail.setWidth("100%");
-		fieldPostal.setWidth("100%");
-		
+		ZKUpdateUtil.setWidth(fieldValue, "100%");
+		ZKUpdateUtil.setWidth(fieldContact, "100%");
+		ZKUpdateUtil.setWidth(fieldPhone, "100%");
+		ZKUpdateUtil.setWidth(fieldName, "100%");
+		ZKUpdateUtil.setWidth(fieldEMail, "100%");
+		ZKUpdateUtil.setWidth(fieldPostal, "100%");
 		Rows rows = new Rows();
 		
 		Row row = new Row();
@@ -343,8 +344,7 @@ public class InfoBPartnerPanel extends InfoPanel implements EventListener, WTabl
         addressTbl.autoSize();
         addressTbl.getModel().addTableModelListener(this);
         addressTbl.setAttribute("zk_component_ID", "Lookup_Data_Address");
-		//
-        detailTabBox.setHeight("100%");
+		ZKUpdateUtil.setHeight(detailTabBox,"100%");
         Tabpanels tabPanels = new Tabpanels();
 		detailTabBox.appendChild(tabPanels);
 		Tabs tabs = new Tabs();
@@ -354,7 +354,7 @@ public class InfoBPartnerPanel extends InfoPanel implements EventListener, WTabl
 		tab.addEventListener(Events.ON_SELECT, this);
 		tabs.appendChild(tab);
 		Tabpanel desktopTabPanel = new Tabpanel();
-		desktopTabPanel.setHeight("100%");
+		ZKUpdateUtil.setHeight(desktopTabPanel,"100%");
 		desktopTabPanel.appendChild(contactTbl);
 		tabPanels.appendChild(desktopTabPanel);
 
@@ -362,7 +362,7 @@ public class InfoBPartnerPanel extends InfoPanel implements EventListener, WTabl
 		tab.addEventListener(Events.ON_SELECT, this);
 		tabs.appendChild(tab);
 		desktopTabPanel = new Tabpanel();
-		desktopTabPanel.setHeight("100%");
+		ZKUpdateUtil.setHeight(desktopTabPanel,"100%");
 		desktopTabPanel.appendChild(addressTbl);
 		tabPanels.appendChild(desktopTabPanel);
 		
@@ -861,4 +861,8 @@ public class InfoBPartnerPanel extends InfoPanel implements EventListener, WTabl
 		checkAND.setSelected(true); 		//  Use AND
 	}
 
+	@Override
+	public String getSortDirection(Comparator comparator) {
+		return "natural";
+	}
 }

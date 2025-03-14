@@ -16,12 +16,6 @@
  *************************************************************************************/
 package org.spin.apps.form;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.Vector;
-import java.util.logging.Level;
-
-
 import org.adempiere.exceptions.ValueChangeEvent;
 import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.component.Button;
@@ -47,6 +41,7 @@ import org.adempiere.webui.panel.CustomForm;
 import org.adempiere.webui.panel.IFormController;
 import org.adempiere.webui.panel.StatusBarPanel;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.minigrid.IDColumn;
 import org.compiere.model.MLookup;
@@ -60,13 +55,18 @@ import org.compiere.util.Util;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.East;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
+import org.zkoss.zul.East;
+import org.zkoss.zul.North;
 import org.zkoss.zul.Separator;
+import org.zkoss.zul.South;
 import org.zkoss.zul.Space;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.Vector;
+import java.util.logging.Level;
 
 /**
  * ZK View class for handle all method of Bank Statement Matcher
@@ -191,8 +191,8 @@ public class WBankStatementMatch extends BankStatementMatchController
 		matchModeLabel.setText(Msg.translate(Env.getCtx(), "MatchMode"));		
 		
 		form.appendChild(mainLayout);
-		mainLayout.setWidth("100%");
-		mainLayout.setHeight("100%");
+		ZKUpdateUtil.setWidth(mainLayout, "100%");
+		ZKUpdateUtil.setHeight(mainLayout, "100%");
 		
 		parameterPanel.appendChild(parameterLayout);
 		actionPanel.appendChild(actionLayout);
@@ -215,8 +215,8 @@ public class WBankStatementMatch extends BankStatementMatchController
 		
 		Rows rows = null;
 		Row row = null;
-		
-		parameterLayout.setWidth("100%");
+
+		ZKUpdateUtil.setWidth(parameterLayout, "100%");
 		rows = parameterLayout.newRows();
 		//	
 		row = rows.newRow();
@@ -249,7 +249,7 @@ public class WBankStatementMatch extends BankStatementMatchController
 		southPanel.appendChild(actionPanel);
 		
 		actionPanel.appendChild(actionLayout);
-		actionLayout.setWidth("100%");
+		ZKUpdateUtil.setWidth(actionLayout, "100%");
 		rows = actionLayout.newRows();
 		row = rows.newRow();
 		row.appendChild(simulateMatchButton);
@@ -266,7 +266,7 @@ public class WBankStatementMatch extends BankStatementMatchController
 		east.appendChild(importedPaymentPanel);
 		importedPaymentPanel.appendChild(currentPaymentLabel);
 		importedPaymentPanel.appendChild(currentPaymentTable);
-		east.setWidth("70%");
+		ZKUpdateUtil.setWidth(east,  "70%");
 		east.setSplittable(true);
 		east.setStyle("border: none");
 		centerPaymentLayout.appendChild(east);
@@ -280,19 +280,16 @@ public class WBankStatementMatch extends BankStatementMatchController
 		paymentTableCenter.setStyle("border: none");
 		
 		centerPaymentLayout.appendChild(paymentTableCenter);
-		centerPaymentLayout.setWidth("100%");
+		ZKUpdateUtil.setWidth(centerPaymentLayout,  "100%");
 
 		Panel northCenter = new Panel();
 		northCenter.setStyle("border: 1px solid #000; height:200px");
 		northCenter.appendChild(centerPaymentLayout);
-		//
-		importedPaymentLayout.setWidth("100%");
-		importedPaymentLayout.setHeight("100%");
+		ZKUpdateUtil.setWidth(importedPaymentLayout, "100%");
+		ZKUpdateUtil.setHeight(importedPaymentLayout, "100%");
 		importedPaymentLayout.setStyle("border: none");
-
-		
-		matchedPaymentPanel.setWidth("100%");
-		matchedPaymentPanel.setHeight("100%");
+		ZKUpdateUtil.setWidth(matchedPaymentPanel, "100%");
+		ZKUpdateUtil.setHeight(matchedPaymentPanel, "100%");
 		matchedPaymentPanel.appendChild(matchedPaymentLabel);
 		matchedPaymentPanel.appendChild(matchedPaymentTable);
 		
@@ -438,7 +435,7 @@ public class WBankStatementMatch extends BankStatementMatchController
 			refresh();
 		} catch (Exception e) {
 			FDialog.error(getWindowNo(), "Error", e.getLocalizedMessage());
-			Clients.showBusy(null, false);
+			Clients.clearBusy();
 		} finally {
 			if(isFromStatement()) {
 				dispose();
@@ -454,11 +451,11 @@ public class WBankStatementMatch extends BankStatementMatchController
 		getParameters();
 		String message = validateParameters();
 		if(Util.isEmpty(message)) {
-			Clients.showBusy(null, true);
+			Clients.showBusy(Msg.getMsg(Env.getCtx(), "Processing"));
 			loadPayments();
 			loadImportedPayments();
 			loadMatchedPayments();
-			Clients.showBusy(null, false);
+			Clients.clearBusy();
 		} else {
 			FDialog.error(getWindowNo(), getForm(), "ValidationError", Msg.parseTranslation(Env.getCtx(), message));
 		}

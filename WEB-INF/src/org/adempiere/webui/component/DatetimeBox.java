@@ -12,12 +12,13 @@
  *****************************************************************************/
 package org.adempiere.webui.component;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.adempiere.webui.apps.AEnv;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Timebox;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * 
@@ -38,7 +39,7 @@ public class DatetimeBox extends Panel {
 		timeBox = new Timebox();
 		appendChild(dateBox);
 		appendChild(timeBox);	
-		
+		ZKUpdateUtil.setHflex(this, "1");
 		initComponents();
 	}
 

@@ -12,6 +12,7 @@
  *****************************************************************************/
 package org.adempiere.webui.component;
 
+import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.editor.WButtonEditor;
 import org.adempiere.webui.editor.WEditor;
 import org.adempiere.webui.editor.WEditorPopupMenu;
@@ -20,6 +21,7 @@ import org.adempiere.webui.event.ContextMenuListener;
 import org.adempiere.webui.panel.AbstractADWindowPanel;
 import org.adempiere.webui.session.SessionManager;
 import org.adempiere.webui.util.GridTabDataBinder;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.ADWindow;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
@@ -69,7 +71,7 @@ import java.util.Map;
  * 		@see FR [ 1697 ] Add definition for change style</a>
  *
  */
-public class GridTabRowRenderer implements RowRenderer, RowRendererExt, RendererCtrl, EventListener {
+public class GridTabRowRenderer implements  RowRenderer<Object>, RowRendererExt, RendererCtrl, EventListener<Event> {
 
 	private static final String CURRENT_ROW_STYLE = "border-top: 2px solid #1f9bde; border-bottom: 2px solid #1f9bde";
 	private static final int MAX_TEXT_LENGTH = 60;
@@ -152,7 +154,7 @@ public class GridTabRowRenderer implements RowRenderer, RowRendererExt, Renderer
 
             //streach component to fill grid cell
             if (editor.getComponent() instanceof Textbox)
-            	((HtmlBasedComponent)editor.getComponent()).setWidth("80%");
+				ZKUpdateUtil.setHflex((HtmlBasedComponent)editor.getComponent(), "true");
             else
             	editor.fillHorizontal();
             
@@ -373,13 +375,12 @@ public class GridTabRowRenderer implements RowRenderer, RowRendererExt, Renderer
 		model.setEditing(false);
 	}
 
-
 	/**
 	 * @param row
 	 * @param data
-	 * @see RowRenderer#render(Row, Object)
+	 * @see RowRenderer#render(Row, Object, int)
 	 */
-	public void render(Row row, Object data) throws Exception {
+	public void render(Row row, Object data, int index) throws Exception {
 		
 		//don't render if not visible
 		if (gridPanel != null && !gridPanel.isVisible()) {

@@ -12,11 +12,6 @@
  *****************************************************************************/
 package org.adempiere.webui.component;
 
-import java.util.Comparator;
-
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-
 import org.adempiere.webui.util.SortComparator;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTable;
@@ -26,6 +21,10 @@ import org.zkoss.zul.ListModel;
 import org.zkoss.zul.ListModelExt;
 import org.zkoss.zul.ListitemComparator;
 import org.zkoss.zul.event.ListDataEvent;
+
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import java.util.Comparator;
 
 /**
  * 
@@ -222,6 +221,11 @@ public class GridTableListModel extends AbstractListModel implements TableModelL
 	 */
 	public void setEditing(boolean b) {
 		editing = b;
+	}
+
+	@Override
+	public String getSortDirection(Comparator comparator) {
+		return "natural";
 	}
 
 }

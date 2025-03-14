@@ -21,6 +21,7 @@
 	<!--  change to false to use compress js which is much smaller -->
 	<client-config>
 		<debug-js>false</debug-js>
+		<processing-prompt-delay>500</processing-prompt-delay>
 	</client-config>
 
 	<!--
@@ -39,6 +40,33 @@
 		<cache-provider-class>org.zkoss.zk.ui.sys.GlobalDesktopCacheProvider</cache-provider-class>
 		</system-config>
 	-->
+	<library-property>
+		<name>org.zkoss.zk.ui.EventListener.duplicateIgnored</name>
+		<value>true</value>
+	</library-property>
+	<!-- turn off the floating scroll bar - behaviour is inconsistent. This can be removed after 7.02-->
+	<library-property>
+		<name>org.zkoss.zul.nativebar</name>
+		<value>true</value>
+	</library-property>
+
+	<!-- The name of the folder where the themes are stored under the root. "theme" is the default -->
+	<library-property>
+		<name>org.zkoss.theme.folder.root</name>
+		<value>theme</value>
+	</library-property>
+
+	<!-- Ensure that the basic default theme is selected.  This is a fall-back if the cookie method hasn't been used. -->
+	<!--library-property>
+		<name>org.zkoss.theme.preferred</name>
+		<value>ADempiereZkTheme</value>
+	</library-property-->
+
+	<library-property>
+		<name>org.zkoss.theme.preferred</name>
+		<value>atlantic</value>
+	</library-property>
+
 
 	<system-config>
 		<id-generator-class>org.adempiere.webui.AdempiereIdGenerator</id-generator-class>
@@ -50,27 +78,47 @@
 	-->
 	<device-config>
  		<device-type>ajax</device-type>
-		<server-push-class>org.zkoss.zkmax.ui.comet.CometServerPush</server-push-class>
+		<server-push-class>org.zkoss.zk.ui.impl.PollingServerPush</server-push-class>
 	</device-config>
+
+	<!-- true for better performance and lower resource usage -->
+	<system-config>
+		<disable-event-thread>true</disable-event-thread>
+	</system-config>
+	<!--
+	<library-property>
+		<name>org.zkoss.zk.ui.invokeFirstRootForAfterKeyDown.enabled</name>
+		<value>true</value>
+	</library-property>
+	-->
+
+	<library-property>
+		<name>org.zkoss.zul.progressbox.position</name>
+		<value>center</value>
+	</library-property>
 
 	<library-property>
 		<name>org.zkoss.zul.theme.fontSizeM
 		</name>
-		<value>11px</value>
+		<value>medium</value>
 	</library-property>
 	<library-property>
 		<name>org.zkoss.zul.theme.fontSizeS
 		</name>
-		<value>10px</value>
+		<value>x-small</value>
 	</library-property>
 	<library-property>
 		<name>org.zkoss.zul.theme.fontSizeXS
 		</name>
-		<value>9px</value>
+		<value>xx-small</value>
 	</library-property>
 	<library-property>
 		<name>org.zkoss.zul.theme.fontSizeMS
 		</name>
-		<value>11px</value>
+		<value>small</value>
+	</library-property>
+	<library-property>
+		<name>org.zkoss.zul.grid.rod</name>
+		<value>true</value>
 	</library-property>
 </zk>

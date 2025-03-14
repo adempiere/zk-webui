@@ -29,7 +29,7 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Menuitem;
 import org.zkoss.zul.Menupopup;
-import org.zkoss.zul.SimpleTreeNode;
+import org.zkoss.zul.DefaultTreeNode;
 import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
@@ -42,7 +42,7 @@ import org.zkoss.zul.Treerow;
  *  		<a href="https://github.com/adempiere/adempiere/issues/729">
  *			@see FR [ 729 ] Add Support to Parent Column And Search Column for Tree </a>
  */
-public class ADTreeOnDropListener implements EventListener {
+public class ADTreeOnDropListener implements EventListener<Event> {
 	
 	private SimpleTreeModel treeModel;
 	private MTree mTree;
@@ -75,7 +75,7 @@ public class ADTreeOnDropListener implements EventListener {
 			if (de.getDragged() != de.getTarget()) {
 				Treeitem src = (Treeitem) ((Treerow) de.getDragged()).getParent();
 				Treeitem target = (Treeitem) ((Treerow) de.getTarget()).getParent();
-				moveNode((SimpleTreeNode)src.getValue(), (SimpleTreeNode)target.getValue());
+				moveNode(src.getValue(), target.getValue());
 			}
 		} 
 	}
@@ -85,7 +85,7 @@ public class ADTreeOnDropListener implements EventListener {
 	 *	@param	movingNode	The node to be moved
 	 *	@param	toNode		The target node
 	 */
-	private void moveNode(SimpleTreeNode movingNode, SimpleTreeNode toNode)
+	private void moveNode(DefaultTreeNode<Object> movingNode, DefaultTreeNode<Object> toNode)
 	{
 		log.info(movingNode.toString() + " to " + toNode.toString());
 
@@ -94,7 +94,7 @@ public class ADTreeOnDropListener implements EventListener {
 		
 		MTreeNode toMNode = (MTreeNode) toNode.getData();
 				
-		SimpleTreeNode newParent;
+		//DefaultTreeNode newParent;
 		int index;
 		if (!toMNode.isSummary())	//	drop on a child node
 		{
@@ -103,7 +103,7 @@ public class ADTreeOnDropListener implements EventListener {
 		else						//	drop on a summary node
 		{
 			//prompt user to select insert after or drop into the summary node
-			int path[] = treeModel.getPath(treeModel.getRoot(), toNode);
+			int path[] = treeModel.getPath( toNode);
 			Treeitem toItem = tree.renderItemByPath(path);
 			
 			tree.setSelectedItem(toItem);
@@ -127,9 +127,9 @@ public class ADTreeOnDropListener implements EventListener {
 		
 	}	//	moveNode
 	
-	private void moveNode(SimpleTreeNode movingNode, SimpleTreeNode toNode, boolean moveInto)
+	private void moveNode(DefaultTreeNode<Object> movingNode, DefaultTreeNode<Object> toNode, boolean moveInto)
 	{
-		SimpleTreeNode newParent;
+		DefaultTreeNode<Object> newParent;
 		int index;	
 		//FR [ 729 ]
 		MColumn parentColumn = null;
@@ -145,7 +145,7 @@ public class ADTreeOnDropListener implements EventListener {
 			keyColumns = treeTable.getKeyColumns();
 		
 		//  remove
-		SimpleTreeNode oldParent = treeModel.getParent(movingNode);
+		DefaultTreeNode<Object> oldParent = treeModel.getParent(movingNode);
 		treeModel.removeNode(movingNode);
 		
 		//get new index
@@ -163,7 +163,7 @@ public class ADTreeOnDropListener implements EventListener {
 		//  insert
 		treeModel.addNode(newParent, movingNode, index);
 		
-		int path[] = treeModel.getPath(treeModel.getRoot(), movingNode);
+		int path[] = treeModel.getPath(movingNode);
 		Treeitem movingItem = tree.renderItemByPath(path);		
 		tree.setSelectedItem(movingItem);
 		Events.sendEvent(tree, new Event(Events.ON_SELECT, tree));
@@ -176,7 +176,7 @@ public class ADTreeOnDropListener implements EventListener {
 			MTreeNode oldMParent = (MTreeNode) oldParent.getData();
 			for (int i = 0; i < oldParent.getChildCount(); i++)
 			{
-				SimpleTreeNode nd = (SimpleTreeNode)oldParent.getChildAt(i);
+				DefaultTreeNode<Object> nd = (DefaultTreeNode<Object>)oldParent.getChildAt(i);
 				MTreeNode md = (MTreeNode) nd.getData();
 				if (parentColumn!=null
 							&& keyColumns != null) {
@@ -207,7 +207,7 @@ public class ADTreeOnDropListener implements EventListener {
 				MTreeNode newMParent = (MTreeNode) newParent.getData();
 				for (int i = 0; i < newParent.getChildCount(); i++)
 				{
-					SimpleTreeNode nd = (SimpleTreeNode)newParent.getChildAt(i);
+					DefaultTreeNode<Object> nd = (DefaultTreeNode<Object>)newParent.getChildAt(i);
 					MTreeNode md = (MTreeNode) nd.getData();
 					if (parentColumn!=null
 							&& keyColumns != null) {
@@ -248,9 +248,9 @@ public class ADTreeOnDropListener implements EventListener {
 	}
 	
 	class MenuListener implements EventListener {
-		private SimpleTreeNode movingNode;
-		private SimpleTreeNode toNode;
-		MenuListener(SimpleTreeNode movingNode, SimpleTreeNode toNode) {
+		private DefaultTreeNode movingNode;
+		private DefaultTreeNode toNode;
+		MenuListener(DefaultTreeNode<Object> movingNode, DefaultTreeNode<Object> toNode) {
 			this.movingNode = movingNode;
 			this.toNode = toNode;
 		}

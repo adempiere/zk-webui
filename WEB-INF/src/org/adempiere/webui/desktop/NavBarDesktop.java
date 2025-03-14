@@ -13,15 +13,6 @@
  *****************************************************************************/
 package org.adempiere.webui.desktop;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Serializable;
-import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.logging.Level;
-
 import org.adempiere.core.domains.models.X_AD_Menu;
 import org.adempiere.core.domains.models.X_PA_DashboardContent;
 import org.adempiere.webui.apps.ProcessDialog;
@@ -42,6 +33,7 @@ import org.adempiere.webui.session.SessionManager;
 import org.adempiere.webui.util.IServerPushCallback;
 import org.adempiere.webui.util.ServerPushTemplate;
 import org.adempiere.webui.util.UserPreference;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.ADWindow;
 import org.compiere.model.MGoal;
 import org.compiere.model.MMenu;
@@ -59,18 +51,26 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.OpenEvent;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.West;
-import org.zkoss.zkmax.zul.Portalchildren;
-import org.zkoss.zkmax.zul.Portallayout;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Html;
+import org.zkoss.zul.North;
 import org.zkoss.zul.Panel;
 import org.zkoss.zul.Panelchildren;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
+import org.zkoss.zul.Vlayout;
+import org.zkoss.zul.West;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Serializable;
+import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Level;
 
 /**
  * @author hengsin
@@ -94,7 +94,7 @@ public class NavBarDesktop extends TabbedDesktop implements MenuListener, Serial
 
 	private DashboardRunnable dashboardRunnable;
 
-	private Portallayout portalLayout;
+	private Vlayout portalLayout;
 
 	private Accordion navigationPanel;
 
@@ -124,8 +124,8 @@ public class NavBarDesktop extends TabbedDesktop implements MenuListener, Serial
         if (parent != null)
         {
         	layout.setParent(parent);
-        	layout.setWidth("100%");
-        	layout.setHeight("100%");
+			ZKUpdateUtil.setWidth(layout, "100%");
+			ZKUpdateUtil.setHeight(layout, "100%");
         	layout.setStyle("position: absolute");
         }
         else
@@ -141,11 +141,11 @@ public class NavBarDesktop extends TabbedDesktop implements MenuListener, Serial
 
         leftRegion = new West();
         layout.appendChild(leftRegion);
-        leftRegion.setWidth("300px");
+		ZKUpdateUtil.setWidth(leftRegion, "300px");
         leftRegion.setCollapsible(true);
         leftRegion.setSplittable(true);
         leftRegion.setTitle("Navigation");
-        leftRegion.setFlex(true);
+		ZKUpdateUtil.setVflex(leftRegion, "flex");
         leftRegion.addEventListener(Events.ON_OPEN, new EventListener() {			
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -160,9 +160,8 @@ public class NavBarDesktop extends TabbedDesktop implements MenuListener, Serial
         leftRegion.setOpen(!menuCollapsed);
         navigationPanel = new Accordion();
         navigationPanel.setParent(leftRegion);
-
-        navigationPanel.setWidth("100%");
-        navigationPanel.setHeight("100%");
+		ZKUpdateUtil.setWidth(navigationPanel, "100%");
+		ZKUpdateUtil.setHeight(navigationPanel, "100%");
         navigationPanel.add(pnlSide, "Application Menu");
 
         Div div = new Div();
@@ -191,8 +190,7 @@ public class NavBarDesktop extends TabbedDesktop implements MenuListener, Serial
 
         windowArea = new Center();
         windowArea.setParent(layout);
-        windowArea.setFlex(true);
-
+		ZKUpdateUtil.setVflex(windowArea, "flex");
         windowContainer.createPart(windowArea);
 
         createHomeTab();
@@ -205,14 +203,16 @@ public class NavBarDesktop extends TabbedDesktop implements MenuListener, Serial
         Tabpanel homeTab = new Tabpanel();
         windowContainer.addWindow(homeTab, Msg.getMsg(Env.getCtx(), "Home").replaceAll("&", ""), false);
 
-		portalLayout = new Portallayout();
-        portalLayout.setWidth("100%");
-        portalLayout.setHeight("100%");
+		portalLayout = new Vlayout(); //new Portallayout();
+		ZKUpdateUtil.setWidth(portalLayout, "100%");
+		ZKUpdateUtil.setHeight(portalLayout, "100%");
+
         portalLayout.setStyle("position: absolute; overflow: auto");
         homeTab.appendChild(portalLayout);
 
         // Dashboard content
-        Portalchildren portalchildren = null;
+        //Portalchildren portalchildren = null;
+		Vlayout portalchildren = null;
         int currentColumnNo = 0;
 
         String sql = "SELECT COUNT(DISTINCT COLUMNNO) "
@@ -246,11 +246,10 @@ public class NavBarDesktop extends TabbedDesktop implements MenuListener, Serial
 	        	int columnNo = rs.getInt(X_PA_DashboardContent.COLUMNNAME_ColumnNo);
 	        	if(portalchildren == null || currentColumnNo != columnNo)
 	        	{
-	        		portalchildren = new Portalchildren();
+	        		portalchildren = new Vlayout();
 	                portalLayout.appendChild(portalchildren);
-	                portalchildren.setWidth(width + "%");
+					ZKUpdateUtil.setWidth(portalchildren, width + "%");
 	                portalchildren.setStyle("padding: 5px");
-
 	                currentColumnNo = columnNo;
 	        	}
 

@@ -16,16 +16,6 @@
  *****************************************************************************/
 package org.adempiere.webui.window;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.logging.Level;
-
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Button;
 import org.adempiere.webui.component.ConfirmPanel;
@@ -40,6 +30,7 @@ import org.adempiere.webui.component.Rows;
 import org.adempiere.webui.component.Window;
 import org.adempiere.webui.panel.StatusBarPanel;
 import org.adempiere.webui.panel.WSchedule;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.MAssignmentSlot;
 import org.compiere.model.MResourceAssignment;
 import org.compiere.model.MRole;
@@ -56,6 +47,16 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Vbox;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.logging.Level;
 
 
 /**
@@ -91,7 +92,7 @@ public class InfoSchedule extends Window implements EventListener
 			setAttribute("mode", "modal");
 		else
 			setAttribute("mode", "overlapped");
-		this.setWidth("600px");
+		ZKUpdateUtil.setWidth(this, "600px");
 //		this.setHeight("600px");
 		this.setClosable(true);
 		this.setBorder("normal");
@@ -160,8 +161,8 @@ public class InfoSchedule extends Window implements EventListener
 	private void init() throws Exception
 	{
 		this.appendChild(mainLayout);
-		mainLayout.setHeight("100%");
-		mainLayout.setWidth("100%");
+		ZKUpdateUtil.setWidth(mainLayout, "100%");
+		ZKUpdateUtil.setHeight(mainLayout, "100%");
 		
 		labelResourceType.setValue(Msg.translate(Env.getCtx(), "S_ResourceType_ID"));
 		labelResource.setValue(Msg.translate(Env.getCtx(), "S_Resource_ID"));
@@ -199,9 +200,8 @@ public class InfoSchedule extends Window implements EventListener
 		//
 		
 		mainLayout.appendChild(schedulePane);
-		
-		schedulePane.setWidth("100%");
-		schedulePane.setHeight("400px");
+		ZKUpdateUtil.setWidth(schedulePane, "100%");
+		ZKUpdateUtil.setHeight(schedulePane, "400px");
 		Div div = new Div();
 		div.appendChild(confirmPanel);
 		div.appendChild(statusBar);

@@ -15,14 +15,6 @@
  *****************************************************************************/
 package org.adempiere.webui.apps.form;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-
 import org.adempiere.exceptions.ValueChangeEvent;
 import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.util.DeleteEntitiesModel;
@@ -39,6 +31,7 @@ import org.adempiere.webui.panel.ADForm;
 import org.adempiere.webui.panel.CustomForm;
 import org.adempiere.webui.panel.IFormController;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.apps.form.DeleteEntityControler;
 import org.compiere.util.CLogger;
@@ -48,13 +41,13 @@ import org.compiere.util.Msg;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Hbox;
+import org.zkoss.zul.North;
+import org.zkoss.zul.South;
 import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treecell;
 import org.zkoss.zul.Treechildren;
@@ -62,6 +55,14 @@ import org.zkoss.zul.Treecol;
 import org.zkoss.zul.Treecols;
 import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.Treerow;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
 
 /**
  *	Delete Dialog.
@@ -125,8 +126,8 @@ public class WDeleteEntity extends DeleteEntityControler
 	private void zkInit() throws Exception {
 		//Form Init()
 		form.appendChild(mainLayout);
-		mainLayout.setWidth("100%");
-		mainLayout.setHeight("100%");
+		ZKUpdateUtil.setWidth(mainLayout, "100%");
+		ZKUpdateUtil.setHeight(mainLayout, "100%");
 		clientLabel.setText(Msg.getElement(Env.getCtx(), "AD_Client_ID"));
 		tableLabel.setText(Msg.getElement(Env.getCtx(), "AD_Table_ID"));
 		definitionLabel.setText(Msg.getElement(Env.getCtx(), "AD_CleanDefinition_ID"));
@@ -147,7 +148,7 @@ public class WDeleteEntity extends DeleteEntityControler
 		north.appendChild(parameterPanel);
 		Rows rows = null;
 		Row row = null;
-		parameterLayout.setWidth("100%");		
+		ZKUpdateUtil.setWidth(parameterLayout, "100%");
 		rows = parameterLayout.newRows();
 		row = rows.newRow();
 		row.appendChild(clientLabel.rightAlign());
@@ -167,7 +168,7 @@ public class WDeleteEntity extends DeleteEntityControler
 		row.appendChild(bRefresh);
 		//	
 		centerPanel.appendChild(centerLayout);
-		centerLayout.setWidth("100%");			
+		ZKUpdateUtil.setWidth(centerLayout, "100%");
 		Center center = new Center();
 		mainLayout.appendChild(center);
 		center.setStyle("border: none");
@@ -179,14 +180,15 @@ public class WDeleteEntity extends DeleteEntityControler
 		centerPanel.appendChild(tree);
 		treeCols.appendChild(treeCol);
 		treeCols.appendChild(treeCol2);
-        tree.appendChild(treeCols); 		
-		center.setFlex(true);
+        tree.appendChild(treeCols);
+		ZKUpdateUtil.setVflex(center, "flex");
 		center.setAutoscroll(true);
 		
 		South south = new South();
 		south.appendChild(southPanel);
-		southPanel.appendChild(southLayout);		
-		southPanel.setWidth("100%");
+		southPanel.appendChild(southLayout);
+		ZKUpdateUtil.setWidth(southPanel, "100%");
+
 		mainLayout.appendChild(south);
 		Rows rows2 = southLayout.newRows();		
 		Row south_row = rows2.newRow();		

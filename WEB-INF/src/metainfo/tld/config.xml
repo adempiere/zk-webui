@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE config>
+<config>
+	<config-name>org.adempiere.webui</config-name>
+	<version>
+		<version-class>org.adempiere.webui.AdempiereWebUI</version-class>
+		<version-uid>3.9.4</version-uid>
+	</version>
+</config>

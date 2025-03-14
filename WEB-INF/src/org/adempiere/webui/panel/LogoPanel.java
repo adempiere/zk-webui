@@ -18,6 +18,7 @@
 package org.adempiere.webui.panel;
 
 import org.adempiere.webui.component.Panel;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.zkoss.zul.Image;
 
 /**
@@ -44,6 +45,6 @@ public class LogoPanel extends Panel
     {
         imgLogo = new Image("/images/logo.png");
         this.appendChild(imgLogo);
-        this.setWidth("250px");
+        ZKUpdateUtil.setWidth(this, "250px");
     }
 }

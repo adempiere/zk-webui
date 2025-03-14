@@ -16,15 +16,13 @@
  *****************************************************************************/
 package org.adempiere.webui.window;
 
-import java.io.InputStream;
-import java.util.logging.Level;
-
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Button;
 import org.adempiere.webui.component.ConfirmPanel;
 import org.adempiere.webui.component.Label;
 import org.adempiere.webui.component.Panel;
 import org.adempiere.webui.component.Window;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.MImage;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;
@@ -34,13 +32,16 @@ import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Fileupload;
 import org.zkoss.zul.Image;
+import org.zkoss.zul.North;
 import org.zkoss.zul.Separator;
+import org.zkoss.zul.South;
+
+import java.io.InputStream;
+import java.util.logging.Level;
 
 /**
  *  Base on the original Swing Image Dialog.
@@ -113,13 +114,13 @@ public class WImageDialog extends Window implements EventListener
 	 */
 	void init() throws Exception
 	{
-		this.setWidth("450px");
-		this.setHeight("550px");
+		ZKUpdateUtil.setWidth(this, "450px");
+		ZKUpdateUtil.setHeight(this, "550px");
 		this.setSizable(true);
 		
 		mainLayout.setParent(this);
-		mainLayout.setWidth("100%");
-		mainLayout.setHeight("100%");
+		ZKUpdateUtil.setWidth(mainLayout, "100%");
+		ZKUpdateUtil.setHeight(mainLayout, "100%");
 		mainLayout.setStyle("background-color: transparent");
 		
 		fileLabel.setValue(Msg.getMsg(Env.getCtx(), "SelectFile"));
@@ -135,7 +136,7 @@ public class WImageDialog extends Window implements EventListener
 		parameterPanel.appendChild((fileButton));
 		
 		Center center = new Center();
-		center.setFlex(true);
+		ZKUpdateUtil.setVflex(center, "flex");
 		center.setParent(mainLayout);
 		center.appendChild(image);
 		center.setStyle("background-color: transparent");
@@ -193,19 +194,11 @@ public class WImageDialog extends Window implements EventListener
 	{
 		//  Show File Open Dialog
 		Media imageFile = null;
-		
-		try 
-		{
-			imageFile = Fileupload.get(); 
-			
-			if (imageFile == null)
+
+		imageFile = Fileupload.get();
+
+		if (imageFile == null)
 				return;
-		}
-		catch (InterruptedException e) 
-		{
-			log.warning(e.getLocalizedMessage());
-			return;
-		}
 
 		String fileName = imageFile.getName();
 		

@@ -24,16 +24,17 @@ import org.adempiere.webui.component.Window;
 import org.adempiere.webui.event.WTableModelEvent;
 import org.adempiere.webui.event.WTableModelListener;
 import org.adempiere.webui.panel.StatusBarPanel;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.grid.CreateFrom;
 import org.compiere.util.Trx;
 import org.compiere.util.TrxRunnable;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
+import org.zkoss.zul.North;
+import org.zkoss.zul.South;
 import org.zkoss.zul.Separator;
 
 /**
@@ -107,13 +108,12 @@ public class WCreateFromWindow extends Window implements EventListener, WTableMo
 
 		southPanel.appendChild(new Separator());
 		southPanel.appendChild(statusBar);
-		
-		setWidth("750px");
-		setHeight("550px");
+		ZKUpdateUtil.setWidth(this, "750px");
+		ZKUpdateUtil.setHeight(this, "550px");
 		setSizable(true);
 		setBorder("normal");
-		contentPane.setWidth("100%");
-		contentPane.setHeight("100%");
+		ZKUpdateUtil.setWidth(contentPane, "100%");
+		ZKUpdateUtil.setHeight(contentPane, "100%");
 	}
 
 	public void onEvent(Event e) throws Exception

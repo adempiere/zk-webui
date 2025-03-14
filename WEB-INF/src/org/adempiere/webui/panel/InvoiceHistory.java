@@ -13,15 +13,6 @@
  *****************************************************************************/
 package org.adempiere.webui.panel;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.Vector;
-import java.util.logging.Level;
-
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.ConfirmPanel;
 import org.adempiere.webui.component.Label;
@@ -34,6 +25,7 @@ import org.adempiere.webui.component.Tabpanels;
 import org.adempiere.webui.component.Tabs;
 import org.adempiere.webui.component.WListbox;
 import org.adempiere.webui.component.Window;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.MPriceList;
 import org.compiere.util.CLogMgt;
 import org.compiere.util.CLogger;
@@ -44,10 +36,19 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
+import org.zkoss.zul.North;
+import org.zkoss.zul.South;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Vector;
+import java.util.logging.Level;
 
 /**
  * Price History for BPartner/Product
@@ -81,8 +82,8 @@ public class InvoiceHistory extends Window implements EventListener
 		m_M_Product_ID = M_Product_ID;
 		m_M_Warehouse_ID = M_Warehouse_ID;
 		m_M_AttributeSetInstance_ID = M_AttributeSetInstance_ID;
-		setHeight("600px");
-		setWidth("900px");
+		ZKUpdateUtil.setHeight(this, "600px");
+		ZKUpdateUtil.setWidth(this, "900px");
 		setSizable(true);
 		try
 		{
@@ -155,30 +156,30 @@ public class InvoiceHistory extends Window implements EventListener
 		
 		if (m_M_Product_ID != 0)
 			tabs.appendChild(new Tab(Msg.getMsg(Env.getCtx(), "ATP")));
-		
-		pricePane.setHeight("100%");
+
+		ZKUpdateUtil.setHeight(pricePane,"100%");
 		pricePane.appendChild(m_tablePrice);
 		tabpanels.appendChild(pricePane);
-		
-		orderPricePane.setHeight("100%");
+
+		ZKUpdateUtil.setHeight(orderPricePane,"100%");
 		orderPricePane.appendChild(m_tableOrderPrice);
 		tabpanels.appendChild(orderPricePane);
-		
-		reservedPane.setHeight("100%");
+
+		ZKUpdateUtil.setHeight(reservedPane,"100%");
 		reservedPane.appendChild(m_tableReserved);
 		tabpanels.appendChild(reservedPane);
-		
-		orderedPane.setHeight("100%");
+
+		ZKUpdateUtil.setHeight(orderedPane,"100%");
 		orderedPane.appendChild(m_tableOrdered);
 		tabpanels.appendChild(orderedPane);
-		
-		unconfirmedPane.setHeight("100%");
+
+		ZKUpdateUtil.setHeight(unconfirmedPane,"100%");
 		unconfirmedPane.appendChild(m_tableUnconfirmed);
 		tabpanels.appendChild(unconfirmedPane);
 		
 		if (m_M_Product_ID != 0)
 		{
-			atpPane.setHeight("100%");
+			ZKUpdateUtil.setHeight(atpPane,"100%");
 			atpPane.appendChild(m_tableAtp);
 			tabpanels.appendChild(atpPane);
 		}
@@ -188,8 +189,8 @@ public class InvoiceHistory extends Window implements EventListener
 		confirmPanel.addActionListener(this);
         
 		Borderlayout borderlayout = new Borderlayout();
-        borderlayout.setWidth("100%");
-        borderlayout.setHeight("100%");
+		ZKUpdateUtil.setHeight(borderlayout, "100%");
+		ZKUpdateUtil.setWidth(borderlayout, "100%");
         borderlayout.setStyle("border: none; position: relative");
 		this.appendChild(borderlayout);
 		
@@ -201,7 +202,7 @@ public class InvoiceHistory extends Window implements EventListener
 		Center center = new Center();
 		center.setStyle("border: none");
 		center.setAutoscroll(true);
-        center.setFlex(true);
+		ZKUpdateUtil.setVflex(center, "flex");
 		borderlayout.appendChild(center);
 		center.appendChild(tabbox);
 		

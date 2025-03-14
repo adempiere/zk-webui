@@ -21,10 +21,6 @@
 
 package org.adempiere.webui.apps.form;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import org.adempiere.controller.form.BOMDropController;
 import org.adempiere.controller.form.BOMDropForm;
 import org.adempiere.exceptions.ValueChangeEvent;
@@ -44,10 +40,10 @@ import org.adempiere.webui.editor.WTableDirEditor;
 import org.adempiere.webui.editor.WYesNoEditor;
 import org.adempiere.webui.panel.ADForm;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.model.MLookup;
 import org.compiere.process.ProcessInfo;
-//import org.compiere.model.MProduct;
 import org.compiere.swing.CEditor;
 import org.compiere.util.CLogger;
 import org.compiere.util.DisplayType;
@@ -57,16 +53,20 @@ import org.zkoss.zk.ui.HtmlBasedComponent;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
 import org.zkoss.zul.Caption;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Groupbox;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.North;
 import org.zkoss.zul.Radiogroup;
 import org.zkoss.zul.Separator;
+import org.zkoss.zul.South;
 import org.zkoss.zul.Vbox;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *	Drop BOM
@@ -145,25 +145,24 @@ public class WBOMDrop extends ADForm implements BOMDropForm, EventListener, Valu
 		if (getProcessInfo().getTable_ID() != 0)
 		{
 			// In a dialog, set the height and width
-			this.setHeight(WINDOW_HEIGHT + "px");
-			this.setWidth(WINDOW_WIDTH + "px");
+			ZKUpdateUtil.setWidth(this, WINDOW_HEIGHT + "px");
+			ZKUpdateUtil.setHeight(this, WINDOW_WIDTH + "px");
 		}
 		
 		Panel mainPanel = new Panel();
-		mainPanel.setHeight("100%");		
+		ZKUpdateUtil.setHeight(mainPanel, "100%");
 		this.appendChild(mainPanel);
 		this.setBorder("normal");
 		
 		Borderlayout mainLayout = new Borderlayout();
 		mainPanel.appendChild(mainLayout);
-		mainLayout.setWidth("100%");
-		mainLayout.setHeight("100%");
-
-		bomItemsHeader.setHeight("15px"); // Hardcoded
-		bomItemsHeader.setWidth("100%");
+		ZKUpdateUtil.setWidth(mainLayout, "100%");
+		ZKUpdateUtil.setHeight(mainLayout, "100%");
+		ZKUpdateUtil.setWidth(bomItemsHeader, "100%");
+		ZKUpdateUtil.setHeight(bomItemsHeader, "15px");
 		North north = new North();
 		Vbox northBox = new Vbox();
-		northBox.setWidth("100%");
+		ZKUpdateUtil.setWidth(northBox, "100%");
 		northBox.appendChild(selectBOMPanel);
 		northBox.appendChild(bomItemsHeader);
 		north.appendChild(northBox);
@@ -179,7 +178,7 @@ public class WBOMDrop extends ADForm implements BOMDropForm, EventListener, Valu
 		Center center = new Center();
 		center.appendChild(selectBOMItemsPanel); 
 		center.setBorder("none");
-		center.setFlex(true);
+		ZKUpdateUtil.setVflex(center, "flex");
 		center.setAutoscroll(true);
 		mainLayout.appendChild(center);
 
@@ -401,7 +400,7 @@ public class WBOMDrop extends ADForm implements BOMDropForm, EventListener, Valu
 	public CEditor addCheck(Object feature, String itemType, String name) {
 		
 		boxBOMItem = new Hbox();
-		boxBOMItem.setWidth("100%");
+		ZKUpdateUtil.setWidth(boxBOMItem, "100%");
 		boxBOMItem.setWidths("50%,25%,25%");
 
 		if (ITEMTYPE_CHECK.equals(itemType))
@@ -473,7 +472,7 @@ public class WBOMDrop extends ADForm implements BOMDropForm, EventListener, Valu
 
 		WNumberEditor qtyEditor = new WNumberEditor("qty", false, false, true, DisplayType.Quantity, "");
 		qtyEditor.setValue(qty);
-		((HtmlBasedComponent) qtyEditor.getComponent()).setWidth("100%");
+		ZKUpdateUtil.setWidth(((HtmlBasedComponent) qtyEditor.getComponent()), "100%");
 		boxBOMItem.appendChild(qtyEditor.getComponent());
 		return qtyEditor;
 		
@@ -500,7 +499,7 @@ public class WBOMDrop extends ADForm implements BOMDropForm, EventListener, Valu
         {
 			uomEditor.setValue(c_uom_id);
 			uomEditor.addValueChangeListener(controller);
-			((HtmlBasedComponent) uomEditor.getComponent()).setWidth("100%");
+			ZKUpdateUtil.setWidth(((HtmlBasedComponent) uomEditor.getComponent()), "100%");
 			boxBOMItem.appendChild(uomEditor.getComponent());
         }
 		return uomEditor;
@@ -518,7 +517,7 @@ public class WBOMDrop extends ADForm implements BOMDropForm, EventListener, Valu
 	public void setBOMListHeaders(String checkName, String productName, String qtyName, String uomName) {
 
 		bomItemsHeader.getChildren().clear();
-		bomItemsHeader.setWidth("100%");
+		ZKUpdateUtil.setWidth(bomItemsHeader, "100%");
 		bomItemsHeader.setWidths("10%, 40%,25%,25%");
 		
 		Label selectLabel = new Label(checkName);

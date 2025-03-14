@@ -16,17 +16,6 @@
  *****************************************************************************/
 package org.adempiere.webui.window;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Properties;
-import java.util.logging.Level;
-
 import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.pdf.ITextDocument;
 import org.adempiere.webui.apps.AEnv;
@@ -43,6 +32,7 @@ import org.adempiere.webui.event.ZoomEvent;
 import org.adempiere.webui.panel.StatusBarPanel;
 import org.adempiere.webui.report.HTMLExtension;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.GridField;
 import org.compiere.model.MArchive;
 import org.compiere.model.MClient;
@@ -71,9 +61,8 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Fileupload;
@@ -81,10 +70,22 @@ import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Iframe;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Menuitem;
+import org.zkoss.zul.North;
 import org.zkoss.zul.Separator;
 import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Vbox;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Properties;
+import java.util.logging.Level;
 
 
 /**
@@ -216,7 +217,7 @@ public class ZkReportViewer extends Window implements EventListener {
 		this.appendChild(layout);
 		this.setStyle("width: 100%; height: 100%; position: absolute");
 
-		toolBar.setHeight("100%");
+		ZKUpdateUtil.setHeight(toolBar,"100%");
 		
 		previewType.setMold("select");
 		previewType.appendItem("PDF", "PDF");
@@ -363,20 +364,20 @@ public class ZkReportViewer extends Window implements EventListener {
 		North north = new North();
 		north.setParent(layout);
 		north.setCollapsible(false);
-		north.setFlex(true);
+		ZKUpdateUtil.setVflex(north, "flex");
 
 		Vbox box = new Vbox();
-		box.setWidth("100%");
+		ZKUpdateUtil.setWidth(box, "100%");
 		toolBar.setParent(box);
 		box.setParent(north);
 
 		Center center = new Center();
-		center.setFlex(true);
+		ZKUpdateUtil.setVflex(center, "flex");
 		layout.appendChild(center);
 		iframe = new Iframe();
 		iframe.setId("reportFrame");
-		iframe.setHeight("100%");
-		iframe.setWidth("100%");
+		ZKUpdateUtil.setWidth(iframe, "100%");
+		ZKUpdateUtil.setHeight(iframe, "100%");
 		iframe.addEventListener(Events.ON_CLICK, this);
 		iframe.addEventListener(Events.ON_RIGHT_CLICK, this);
 		center.appendChild(iframe);
@@ -882,7 +883,7 @@ public class ZkReportViewer extends Window implements EventListener {
 		{
 			winExportFile = new Window();
 			winExportFile.setTitle(Msg.getMsg(Env.getCtx(), "Export") + ": " + getTitle());
-			winExportFile.setWidth("450px");
+			ZKUpdateUtil.setWidth(winExportFile, "450px");
 			winExportFile.setClosable(true);
 			winExportFile.setBorder("normal");
 			winExportFile.setStyle("position:absolute");
@@ -915,9 +916,9 @@ public class ZkReportViewer extends Window implements EventListener {
 			div.appendChild(new Label(Msg.getMsg(Env.getCtx(), "FilesOfType")));
 			hb.appendChild(div);
 			hb.appendChild(cboType);
-			cboType.setWidth("100%");
+			ZKUpdateUtil.setWidth(cboType, "100%");
 			Vbox vb = new Vbox();
-			vb.setWidth("390px");
+			ZKUpdateUtil.setWidth(vb, "390px%");
 			winExportFile.appendChild(vb);
 			vb.appendChild(hb);
 			vb.appendChild(confirmPanel);	
@@ -945,7 +946,7 @@ public class ZkReportViewer extends Window implements EventListener {
 			if (file == null)
 				return;
 		}
-		catch (InterruptedException e)
+		catch (Exception e)
 		{
 			log.warning(e.getLocalizedMessage());
 			return;
@@ -1288,16 +1289,16 @@ public class ZkReportViewer extends Window implements EventListener {
 					//synchrous
 					//worker.run();
 					processModalDialog.runProcess();
-					//	
+					//
 					ReportEngine re = ReportEngine.get(Env.getCtx(), pi);
-					//	
+					//
 					if(re != null) {
 						m_reportEngine.setQuery(re.getQuery());
 					}
-					//	
+					//
 					return true;
 				}
-			} catch (InterruptedException e) {
+			} catch (Exception e) {
 				log.severe(e.getLocalizedMessage());
 			}
 		}

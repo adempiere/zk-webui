@@ -16,22 +16,26 @@
  *****************************************************************************/
 package org.adempiere.webui.window;
 
-import java.util.logging.*;
-
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.ConfirmPanel;
 import org.adempiere.webui.component.Textbox;
 import org.adempiere.webui.component.Window;
-import org.compiere.model.*;
-import org.compiere.util.*;
+import org.adempiere.webui.util.ZKUpdateUtil;
+import org.compiere.model.MChat;
+import org.compiere.model.MChatEntry;
+import org.compiere.util.CLogger;
+import org.compiere.util.Env;
+import org.compiere.util.Msg;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Html;
+import org.zkoss.zul.North;
+import org.zkoss.zul.South;
+
+import java.util.logging.Level;
 
 /**
  * 	Application Chat
@@ -125,7 +129,7 @@ public class WChat extends Window implements EventListener
 		historyDiv.appendChild(historyText);
 		north.appendChild(historyDiv);
 		north.setAutoscroll(true);
-		north.setHeight("150px");
+		ZKUpdateUtil.setHeight(north,"150px");
 
 		Center center = new Center();
 		center.appendChild(newText);
@@ -135,7 +139,7 @@ public class WChat extends Window implements EventListener
 		//
 		//	South
 		South south = new South();
-		south.setHeight("50px");
+		ZKUpdateUtil.setHeight(south,"50px");
 		south.setStyle("border: none; margin-top: 10px");
 		south.appendChild(confirmPanel);
 		mainPanel.appendChild(south);

@@ -17,12 +17,12 @@
 
 package org.adempiere.webui.panel;
 
-import java.net.URI;
 import org.adempiere.webui.LayoutUtils;
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Borderlayout;
 import org.adempiere.webui.component.Label;
 import org.adempiere.webui.component.Panel;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.WRecordInfo;
 import org.compiere.apps.IStatusBar;
 import org.compiere.model.DataStatusEvent;
@@ -34,11 +34,14 @@ import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.North;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Hbox;
+import org.zkoss.zul.Hlayout;
 import org.zkoss.zul.Image;
+import org.zkoss.zul.North;
 import org.zkoss.zul.Vbox;
+
+import java.net.URI;
 
 /**
  * This class is based on org.compiere.apps.StatusBar written by Jorg Janke.
@@ -70,7 +73,7 @@ public class StatusBarPanel extends Panel implements EventListener, IStatusBar
 
 	private String m_text;
 
-	private Div east;
+	private Hlayout east;
 
 	private Div west;
 
@@ -107,8 +110,8 @@ public class StatusBarPanel extends Panel implements EventListener, IStatusBar
         statusLine = new Label();
         
         Hbox hbox = new Hbox();
-        hbox.setWidth("100%");
-        hbox.setHeight("100%");
+		ZKUpdateUtil.setWidth(hbox, "100%");
+		ZKUpdateUtil.setHeight(hbox, "100%");
         
         URI uri = AEnv.getImage("errormsg.png");
     	image.setSrc(uri.toString());
@@ -116,23 +119,24 @@ public class StatusBarPanel extends Panel implements EventListener, IStatusBar
     	hbox.appendChild(image);
     	image.setVisible(false);
         
-        if (embedded)
+        /*if (embedded)
         	hbox.setWidths("5%,80%,10%");
         else
-        	hbox.setWidths("5%,50%,40%");
+        	hbox.setWidths("5%,50%,40%");*/
         
         west = new Div();
         west.setStyle("text-align: left; ");
         LayoutUtils.addSclass("status-db", statusLine);
         west.appendChild(statusLine);
         Vbox vbox = new Vbox();
+		ZKUpdateUtil.setHflex(vbox, "2");
         vbox.setPack("center");
         LayoutUtils.addSclass("status", vbox);
         vbox.appendChild(west);
         hbox.appendChild(vbox);
 
-        east = new Div();
-        east.setWidth("100%");
+        east = new Hlayout();
+		//ZKUpdateUtil.setHflex(east, "1");
         east.setStyle("text-align: right; ");
         if (!embedded)
         {
@@ -145,11 +149,19 @@ public class StatusBarPanel extends Panel implements EventListener, IStatusBar
         LayoutUtils.addSclass("status-db", statusDB);
         if (!embedded)
         	LayoutUtils.addSclass("status-info", infoLine);
-        vbox = new Vbox();
+		org.zkoss.zul.Vlayout vlayout = new org.zkoss.zul.Vlayout();
+		vlayout.setClientAttribute("align", "right");
+		LayoutUtils.addSclass("status", vlayout);
+		vlayout.appendChild(east);
+		LayoutUtils.addSclass("status-vbox", vlayout);
+		LayoutUtils.addSclass("status-vbox-east", vlayout);
+		ZKUpdateUtil.setHflex(vlayout, "1");
+		hbox.appendChild(vlayout);
+        /*vbox = new Vbox();
         vbox.setPack("center");
         LayoutUtils.addSclass("status", vbox);
         vbox.appendChild(east);
-        hbox.appendChild(vbox);
+        hbox.appendChild(vbox);*/
 
          this.appendChild(hbox);
 
@@ -217,18 +229,19 @@ public class StatusBarPanel extends Panel implements EventListener, IStatusBar
     		this.setSclass("message-error");
     		statusLine.setSclass("message-error-text");
     		image.setVisible(true);
-    		this.setHeight("50px");
+			ZKUpdateUtil.setHeight(this,"50px");
     		if(north !=null)
-    		north.setHeight("83px");
+				ZKUpdateUtil.setHeight(north,"83px");
     	}
     	else
     	{
     		this.setSclass("message-info");
     		statusLine.setSclass("message-info-text");
     		image.setVisible(false);
-    		this.setHeight("25px");
+			ZKUpdateUtil.setHeight(this,"25px");
     		if(north !=null)
-    			north.setHeight("68px");
+				ZKUpdateUtil.setHeight(north,"68px");
+
     	}
     	
     	statusLine.setTooltiptext(text);

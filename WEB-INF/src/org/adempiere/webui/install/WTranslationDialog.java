@@ -13,9 +13,6 @@
  *****************************************************************************/
 package org.adempiere.webui.install;
 
-import java.util.ArrayList;
-import java.util.logging.Level;
-
 import org.adempiere.webui.LayoutUtils;
 import org.adempiere.webui.component.Button;
 import org.adempiere.webui.component.FolderBrowser;
@@ -32,6 +29,7 @@ import org.adempiere.webui.panel.CustomForm;
 import org.adempiere.webui.panel.IFormController;
 import org.adempiere.webui.panel.StatusBarPanel;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.install.Translation;
 import org.compiere.install.TranslationController;
@@ -41,10 +39,13 @@ import org.compiere.util.Msg;
 import org.compiere.util.ValueNamePair;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
+import org.zkoss.zul.South;
+
+import java.util.ArrayList;
+import java.util.logging.Level;
 
 public class WTranslationDialog extends TranslationController implements IFormController, EventListener {
 
@@ -59,8 +60,8 @@ public class WTranslationDialog extends TranslationController implements IFormCo
 			zkInit();
 			dynInit();
 			Borderlayout contentLayout = new Borderlayout();
-			contentLayout.setWidth("100%");
-			contentLayout.setHeight("100%");
+			ZKUpdateUtil.setWidth(contentLayout, "100%");
+			ZKUpdateUtil.setHeight(contentLayout, "100%");
 			form.appendChild(contentLayout);
 			Center center = new Center();
 			contentLayout.appendChild(center);
@@ -70,7 +71,7 @@ public class WTranslationDialog extends TranslationController implements IFormCo
 			contentLayout.appendChild(south);
 			south.appendChild(statusBar);
 			LayoutUtils.addSclass("status-border", statusBar);
-			south.setHeight("22px");
+			ZKUpdateUtil.setHeight(south,"22px");
 		}
 		catch(Exception e)
 		{

@@ -16,18 +16,6 @@
  *****************************************************************************/
 package org.adempiere.webui.window;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.logging.Level;
-
 import org.adempiere.webui.LayoutUtils;
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Button;
@@ -55,7 +43,20 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Div;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Timebox;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.logging.Level;
 
 /**
  *	Resource Assignment Dialog
@@ -66,7 +67,7 @@ import org.zkoss.zul.Timebox;
  *  Zk Port
  *  @author Low Heng Sin
  */
-public class WAssignmentDialog extends Window implements EventListener
+public class WAssignmentDialog extends Window implements EventListener<Event>
 {
 	/**
 	 * 
@@ -222,7 +223,7 @@ public class WAssignmentDialog extends Window implements EventListener
 		//	Set Resource
 		int S_Resource_ID = m_mAssignment.getS_Resource_ID();
 		
-		for (ListItem item : fResource.getItems()) {
+		for (Listitem item : fResource.getItems()) {
 			if ( (Integer)item.getValue() == S_Resource_ID) {
 				fResource.setSelectedItem(item);
 				break;

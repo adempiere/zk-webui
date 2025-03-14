@@ -18,8 +18,6 @@
 
 package org.eevolution.form;
 
-import java.util.ArrayList;
-
 import org.adempiere.controller.SmallViewEditable;
 import org.adempiere.webui.component.Column;
 import org.adempiere.webui.component.Columns;
@@ -32,12 +30,15 @@ import org.adempiere.webui.editor.WEditor;
 import org.adempiere.webui.editor.WEditorPopupMenu;
 import org.adempiere.webui.editor.WebEditorFactory;
 import org.adempiere.webui.event.ContextMenuListener;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.GridField;
 import org.compiere.swing.CEditor;
 import org.eevolution.grid.BrowserSearch;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Row;
+
+import java.util.ArrayList;
 
 /**
  * @author victor.perez@e-evolution.com , eEvolution Consultants
@@ -103,9 +104,9 @@ public class WBrowserSearch extends BrowserSearch implements SmallViewEditable {
     		int percent = 100 / colN;
     		for(int i = 0; i < colN; i++) {
     			Column col = new Column();
-	        	col.setWidth((i == 0
-	        			? ((int) percent / 2)
-	        			: percent) + "%");
+				ZKUpdateUtil.setWidth(col, (i == 0
+						? ((int) percent / 2)
+						: percent) + "%");
 	        	columns.appendChild(col);
 	    	}
     	}

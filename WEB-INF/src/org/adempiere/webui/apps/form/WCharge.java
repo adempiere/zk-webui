@@ -21,8 +21,6 @@
 
 package org.adempiere.webui.apps.form;
 
-import java.util.logging.Level;
-
 import org.adempiere.webui.component.Button;
 import org.adempiere.webui.component.Checkbox;
 import org.adempiere.webui.component.ConfirmPanel;
@@ -39,6 +37,7 @@ import org.adempiere.webui.panel.ADForm;
 import org.adempiere.webui.panel.CustomForm;
 import org.adempiere.webui.panel.IFormController;
 import org.adempiere.webui.session.SessionManager;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.apps.form.Charge;
 import org.compiere.util.CLogger;
@@ -49,11 +48,13 @@ import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
+import org.zkoss.zul.North;
 import org.zkoss.zul.Separator;
+import org.zkoss.zul.South;
+
+import java.util.logging.Level;
 
 /**
  * This class represents the Custom Form for generating charges
@@ -248,8 +249,8 @@ public class WCharge extends Charge implements IFormController, EventListener
     {
     	Borderlayout borderlayout = new Borderlayout();
     	borderlayout.setStyle("position: absolute");
-    	borderlayout.setWidth("100%");
-    	borderlayout.setHeight("100%");
+        ZKUpdateUtil.setWidth(borderlayout, "100%");
+        ZKUpdateUtil.setHeight(borderlayout, "100%");
     	m_pnlAccount.appendChild(borderlayout);
 
 		North north = new North();
@@ -261,7 +262,7 @@ public class WCharge extends Charge implements IFormController, EventListener
 
 		Center center = new Center();
 		center.setBorder("none");
-		center.setFlex(true);
+        ZKUpdateUtil.setVflex(center, "flex");
 		center.setAutoscroll(true);
 		borderlayout.appendChild(center);
 		center.appendChild(m_tblData);

@@ -17,31 +17,7 @@
 
 package org.adempiere.webui.panel;
 
-/******************************************************************************
- * Product: Adempiere ERP & CRM Smart Business Solution                       *
- * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved.                *
- * This program is free software; you can redistribute it and/or modify it    *
- * under the terms version 2 of the GNU General Public License as published   *
- * by the Free Software Foundation. This program is distributed in the hope   *
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
- * See the GNU General Public License for more details.                       *
- * You should have received a copy of the GNU General Public License along    *
- * with this program; if not, write to the Free Software Foundation, Inc.,    *
- * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
- * For the text or an alternative of this public license, you may reach us    *
- * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA 95054, USA        *
- * or via info@compiere.org or http://www.compiere.org/license.html           *
- *****************************************************************************/
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Vector;
-import java.util.logging.Level;
-
+import org.adempiere.exceptions.ValueChangeListener;
 import org.adempiere.webui.apps.AEnv;
 import org.adempiere.webui.component.Button;
 import org.adempiere.webui.component.Checkbox;
@@ -62,7 +38,7 @@ import org.adempiere.webui.component.WListbox;
 import org.adempiere.webui.editor.WPAttributeEditor;
 import org.adempiere.webui.editor.WSearchEditor;
 import org.adempiere.webui.editor.WTableDirEditor;
-import org.adempiere.exceptions.ValueChangeListener;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.apps.search.Info_Column;
 import org.compiere.minigrid.ColumnInfo;
 import org.compiere.minigrid.IDColumn;
@@ -84,9 +60,19 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
+import org.zkoss.zul.North;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Vector;
+import java.util.logging.Level;
 
 /**
  * Search Product and return selection
@@ -100,7 +86,7 @@ import org.zkoss.zkex.zul.North;
  * @author Michael McKay, ADEMPIERE-72 VLookup and Info Window improvements
  * 	<li>https://adempiere.atlassian.net/browse/ADEMPIERE-72
  */
-public class InfoProductPanel extends InfoPanel implements EventListener, ValueChangeListener
+public class InfoProductPanel extends InfoPanel implements EventListener<Event>, ValueChangeListener
 {
 	/**
 	 * 
@@ -175,38 +161,45 @@ public class InfoProductPanel extends InfoPanel implements EventListener, ValueC
 
 	/**
 	 *	Standard Constructor
-	 * 	@param WindowNo window no
+	 * 	@param windowNo window no
 	 * 	@param M_Warehouse_ID warehouse
 	 * 	@param M_PriceList_ID price list
 	 *  @param record_id The record ID to find
 	 *  @param value Query Value or Name if enclosed in @
-	 * 	@param multiSelection multiple selections
-	 *  @param saveResults  True if results will be saved, false for info only
+	 * 	@param multipleSelection multiple selections
 	 * 	@param whereClause where clause
 	 */
 	public InfoProductPanel(int windowNo,
-		int M_Warehouse_ID, int M_PriceList_ID, int record_id, String value,
-		boolean multipleSelection, String whereClause)
-	{
+							int M_Warehouse_ID,
+							int M_PriceList_ID,
+							int record_id,
+							String value,
+							boolean multipleSelection,
+							String whereClause) {
 		this(windowNo, true, M_Warehouse_ID, M_PriceList_ID, record_id, value, multipleSelection, true, whereClause);
 	}
 
 	/**
 	 *	Standard Constructor
-	 * 	@param WindowNo window no
+	 * 	@param windowNo window no
 	 * 	@param M_Warehouse_ID warehouse
 	 * 	@param M_PriceList_ID price list
 	 *  @param record_id The record ID to find
 	 *  @param value Query Value or Name if enclosed in @
-	 * 	@param multiSelection multiple selections
+	 * 	@param multipleSelection multiple selections
 	 *  @param saveResults  True if results will be saved, false for info only
 	 * 	@param whereClause where clause
 	 *  @param modal True if the column has a lookup - open modal
 	 */
-	public InfoProductPanel(int windowNo, boolean modal,
-		int M_Warehouse_ID, int M_PriceList_ID, int record_id, String value,
-		boolean multipleSelection, boolean saveResults, String whereClause)
-	{
+	public InfoProductPanel(int windowNo,
+							boolean modal,
+							int M_Warehouse_ID,
+							int M_PriceList_ID,
+							int record_id,
+							String value,
+							boolean multipleSelection,
+							boolean saveResults,
+							String whereClause) {
 		super (windowNo, modal, "p", "M_Product_ID",multipleSelection, saveResults, whereClause);
 		log.info(value + ", Wh=" + M_Warehouse_ID + ", PL=" + M_PriceList_ID + ", WHERE=" + whereClause);
 		setTitle(Util.cleanAmp(Msg.getMsg(Env.getCtx(), "InfoProduct")));
@@ -348,7 +341,7 @@ public class InfoProductPanel extends InfoPanel implements EventListener, ValueC
 		fAS_ID.getComponent().setAttribute("zk_component_prefix", "Lookup_");
 		fAS_ID.getComponent().setAttribute("IsDynamic", "False");
 		fAS_ID.getComponent().setAttribute("fieldName", "fAS_ID");
-		fAS_ID.getComponent().setWidth("200px");
+		ZKUpdateUtil.setWidth(fAS_ID.getComponent(), "200px");
 		
 		MPAttributeLookup mpaLookup = new MPAttributeLookup(Env.getCtx(), p_WindowNo);
 		fASI_ID = new WPAttributeEditor(null, false, false, true, p_WindowNo, 
@@ -358,7 +351,7 @@ public class InfoProductPanel extends InfoPanel implements EventListener, ValueC
 		fASI_ID.getComponent().setAttribute("zk_component_prefix", "Lookup_");
 		fASI_ID.getComponent().setAttribute("IsDynamic", "False");
 		fASI_ID.getComponent().setAttribute("fieldName", "fASI_ID");
-		fASI_ID.getComponent().setWidth("200px");
+		ZKUpdateUtil.setWidth(fAS_ID.getComponent(), "200px");
 
 		fWarehouse_ID = new WTableDirEditor("M_Warehouse_ID", false, false, true,
 				MLookupFactory.get (Env.getCtx(), p_WindowNo, 0, 
@@ -378,7 +371,7 @@ public class InfoProductPanel extends InfoPanel implements EventListener, ValueC
 		fVendor_ID.getComponent().setAttribute("zk_component_prefix", "Lookup_");
 		fVendor_ID.getComponent().setAttribute("IsDynamic", "False");
 		fVendor_ID.getComponent().setAttribute("fieldName", "fVendor_ID");
-		fVendor_ID.getComponent().setWidth("200px");
+		ZKUpdateUtil.setWidth(fVendor_ID.getComponent(), "200px");
 		
 		// Product Attribute Instance
 		m_PAttributeButton = confirmPanel.createButton(ConfirmPanel.A_PATTRIBUTE);
@@ -401,7 +394,6 @@ public class InfoProductPanel extends InfoPanel implements EventListener, ValueC
 		initComponents();
 		
 		Rows rows = new Rows();
-
 		Row row = new Row();
 		rows.appendChild(row);
 		row.setSpans("1, 1, 1, 1, 1, 1");
@@ -526,8 +518,7 @@ public class InfoProductPanel extends InfoPanel implements EventListener, ValueC
         vendorTbl.setMultiSelection(false);
         vendorTbl.autoSize();
         vendorTbl.setAttribute("zk_component_ID", "Lookup_Data_Vendor");
-
-        detailTabBox.setHeight("100%");
+		ZKUpdateUtil.setHeight(detailTabBox,"100%");
         Tabpanels tabPanels = new Tabpanels();
 		detailTabBox.appendChild(tabPanels);
 		Tabs tabs = new Tabs();
@@ -537,7 +528,7 @@ public class InfoProductPanel extends InfoPanel implements EventListener, ValueC
 		tab.addEventListener(Events.ON_SELECT, this);
 		tabs.appendChild(tab);
 		Tabpanel desktopTabPanel = new Tabpanel();
-		desktopTabPanel.setHeight("100%");
+		ZKUpdateUtil.setHeight(desktopTabPanel,"100%");
 		desktopTabPanel.appendChild(warehouseTbl);
 		tabPanels.appendChild(desktopTabPanel);
 
@@ -545,9 +536,9 @@ public class InfoProductPanel extends InfoPanel implements EventListener, ValueC
 		tab.addEventListener(Events.ON_SELECT, this);
 		tabs.appendChild(tab);
 		desktopTabPanel = new Tabpanel();
-		desktopTabPanel.setHeight("100%");
-		fieldDescription.setWidth("99%");
-		fieldDescription.setHeight("99%");
+		ZKUpdateUtil.setHeight(desktopTabPanel, "100%");
+		ZKUpdateUtil.setWidth(fieldDescription, "99%");
+		ZKUpdateUtil.setHeight(fieldDescription, "99%");
 		desktopTabPanel.appendChild(fieldDescription);
 		tabPanels.appendChild(desktopTabPanel);
 
@@ -555,9 +546,9 @@ public class InfoProductPanel extends InfoPanel implements EventListener, ValueC
 		tab.addEventListener(Events.ON_SELECT, this);
 		tabs.appendChild(tab);
 		desktopTabPanel = new Tabpanel();
-		desktopTabPanel.setHeight("100%");
-		fieldPAttributes.setWidth("99%");
-		fieldPAttributes.setHeight("99%");
+		ZKUpdateUtil.setHeight(desktopTabPanel, "100%");
+		ZKUpdateUtil.setWidth(fieldPAttributes, "99%");
+		ZKUpdateUtil.setHeight(fieldPAttributes, "99%");
 		desktopTabPanel.appendChild(fieldPAttributes);
 		tabPanels.appendChild(desktopTabPanel);
 		 
@@ -565,7 +556,7 @@ public class InfoProductPanel extends InfoPanel implements EventListener, ValueC
 		tab.addEventListener(Events.ON_SELECT, this);
 		tabs.appendChild(tab);
 		desktopTabPanel = new Tabpanel();
-		desktopTabPanel.setHeight("100%");
+		ZKUpdateUtil.setHeight(desktopTabPanel,"100%");
 		desktopTabPanel.appendChild(substituteTbl);
 		tabPanels.appendChild(desktopTabPanel);
 
@@ -573,7 +564,7 @@ public class InfoProductPanel extends InfoPanel implements EventListener, ValueC
 		tab.addEventListener(Events.ON_SELECT, this);
 		tabs.appendChild(tab);
 		desktopTabPanel = new Tabpanel();
-		desktopTabPanel.setHeight("100%");
+		ZKUpdateUtil.setHeight(desktopTabPanel,"100%");
 		desktopTabPanel.appendChild(relatedTbl);
 		tabPanels.appendChild(desktopTabPanel);
 
@@ -581,7 +572,7 @@ public class InfoProductPanel extends InfoPanel implements EventListener, ValueC
 		tab.addEventListener(Events.ON_SELECT, this);
 		tabs.appendChild(tab);
 		desktopTabPanel = new Tabpanel();
-		desktopTabPanel.setHeight("100%");
+		ZKUpdateUtil.setHeight(desktopTabPanel,"100%");
 		desktopTabPanel.appendChild(m_tableAtp);		
 		tabPanels.appendChild(desktopTabPanel);
 
@@ -589,7 +580,7 @@ public class InfoProductPanel extends InfoPanel implements EventListener, ValueC
 		tab.addEventListener(Events.ON_SELECT, this);
 		tabs.appendChild(tab);
 		desktopTabPanel = new Tabpanel();
-		desktopTabPanel.setHeight("100%");
+		ZKUpdateUtil.setHeight(desktopTabPanel,"100%");
 		desktopTabPanel.appendChild(vendorTbl);
 		tabPanels.appendChild(desktopTabPanel);
 
@@ -597,12 +588,16 @@ public class InfoProductPanel extends InfoPanel implements EventListener, ValueC
 
 		//  Add the tabs to the center south layout
 		Borderlayout tabLayout = new Borderlayout();
-		//  
+		ZKUpdateUtil.setVflex(tabLayout, "true");
+		ZKUpdateUtil.setHflex(tabLayout, "true");
+		//
 		North north = new North();
+		north.setStyle("padding: 0px");
 		tabLayout.appendChild(north);
 		north.appendChild(checkShowDetail);
 		//
 		Center center = new Center();
+		center.setStyle("padding: 0px");
 		tabLayout.appendChild(center);
 		center.appendChild(detailTabBox);
 
@@ -1014,7 +1009,7 @@ public class InfoProductPanel extends InfoPanel implements EventListener, ValueC
         if (!(record_id == 0))  // A record is defined
         {
         	fieldID = record_id;
-        	fWarehouse_ID.setValue(Integer.valueOf(M_Warehouse_ID).intValue());
+        	fWarehouse_ID.setValue(M_Warehouse_ID);
         	fPriceList_ID.setValue(findPLV(M_PriceList_ID));
 
         } 
@@ -2123,4 +2118,8 @@ public class InfoProductPanel extends InfoPanel implements EventListener, ValueC
 		return;
 	}
 
+	@Override
+	public String getSortDirection(Comparator comparator) {
+		return "natural";
+	}
 }	//	InfoProduct

@@ -17,9 +17,10 @@
 
 package org.adempiere.webui.component;
 
-import java.util.List;
-
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.zkoss.zul.Comboitem;
+
+import java.util.List;
 
 /**
  *
@@ -42,6 +43,7 @@ public class Combobox extends org.zkoss.zul.Combobox
     public Comboitem appendItem(String label) 
     {
         ComboItem item = new ComboItem(label);
+		ZKUpdateUtil.setHflex(item, "1");
         item.setParent(this);
         return item;
     }
@@ -132,7 +134,7 @@ public class Combobox extends org.zkoss.zul.Combobox
     
     /** Returns RS_NO_WIDTH|RS_NO_HEIGHT.
 	 */
-	protected int getRealStyleFlags() {
+	/*protected int getRealStyleFlags() {
 		return super.getRealStyleFlags() & 0x0006;
-	}
+	}*/
 }

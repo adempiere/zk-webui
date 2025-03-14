@@ -1,23 +1,15 @@
 package org.adempiere.webui.window;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Properties;
-import java.util.logging.Level;
-
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRRtfExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
-import org.adempiere.webui.component.Listbox;
 import org.adempiere.exceptions.AdempiereException;
+import org.adempiere.webui.component.Listbox;
 import org.adempiere.webui.component.Window;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.model.MArchive;
 import org.compiere.model.MUser;
 import org.compiere.model.PrintInfo;
@@ -29,14 +21,23 @@ import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
 import org.zkoss.zul.Iframe;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.North;
 import org.zkoss.zul.Separator;
 import org.zkoss.zul.Toolbar;
 import org.zkoss.zul.Toolbarbutton;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  * 
@@ -91,7 +92,7 @@ public class ZkJRViewer extends Window implements EventListener {
 
 
 		toolbar = new Toolbar();
-		toolbar.setHeight("26px");
+		ZKUpdateUtil.setHeight(toolbar,"26px");
 		sendMail = new Toolbarbutton();
 		archive = new Toolbarbutton();
 
@@ -126,12 +127,13 @@ public class ZkJRViewer extends Window implements EventListener {
 		north.appendChild(toolbar);
 
 		Center center = new Center();
-		center.setFlex(true);
+		ZKUpdateUtil.setVflex(center, "flex");
 		layout.appendChild(center);
 		iframe = new Iframe();
 		iframe.setId(jasperPrint.getName());
-		iframe.setHeight("100%");
-		iframe.setWidth("100%");
+		ZKUpdateUtil.setWidth(iframe, "100%");
+		ZKUpdateUtil.setHeight(iframe, "100%");
+
 		iframe.setAutohide( Boolean.TRUE );
 
 		try {

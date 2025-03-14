@@ -13,9 +13,8 @@
  *****************************************************************************/
 package org.adempiere.webui.component;
 
-import java.io.File;
-
 import org.adempiere.webui.apps.AEnv;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.adempiere.webui.window.FDialog;
 import org.compiere.model.MSysConfig;
 import org.compiere.util.Ini;
@@ -23,10 +22,12 @@ import org.compiere.util.ValueNamePair;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zkex.zul.Borderlayout;
-import org.zkoss.zkex.zul.Center;
-import org.zkoss.zkex.zul.North;
-import org.zkoss.zkex.zul.South;
+import org.zkoss.zul.Borderlayout;
+import org.zkoss.zul.Center;
+import org.zkoss.zul.North;
+import org.zkoss.zul.South;
+
+import java.io.File;
 
 /**
  * Directory and File Browser
@@ -60,8 +61,8 @@ public class FolderBrowser extends Window implements EventListener
 		this.showDirOnly = showDirOnly;
 		
 		setTitle(showDirOnly ? "Directory Browser" : "File Browser");
-		setWidth("500px");
-		setHeight("500px");
+		ZKUpdateUtil.setWindowWidthX(this, 500);
+		ZKUpdateUtil.setWindowHeightX(this, 500);
 		setBorder("normal");
 		
 		Borderlayout contentLayout = new Borderlayout();
@@ -72,7 +73,8 @@ public class FolderBrowser extends Window implements EventListener
 		north.appendChild(txtPath);
 		
 		Center center = new Center();
-		center.setFlex(true);
+		ZKUpdateUtil.setVflex(listDir, "1");
+		ZKUpdateUtil.setHflex(listDir, "1");
 		contentLayout.appendChild(center);
 		center.appendChild(listDir);
 		
@@ -80,8 +82,7 @@ public class FolderBrowser extends Window implements EventListener
 		south.setStyle("border: none");
 		contentLayout.appendChild(south);
 		south.appendChild(confirmPanel);
-		
-		txtPath.setWidth("475px");
+		ZKUpdateUtil.setWidth(txtPath, "475px");
 		txtPath.setReadonly(true);
 		
 		getFileListing(root.getPath());

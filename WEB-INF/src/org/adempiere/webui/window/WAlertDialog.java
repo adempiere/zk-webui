@@ -15,6 +15,7 @@ package org.adempiere.webui.window;
 import org.adempiere.webui.component.ConfirmPanel;
 import org.adempiere.webui.component.VerticalBox;
 import org.adempiere.webui.component.Window;
+import org.adempiere.webui.util.ZKUpdateUtil;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.zkoss.zk.ui.event.Event;
@@ -57,8 +58,8 @@ public class WAlertDialog extends Window implements EventListener{
 		VerticalBox vbox = new VerticalBox();
 		appendChild(vbox);
 		Div div = new Div();
-		div.setHeight("500px");
-		div.setWidth("700px");
+		ZKUpdateUtil.setWidth(div, "500px");
+		ZKUpdateUtil.setHeight(div, "700px");
 		div.setStyle("overflow: auto; border: 1px solid");
 		vbox.appendChild(div);
 		Html html = new Html();
