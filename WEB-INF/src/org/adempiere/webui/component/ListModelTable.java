@@ -28,7 +28,7 @@ import java.util.Vector;
 import org.adempiere.webui.event.WTableModelEvent;
 import org.adempiere.webui.event.WTableModelListener;
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zul.ListModelExt;
+//import org.zkoss.zul.ListModelExt;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.event.ListDataEvent;
 
@@ -40,7 +40,7 @@ import org.zkoss.zul.event.ListDataEvent;
  * @author Andrew Kimball
  * @param <E>
  */
-public class ListModelTable<E> extends ListModelList implements ListModelExt
+public class ListModelTable<E> extends ListModelList
 {
 	/**
 	 * 
@@ -51,7 +51,7 @@ public class ListModelTable<E> extends ListModelList implements ListModelExt
 	/** The number of columns in the table. */
 	private int m_noColumns;
 
-	private ListModelExt sorter = null;
+//	private ListModelExt sorter = null;
 
 	/**
 	 * Default constructor.
@@ -327,10 +327,10 @@ public class ListModelTable<E> extends ListModelList implements ListModelExt
      */
     public void sort(Comparator cmpr, boolean ascending)
     {
-    	if (sorter != null)
-    		sorter.sort(cmpr, ascending);
-    	else
-        	Collections.sort(this.getInnerList(), cmpr);
+//    	if (sorter != null)
+//    		sorter.sort(cmpr, ascending);
+//    	else
+    	Collections.sort(this.getInnerList(), cmpr);
 
         WTableModelEvent event = new WTableModelEvent(this,
                 WTableModelEvent.ALL_ROWS,
@@ -389,8 +389,8 @@ public class ListModelTable<E> extends ListModelList implements ListModelExt
 		}
 	}
 
-	public void setSorter(ListModelExt lme)
-	{
-		sorter = lme;
-	}
+//	public void setSorter(ListModelExt lme)
+//	{
+//		sorter = lme;
+//	}
 }

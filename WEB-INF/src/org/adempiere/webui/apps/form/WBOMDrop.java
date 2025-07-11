@@ -381,7 +381,7 @@ public class WBOMDrop extends ADForm implements BOMDropForm, EventListener, Valu
 		Groupbox optionGroup = new Groupbox();
 		optionGroup.setMold("3d");
 		optionGroup.appendChild(caption);
-		optionGroup.setLegend(false);
+//		optionGroup.setLegend(false);
 		optionGroup.setContentStyle("border-style: solid; border-color: lightgray; border-width: 0px 1px 1px 1px; border-radius: 0px 0px 5px 5px;");
 		optionGroup.setTooltiptext(Msg.translate(Env.getCtx(), MSG_ClickToOpen));
 		optionGroup.setClosable(true);
@@ -401,7 +401,7 @@ public class WBOMDrop extends ADForm implements BOMDropForm, EventListener, Valu
 		
 		boxBOMItem = new Hbox();
 		ZKUpdateUtil.setWidth(boxBOMItem, "100%");
-		boxBOMItem.setWidths("50%,25%,25%");
+//		boxBOMItem.setWidths("50%,25%,25%");
 
 		if (ITEMTYPE_CHECK.equals(itemType))
 		{
@@ -518,7 +518,7 @@ public class WBOMDrop extends ADForm implements BOMDropForm, EventListener, Valu
 
 		bomItemsHeader.getChildren().clear();
 		ZKUpdateUtil.setWidth(bomItemsHeader, "100%");
-		bomItemsHeader.setWidths("10%, 40%,25%,25%");
+//		bomItemsHeader.setWidths("10%, 40%,25%,25%");
 		
 		Label selectLabel = new Label(checkName);
 		Label nameLabel = new Label(productName);

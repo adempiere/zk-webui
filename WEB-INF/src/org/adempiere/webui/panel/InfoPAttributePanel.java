@@ -196,7 +196,7 @@ public class InfoPAttributePanel extends Window implements EventListener<Event>
 			row	= new Row();
 			rows.appendChild(row);
 			div = new Div();
-			div.setAlign("right");
+//			div.setAlign("right");
 			div.appendChild(serNoLabel);
 			row.appendChild(div);
 			row.appendChild(serNoField.getComponent());
@@ -208,7 +208,7 @@ public class InfoPAttributePanel extends Window implements EventListener<Event>
 			row = new Row();
 			rows.appendChild(row);
 			div = new Div();
-			div.setAlign("right");
+//			div.setAlign("right");
 			div.appendChild(lotLabel);
 			row.appendChild(div);
 			row.appendChild(lotField.getComponent());
@@ -218,7 +218,7 @@ public class InfoPAttributePanel extends Window implements EventListener<Event>
 			row = new Row();
 			rows.appendChild(row);
 			div = new Div();
-			div.setAlign("right");
+//			div.setAlign("right");
 			div.appendChild(lotLabel2);
 			row.appendChild(div);
 			row.appendChild(lotSelection);
@@ -228,7 +228,7 @@ public class InfoPAttributePanel extends Window implements EventListener<Event>
 			row = new Row();
 			rows.appendChild(row);
 			div = new Div();
-			div.setAlign("right");
+//			div.setAlign("right");
 			div.appendChild(guaranteeDateSelection);
 			row.appendChild(div);
 			row.appendChild(guaranteeDateField);
@@ -274,14 +274,14 @@ public class InfoPAttributePanel extends Window implements EventListener<Event>
 				{
 					Row row = new Row();
 					rows.appendChild(row);
-					row.setSpans("2");
+//					row.setSpans("2");
     				Label group = new Label(Msg.translate(Env.getCtx(), "IsProductAttribute"));
     				row.appendChild(group);
     				rows.appendChild(row);
 
     				row = new Row();
 					rows.appendChild(row);
-					row.setSpans("2");
+//					row.setSpans("2");
                     Separator separator = new Separator();
                     separator.setBar(true);
         			row.appendChild(separator);
@@ -294,14 +294,14 @@ public class InfoPAttributePanel extends Window implements EventListener<Event>
 				{
 					Row row = new Row();
 					rows.appendChild(row);
-					row.setSpans("2");
+//					row.setSpans("2");
     				Label group = new Label(Msg.translate(Env.getCtx(), "IsInstanceAttribute")); 
     				row.appendChild(group);
     				rows.appendChild(row);
     				
     				row = new Row();
 					rows.appendChild(row);
-					row.setSpans("2");
+//					row.setSpans("2");
                     Separator separator = new Separator();
                     separator.setBar(true);
         			row.appendChild(separator);
@@ -319,7 +319,7 @@ public class InfoPAttributePanel extends Window implements EventListener<Event>
 					label.setTooltiptext(description);
 				
 				Div div = new Div();
-				div.setAlign("right");
+//				div.setAlign("right");
 				div.appendChild(label);
 				row.appendChild(div);
 				
@@ -364,7 +364,7 @@ public class InfoPAttributePanel extends Window implements EventListener<Event>
 					row = new Row();
 					rows.appendChild(row);
 					div = new Div();
-					div.setAlign("right");
+//					div.setAlign("right");
 					div.appendChild(new Label("-"));
 					row.appendChild(div);
 					row.appendChild(fieldTo);
@@ -401,14 +401,14 @@ public class InfoPAttributePanel extends Window implements EventListener<Event>
 			if (isGuarantee || isSerial || isLot) {
 				Row row = new Row();
 				rows.appendChild(row);
-				row.setSpans("2");
+//				row.setSpans("2");
 				Label group = new Label(Msg.translate(Env.getCtx(), "IsInstanceAttribute")); 
 				row.appendChild(group);
 				rows.appendChild(row);
 				
 				row = new Row();
 				rows.appendChild(row);
-				row.setSpans("2");
+//				row.setSpans("2");
                 Separator separator = new Separator();
                 separator.setBar(true);
     			row.appendChild(separator);

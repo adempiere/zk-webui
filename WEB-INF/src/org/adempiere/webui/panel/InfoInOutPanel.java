@@ -224,7 +224,7 @@ public class InfoInOutPanel extends InfoPanel implements ValueChangeListener, Ev
 		row.appendChild(fIsSOTrx);
 		
 		row = new Row();
-		row.setSpans("1, 1, 1, 2");
+//		row.setSpans("1, 1, 1, 2");
 		rows.appendChild(row);
 		row.appendChild(lDescription.rightAlign());
 		row.appendChild(fDescription);
@@ -479,8 +479,8 @@ public class InfoInOutPanel extends InfoPanel implements ValueChangeListener, Ev
 		return;
 	}
 
-	@Override
-	public String getSortDirection(Comparator comparator) {
-		return "natural";
-	}
+//	@Override
+//	public String getSortDirection(Comparator comparator) {
+//		return "natural";
+//	}
 }

@@ -594,7 +594,7 @@ public class WBrowser extends Browser implements IFormController,
 		});
 		
 		Div confirmDiv = new Div();
-		confirmDiv.setAlign("center");
+//		confirmDiv.setAlign("center");
 		hbox.appendChild(bCancel);
 		hbox.appendChild(bOk);
 		hbox.setAlign("center");

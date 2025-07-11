@@ -225,15 +225,15 @@ public class WArchiveViewer extends Archive implements IFormController, EventLis
 		
 		Row row = new Row();
 		rows.appendChild(row);
-		row.setSpans("3");
+//		row.setSpans("3");
 		row.setAlign("right");
 		row.appendChild(reportField);
 
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("1, 2");
+//		row.setSpans("1, 2");
 		Div div = new Div();
-		div.setAlign("right");
+//		div.setAlign("right");
 		div.appendChild(processLabel);
 		row.appendChild(div);
 		row.appendChild(processField);
@@ -241,18 +241,18 @@ public class WArchiveViewer extends Archive implements IFormController, EventLis
 		
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("1, 2");
+//		row.setSpans("1, 2");
 		div = new Div();
-		div.setAlign("right");
+//		div.setAlign("right");
 		div.appendChild(bPartnerLabel);
 		row.appendChild(div);
 		row.appendChild(bPartnerField.getComponent());
 		
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("1, 2");
+//		row.setSpans("1, 2");
 		div = new Div();
-		div.setAlign("right");
+//		div.setAlign("right");
 		div.appendChild(tableLabel);
 		row.appendChild(div);
 		row.appendChild(tableField);
@@ -260,9 +260,9 @@ public class WArchiveViewer extends Archive implements IFormController, EventLis
 		
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("1, 2");
+//		row.setSpans("1, 2");
 		div = new Div();
-		div.setAlign("right");
+//		div.setAlign("right");
 		div.appendChild(nameQLabel);
 		row.appendChild(div);
 		row.appendChild(nameQField);
@@ -270,18 +270,18 @@ public class WArchiveViewer extends Archive implements IFormController, EventLis
 		
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("1, 2");
+//		row.setSpans("1, 2");
 		div = new Div();
-		div.setAlign("right");
+//		div.setAlign("right");
 		div.appendChild(descriptionQLabel);
 		row.appendChild(div);
 		row.appendChild(descriptionQField);
 		ZKUpdateUtil.setWidth(descriptionQField, "100%");
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("1, 2");
+//		row.setSpans("1, 2");
 		div = new Div();
-		div.setAlign("right");
+//		div.setAlign("right");
 		div.appendChild(helpQLabel);
 		row.appendChild(div);
 		row.appendChild(helpQField);
@@ -289,9 +289,9 @@ public class WArchiveViewer extends Archive implements IFormController, EventLis
 		
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("1, 2");
+//		row.setSpans("1, 2");
 		div = new Div();
-		div.setAlign("right");
+//		div.setAlign("right");
 		div.appendChild(createdByQLabel);
 		row.appendChild(div);
 		row.appendChild(createdByQField);
@@ -300,14 +300,14 @@ public class WArchiveViewer extends Archive implements IFormController, EventLis
 		row = new Row();
 		rows.appendChild(row);
 		div = new Div();
-		div.setAlign("right");
+//		div.setAlign("right");
 		div.appendChild(createdQLabel);
 		row.appendChild(div);
 		row.appendChild(createdQFrom);
 		row.appendChild(createdQTo);
 		
 		div = new Div();
-		div.setAlign("center");
+//		div.setAlign("center");
 		div.appendChild(gridQuery);
 		
 		Tabpanel tabQueryPanel = new Tabpanel();
@@ -328,83 +328,83 @@ public class WArchiveViewer extends Archive implements IFormController, EventLis
 		
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("1, 2, 1");
+//		row.setSpans("1, 2, 1");
 		div = new Div();
-		div.setAlign("left");
+//		div.setAlign("left");
 		div.appendChild(bBack);
 		row.appendChild(div);
 		div = new Div();
-		div.setAlign("center");
+//		div.setAlign("center");
 		div.appendChild(positionInfo);
 		row.appendChild(div);
 		div = new Div();
-		div.setAlign("right");
+//		div.setAlign("right");
 		div.appendChild(bNext);
 		row.appendChild(div);
 
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("4");
+//		row.setSpans("4");
 		row.appendChild(createdByLabel);
 		ZKUpdateUtil.setWidth(createdByLabel, "100%");
 		
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("4");
+//		row.setSpans("4");
 		row.appendChild(createdByField);
 		ZKUpdateUtil.setWidth(createdByField, "100%");
 		
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("4");
+//		row.setSpans("4");
 		div = new Div();
-		div.setAlign("right");
+//		div.setAlign("right");
 		div.appendChild(createdField);
 		row.appendChild(div);
 		
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("4");
+//		row.setSpans("4");
 		row.appendChild(nameLabel);
 		ZKUpdateUtil.setWidth(nameLabel, "100%");
 		
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("4");
+//		row.setSpans("4");
 		row.appendChild(nameField);
 		ZKUpdateUtil.setWidth(nameField, "100%");
 		
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("4");
+//		row.setSpans("4");
 		row.appendChild(descriptionLabel);
 		ZKUpdateUtil.setWidth(descriptionLabel, "100%");
 		
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("4");
+//		row.setSpans("4");
 		row.appendChild(descriptionField);
 		descriptionField.setRows(3);
 		ZKUpdateUtil.setWidth(descriptionField, "100%");
 		
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("4");
+//		row.setSpans("4");
 		row.appendChild(helpLabel);
 		ZKUpdateUtil.setWidth(helpLabel, "100%");
 		
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("4");
+//		row.setSpans("4");
 		row.appendChild(helpField);
 		helpField.setRows(3);
 		ZKUpdateUtil.setWidth(helpField, "100%");
 		
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("4");
+//		row.setSpans("4");
 		div = new Div();
-		div.setAlign("right");
+//		div.setAlign("right");
 		div.appendChild(bRefresh);
 		div.appendChild(updateArchive);
 		row.appendChild(div);
@@ -419,7 +419,7 @@ public class WArchiveViewer extends Archive implements IFormController, EventLis
 		Hbox boxViewSeparator = new Hbox();
 		ZKUpdateUtil.setWidth(boxViewSeparator, "100%");
 		ZKUpdateUtil.setHeight(boxViewSeparator, "100%");
-		boxViewSeparator.setWidths("70%, 30%");		
+//		boxViewSeparator.setWidths("70%, 30%");		
 		boxViewSeparator.appendChild(iframe);
 		boxViewSeparator.appendChild(gridView);
 		tabViewPanel.appendChild(boxViewSeparator);

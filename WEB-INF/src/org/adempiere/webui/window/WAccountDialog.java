@@ -461,7 +461,7 @@ public final class WAccountDialog extends Window
 		Row row = new Row();
 		f_Description.setStyle("font-decoration: italic;");
 		row.appendChild(f_Description);
-		row.setSpans("4");
+//		row.setSpans("4");
 		row.setStyle("background-color: transparent;");
 		m_rows.appendChild(row);
 

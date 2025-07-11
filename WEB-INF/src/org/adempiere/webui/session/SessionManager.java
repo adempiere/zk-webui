@@ -32,7 +32,7 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.impl.ExecutionCarryOver;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.Hashtable;

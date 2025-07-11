@@ -348,19 +348,19 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener<Event>, 
             		}
 
                     row = new Row();
-                    row.setSpans("5");
+//                    row.setSpans("5");
                     row.appendChild(new Separator());
                     rows.appendChild(row);
 
                     row = new Group();
-                    row.setSpans("2,3");
+//                    row.setSpans("2,3");
                     rows.appendChild(row);
                     includedTab.put(field.getIncluded_Tab_ID(), (Group)row);
 
     				org.zkoss.zul.Div div = new Div();
 					ZKUpdateUtil.setWidth(div, "100%");
                     row = new org.adempiere.webui.component.Row();
-                    row.setSpans("5");
+//                    row.setSpans("5");
                     row.appendChild(div);
                     rows.appendChild(row);
                     horizontalIncludedTab.put(field.getIncluded_Tab_ID(),  div);
@@ -419,7 +419,7 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener<Event>, 
             			List<org.zkoss.zul.Row> headerRows = new ArrayList<org.zkoss.zul.Row>();
             			fieldGroupHeaders.put(fieldGroup, headerRows);
 
-            			row.setSpans("5");
+//            			row.setSpans("5");
             			row.appendChild(new Separator());
             			rows.appendChild(row);
             			headerRows.add(row);
@@ -430,7 +430,7 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener<Event>, 
             			if (X_AD_FieldGroup.FIELDGROUPTYPE_Label.equals(field.getFieldGroupType()))
             			{
             				row = new Row();
-                			row.setSpans("4");
+//                			row.setSpans("4");
             				Label groupLabel = new Label(fieldGroup);
             				row.appendChild(groupLabel);
             				row.appendChild(createSpacer());
@@ -438,7 +438,7 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener<Event>, 
             				headerRows.add(row);
 
             				row = new Row();
-	                        row.setSpans("4");
+//	                        row.setSpans("4");
 	                        Separator separator = new Separator();
 	                        separator.setBar(true);
 	            			row.appendChild(separator);
@@ -512,7 +512,7 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener<Event>, 
                     	Div div = new Div();
                     	div.setSclass("field-label");
                     	//	Ajust align
-                        div.setAlign("right");
+//                        div.setAlign("right");
                         Label label = editor.getLabel();
                         div.appendChild(label);
 
@@ -523,7 +523,7 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener<Event>, 
                     }
                     row.appendChild(editor.getComponent());
                     if (field.isLongField()) {
-                    	row.setSpans("1,3,1");
+//                    	row.setSpans("1,3,1");
                     	row.appendChild(createSpacer());
                     	rows.appendChild(row);
                     	if (rowList != null)
@@ -568,7 +568,7 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener<Event>, 
     				//display just a label if we are "heading only"
     				Label label = new Label(field.getHeader());
     				Div div = new Div();
-    				div.setAlign("center");
+//    				div.setAlign("center");
     				row.appendChild(createSpacer());
     				div.appendChild(label);
     				row.appendChild(div);
@@ -1427,7 +1427,7 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener<Event>, 
 
 
 		org.zkoss.zul.Row row = new Row();
-		row.setSpans("5");
+//		row.setSpans("5");
 
 		if(!ep.gridWindow.getTab(ep.tabIndex).isDisplayed())
 		{
@@ -1891,7 +1891,7 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener<Event>, 
         // Create a Panel Object
         Panel panel = new Panel();
         //Setting Properties to Panel
-        panel.setFramable(true);
+//        panel.setFramable(true);
     	//panel.setStyle("overflow:auto");
 		ZKUpdateUtil.setWidth(panel, "100%");
 		ZKUpdateUtil.setHeight(panel, "100%");
@@ -1924,11 +1924,11 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener<Event>, 
         org.zkoss.zul.Row newRow = new Group();
         // Create a Row For ToolBar
         org.zkoss.zul.Row toolbarRow = new org.adempiere.webui.component.Row();
-        toolbarRow.setSpans("5");
+//        toolbarRow.setSpans("5");
         ep.toolbarRow = toolbarRow;
         //Create a Row For All Widgets
         org.zkoss.zul.Row panelRow = new org.adempiere.webui.component.Row();
-        panelRow.setSpans("5");
+//        panelRow.setSpans("5");
 		ZKUpdateUtil.setWidth(panelRow, "100%");
 		ZKUpdateUtil.setHeight(panelRow, "100%");
         // Added to Group

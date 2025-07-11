@@ -232,7 +232,7 @@ public class InfoOrderPanel extends InfoPanel implements ValueChangeListener
 		row.appendChild(fIsSOTrx);
 		
 		row = new Row();
-		row.setSpans("1, 1, 1, 2");
+//		row.setSpans("1, 1, 1, 2");
 		rows.appendChild(row);
 		row.appendChild(lblDescription.rightAlign());
 		row.appendChild(fDescription);
@@ -245,7 +245,7 @@ public class InfoOrderPanel extends InfoPanel implements ValueChangeListener
 		row.appendChild(hbox);
 		
 		row = new Row();
-		row.setSpans("1, 1, 1, 2");
+//		row.setSpans("1, 1, 1, 2");
 		rows.appendChild(row);
 		row.appendChild(lblOrderRef.rightAlign());
 		row.appendChild(fPOReference);
@@ -574,8 +574,8 @@ public class InfoOrderPanel extends InfoPanel implements ValueChangeListener
 		return;
 	}
 
-	@Override
-	public String getSortDirection(Comparator comparator) {
-		return "natural";
-	}
+//	@Override
+//	public String getSortDirection(Comparator comparator) {
+//		return "natural";
+//	}
 }

@@ -371,7 +371,7 @@ public class WFactReconcile extends CustomForm
 		//
 		Row row = new Row();
 		rows.appendChild(row);
-		row.setSpans("1, 1, 1, 1");
+//		row.setSpans("1, 1, 1, 1");
 		row.appendChild(labelAcctSchema.rightAlign());
 		row.appendChild(fieldAcctSchema.getComponent());
 		row.appendChild(labelBPartner.rightAlign());
@@ -379,7 +379,7 @@ public class WFactReconcile extends CustomForm
 		//
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("1, 1, 1, 1");
+//		row.setSpans("1, 1, 1, 1");
 		row.appendChild(labelOrg.rightAlign());
 		row.appendChild(fieldOrg.getComponent());
 		row.appendChild(labelProduct.rightAlign());
@@ -387,7 +387,7 @@ public class WFactReconcile extends CustomForm
 		//
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("1, 1, 1, 1");
+//		row.setSpans("1, 1, 1, 1");
 		row.appendChild(labelAccount.rightAlign());
 		row.appendChild(fieldAccount.getComponent());
 		row.appendChild(new Space());
@@ -395,7 +395,7 @@ public class WFactReconcile extends CustomForm
 		//
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("1, 1, 1, 1");
+//		row.setSpans("1, 1, 1, 1");
 		row.appendChild(labelDateAcct.rightAlign());
 		Hbox hbox = new Hbox();
 		hbox.appendChild(fieldDateAcct);
@@ -429,12 +429,12 @@ public class WFactReconcile extends CustomForm
 
 		//  Setup the command buttons
 		pnlBtnLeft = new Panel();
-        pnlBtnLeft.setAlign("left");
+//        pnlBtnLeft.setAlign("left");
         pnlBtnLeft.setStyle("border-top: 2px; border-bottom: 2px; padding: 4px");
         pnlBtnLeft.appendChild(bZoom);
         //
         pnlBtnRight = new Panel();
-        pnlBtnRight.setAlign("right");
+//        pnlBtnRight.setAlign("right");
         pnlBtnRight.setStyle("border-top: 2px; border-bottom: 2px; padding: 4px");
         pnlBtnRight.appendChild(bGenerate);
         pnlBtnRight.appendChild(bReset);
@@ -442,7 +442,7 @@ public class WFactReconcile extends CustomForm
         //
         pnlTextCenter = new Panel();
         pnlTextCenter.setStyle("border-top: 2px; border-bottom: 2px; padding: 4px");
-        pnlTextCenter.setAlign("center");
+//        pnlTextCenter.setAlign("center");
         pnlTextCenter.appendChild(differenceLabel);
         pnlTextCenter.appendChild(differenceField);
         //

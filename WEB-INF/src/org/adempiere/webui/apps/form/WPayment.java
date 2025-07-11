@@ -312,7 +312,7 @@ public class WPayment extends Window
 		row.appendChild(kOnline);   // check online processing not enabled
 		
 		row = rows.newRow();
-		row.setSpans("3,1");
+//		row.setSpans("3,1");
 		row.appendChild(kStatus);
 		row.appendChild(new Space());
 		
@@ -341,7 +341,7 @@ public class WPayment extends Window
 		row.appendChild(tOnline);
 				
 		row = rows.newRow();
-		row.setSpans("3,1");
+//		row.setSpans("3,1");
 		row.appendChild(tStatus);
 		row.appendChild(new Space());
 						
@@ -405,7 +405,7 @@ public class WPayment extends Window
 		row.appendChild(sOnline);
 		
 		row = rows.newRow();
-		row.setSpans("3,1");
+//		row.setSpans("3,1");
 		row.appendChild(sStatus);
 		row.appendChild(new Space());
 		

@@ -158,7 +158,7 @@ public class WWFActivity extends ADForm implements EventListener
 		Row row = new Row();
 		rows.appendChild(row);
 		Div div = new Div();
-		div.setAlign("right");
+//		div.setAlign("right");
 		div.appendChild(lNode);
 		row.appendChild(div);
 		row.appendChild(fNode);
@@ -169,7 +169,7 @@ public class WWFActivity extends ADForm implements EventListener
 		rows.appendChild(row);
 		row.setValign("top");
 		div = new Div();
-		div.setAlign("right");
+//		div.setAlign("right");
 		div.appendChild(lDesctiption);
 		row.appendChild(div);
 		row.appendChild(fDescription);
@@ -180,7 +180,7 @@ public class WWFActivity extends ADForm implements EventListener
 		row = new Row();
 		rows.appendChild(row);
 		div = new Div();
-		div.setAlign("right");
+//		div.setAlign("right");
 		div.appendChild(lHelp);
 		row.appendChild(div);
 		row.appendChild(fHelp);
@@ -193,7 +193,7 @@ public class WWFActivity extends ADForm implements EventListener
 		row = new Row();
 		rows.appendChild(row);
 		div = new Div();
-		div.setAlign("right");
+//		div.setAlign("right");
 		div.appendChild(lHistory);
 		row.appendChild(div);
 		row.appendChild(fHistory);
@@ -202,7 +202,7 @@ public class WWFActivity extends ADForm implements EventListener
 		row = new Row();
 		rows.appendChild(row);
 		div = new Div();
-		div.setAlign("right");
+//		div.setAlign("right");
 		div.appendChild(lAnswer);
 		row.appendChild(div);
 		Hbox hbox = new Hbox();
@@ -217,7 +217,7 @@ public class WWFActivity extends ADForm implements EventListener
 		row = new Row();
 		rows.appendChild(row);
 		div = new Div();
-		div.setAlign("right");
+//		div.setAlign("right");
 		div.appendChild(lTextMsg);
 		row.appendChild(div);
 		row.appendChild(fTextMsg);
@@ -228,7 +228,7 @@ public class WWFActivity extends ADForm implements EventListener
 		row = new Row();
 		rows.appendChild(row);
 		div = new Div();
-		div.setAlign("right");
+//		div.setAlign("right");
 		div.appendChild(lForward);
 		row.appendChild(div);
 		hbox = new Hbox();

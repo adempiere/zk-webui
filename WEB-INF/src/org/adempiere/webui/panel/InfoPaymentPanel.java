@@ -274,7 +274,7 @@ public class InfoPaymentPanel extends InfoPanel implements ValueChangeListener, 
 		row.appendChild(fCheckPayment);
 		
 		row = new Row();
-		row.setSpans("3, 1");
+//		row.setSpans("3, 1");
 		rows.appendChild(row);
 		row.appendChild(lAmtFrom.rightAlign());
 		hbox = new Hbox();
@@ -600,8 +600,8 @@ public class InfoPaymentPanel extends InfoPanel implements ValueChangeListener, 
 		return;
 	}
 
-	@Override
-	public String getSortDirection(Comparator comparator) {
-		return "natural";
-	}
+//	@Override
+//	public String getSortDirection(Comparator comparator) {
+//		return "natural";
+//	}
 }

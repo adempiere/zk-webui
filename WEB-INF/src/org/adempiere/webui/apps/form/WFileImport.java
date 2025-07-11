@@ -341,7 +341,7 @@ public class WFileImport extends FileImportController implements IFormController
 			
 			Hbox hbox = new Hbox();
 			ZKUpdateUtil.setWidth(hbox, "100%");
-			hbox.setWidths("30%, 70%");
+//			hbox.setWidths("30%, 70%");
 			hbox.setStyle("padding-bottom: 3px");
 			
 			hbox.appendChild(m_labels[i].rightAlign());

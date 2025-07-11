@@ -122,7 +122,7 @@ public class DPUserFavorites extends DashboardPanel implements EventListener<Eve
 
 		trashCan = new Image(ITheme.DASHBOARD_DELETE_IMAGE);
 		favToolbar.appendChild(trashCan);
-		trashCan.setAlign("left");
+//		trashCan.setAlign("left");
 		trashCan.setDroppable(SimpleFavoriteTreeModel.USER_FAVORITE_DRAGGABLE_TYPE);
 		trashCan.setStyle("margin: 5px;");
 		trashCan.setTooltiptext(Msg.getMsg(Env.getCtx(), "DPUserFavorites.trashcan.tooltip"));

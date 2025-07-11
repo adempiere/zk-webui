@@ -293,7 +293,7 @@ public class InfoInvoicePanel extends InfoPanel implements ValueChangeListener
 		row.appendChild(fIsPaid);
 		
 		row = new Row();
-		row.setSpans("1, 1, 1, 3");
+//		row.setSpans("1, 1, 1, 3");
 		rows.appendChild(row);
 		row.appendChild(lblDescription.rightAlign());
 		row.appendChild(fDescription);
@@ -305,7 +305,7 @@ public class InfoInvoicePanel extends InfoPanel implements ValueChangeListener
 		row.appendChild(hbox);
 		
 		row = new Row();
-		row.setSpans("1, 1, 1, 3");
+//		row.setSpans("1, 1, 1, 3");
 		rows.appendChild(row);
 		row.appendChild(fOrder_ID.getLabel().rightAlign());
 		row.appendChild(fOrder_ID.getComponent());
@@ -653,8 +653,8 @@ public class InfoInvoicePanel extends InfoPanel implements ValueChangeListener
 		}
 	}
 
-	@Override
-	public String getSortDirection(Comparator comparator) {
-		return "natural";
-	}
+//	@Override
+//	public String getSortDirection(Comparator comparator) {
+//		return "natural";
+//	}
 }

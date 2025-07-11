@@ -23,7 +23,7 @@ import org.adempiere.webui.component.Textbox;
 import org.adempiere.webui.component.VerticalBox;
 import org.adempiere.webui.component.Window;
 import org.adempiere.webui.util.ZKUpdateUtil;
-import org.zkforge.ckez.CKeditor;
+import org.zkforge.fckez.FCKeditor;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -48,7 +48,7 @@ public class WTextEditorDialog extends Window implements EventListener<Event>{
 	private boolean cancelled;
 	private Tabbox tabbox;
 	private Textbox textBox;
-	private CKeditor editor;
+	private FCKeditor editor;
 	private Label status;
 	private boolean isShowHTMLTab = true;
 
@@ -121,7 +121,7 @@ public class WTextEditorDialog extends Window implements EventListener<Event>{
 			tabPanel = new Tabpanel();
 			tabPanels.appendChild(tabPanel);
 			if (editable) {
-				editor = new CKeditor();
+				editor = new FCKeditor();
 				tabPanel.appendChild(editor);
 				editor.setWidth("700px");
 				editor.setHeight("500px");

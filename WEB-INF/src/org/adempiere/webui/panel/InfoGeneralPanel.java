@@ -505,8 +505,8 @@ public class InfoGeneralPanel extends InfoPanel implements EventListener<org.zko
 		return;
 	}
 
-	@Override
-	public String getSortDirection(Comparator comparator) {
-		return "natural";
-	}
+//	@Override
+//	public String getSortDirection(Comparator comparator) {
+//		return "natural";
+//	}
 }

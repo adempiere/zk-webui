@@ -102,7 +102,7 @@ public class SimpleTreeModel extends org.zkoss.zul.DefaultTreeModel<Object> impl
 		}
 		tree.setPageSize(-1);
 		try {
-			tree.setTreeitemRenderer(treeModel);
+			tree.setItemRenderer(treeModel);
 			tree.setModel(treeModel);
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "Failed to setup tree");
@@ -176,7 +176,7 @@ public class SimpleTreeModel extends org.zkoss.zul.DefaultTreeModel<Object> impl
 	public void addNode(DefaultTreeNode<Object> newNode) {
 		DefaultTreeNode<Object> root = (DefaultTreeNode<Object>) getRoot();
 		root.getChildren().add(newNode);
-		fireEvent(root, root.getChildCount() - 1, root.getChildCount() - 1, TreeDataEvent.INTERVAL_ADDED);
+//		fireEvent(root, root.getChildCount() - 1, root.getChildCount() - 1, TreeDataEvent.INTERVAL_ADDED);
 	}
 
 	@Override
@@ -204,7 +204,7 @@ public class SimpleTreeModel extends org.zkoss.zul.DefaultTreeModel<Object> impl
 			
 			
 			parentNode.getChildren().remove(path[index]);
-			fireEvent(parentNode, path[index], path[index], TreeDataEvent.INTERVAL_REMOVED);
+//			fireEvent(parentNode, path[index], path[index], TreeDataEvent.INTERVAL_REMOVED);
 		}
 	}
 	
@@ -269,7 +269,7 @@ public class SimpleTreeModel extends org.zkoss.zul.DefaultTreeModel<Object> impl
 	public void addNode(DefaultTreeNode<Object> newParent, DefaultTreeNode<Object> newNode,
 			int index) {
 		newParent.getChildren().add(index, newNode);
-		fireEvent(newParent, index, index, TreeDataEvent.INTERVAL_ADDED);
+//		fireEvent(newParent, index, index, TreeDataEvent.INTERVAL_ADDED);
 	}
 	
 	/**
@@ -312,7 +312,7 @@ public class SimpleTreeModel extends org.zkoss.zul.DefaultTreeModel<Object> impl
 		DefaultTreeNode<Object>  parent = getParent(node);
 		if (parent != null) {
 			int i = parent.getChildren().indexOf(node);
-			fireEvent(parent, i, i, TreeDataEvent.CONTENTS_CHANGED);
+//			fireEvent(parent, i, i, TreeDataEvent.CONTENTS_CHANGED);
 		}
 	}
 

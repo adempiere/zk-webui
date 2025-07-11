@@ -18,7 +18,7 @@ import org.compiere.model.GridTable;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.AbstractListModel;
 import org.zkoss.zul.ListModel;
-import org.zkoss.zul.ListModelExt;
+//import org.zkoss.zul.ListModelExt;
 import org.zkoss.zul.ListitemComparator;
 import org.zkoss.zul.event.ListDataEvent;
 
@@ -31,7 +31,7 @@ import java.util.Comparator;
  * @author Low Heng Sin
  *
  */
-public class GridTableListModel extends AbstractListModel implements TableModelListener, ListModelExt {
+public class GridTableListModel extends AbstractListModel implements TableModelListener { //, ListModelExt {
 	
 	/**
 	 * 
@@ -223,9 +223,9 @@ public class GridTableListModel extends AbstractListModel implements TableModelL
 		editing = b;
 	}
 
-	@Override
-	public String getSortDirection(Comparator comparator) {
-		return "natural";
-	}
+//	@Override
+//	public String getSortDirection(Comparator comparator) {
+//		return "natural";
+//	}
 
 }
