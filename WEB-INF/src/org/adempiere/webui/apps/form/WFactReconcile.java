@@ -430,11 +430,13 @@ public class WFactReconcile extends CustomForm
 		//  Setup the command buttons
 		pnlBtnLeft = new Panel();
 //        pnlBtnLeft.setAlign("left");
+pnlBtnLeft.setStyle("text-align: left;");
         pnlBtnLeft.setStyle("border-top: 2px; border-bottom: 2px; padding: 4px");
         pnlBtnLeft.appendChild(bZoom);
         //
         pnlBtnRight = new Panel();
 //        pnlBtnRight.setAlign("right");
+pnlBtnRight.setStyle("text-align: right;");
         pnlBtnRight.setStyle("border-top: 2px; border-bottom: 2px; padding: 4px");
         pnlBtnRight.appendChild(bGenerate);
         pnlBtnRight.appendChild(bReset);
@@ -443,6 +445,7 @@ public class WFactReconcile extends CustomForm
         pnlTextCenter = new Panel();
         pnlTextCenter.setStyle("border-top: 2px; border-bottom: 2px; padding: 4px");
 //        pnlTextCenter.setAlign("center");
+pnlTextCenter.setStyle("text-align: center;");
         pnlTextCenter.appendChild(differenceLabel);
         pnlTextCenter.appendChild(differenceField);
         //

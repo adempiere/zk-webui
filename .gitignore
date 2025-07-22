@@ -1,0 +1,34 @@
+# Compilados Java
+bin/
+*.class
+
+# Salidas de Gradle
+/build/
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Archivos de configuración de Eclipse
+.classpath
+.project
+.settings/
+
+# Archivos de configuración de IntelliJ
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Archivos de Tomcat
+webapp-tomcat/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Logs y temporales
+*.log
+*.tmp
+
+# Otros
+*.swp
+*.swo 

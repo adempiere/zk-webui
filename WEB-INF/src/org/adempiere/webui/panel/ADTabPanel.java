@@ -512,7 +512,7 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener<Event>, 
                     	Div div = new Div();
                     	div.setSclass("field-label");
                     	//	Ajust align
-//                        div.setAlign("right");
+                        div.setStyle("text-align: right;");
                         Label label = editor.getLabel();
                         div.appendChild(label);
 
@@ -568,7 +568,7 @@ public class ADTabPanel extends Div implements Evaluatee, EventListener<Event>, 
     				//display just a label if we are "heading only"
     				Label label = new Label(field.getHeader());
     				Div div = new Div();
-//    				div.setAlign("center");
+                    div.setStyle("text-align: center;");
     				row.appendChild(createSpacer());
     				div.appendChild(label);
     				row.appendChild(div);

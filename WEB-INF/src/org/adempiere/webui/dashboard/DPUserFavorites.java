@@ -199,7 +199,7 @@ public class DPUserFavorites extends DashboardPanel implements EventListener<Eve
 	private void hideHint() {
 		if (hint != null)
 		{
-			bxFav.setAlign("left");
+			bxFav.setStyle("text-align: left;");
 			hint.setVisible(false);
 		}
 	}
@@ -210,7 +210,7 @@ public class DPUserFavorites extends DashboardPanel implements EventListener<Eve
 	private void showHint() {
 		if (hint != null)
 		{
-			bxFav.setAlign("center");
+			bxFav.setStyle("text-align: center;");
 			hint.setVisible(true);
 		}
 	}

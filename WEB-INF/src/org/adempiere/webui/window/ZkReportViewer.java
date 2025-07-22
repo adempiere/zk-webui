@@ -912,7 +912,7 @@ public class ZkReportViewer extends Window implements EventListener {
 			cboType.setSelectedIndex(defaultItem);
 			Hbox hb = new Hbox();
 			Div div = new Div();
-//			div.setAlign("right");
+			div.setStyle("text-align: right;");
 			div.appendChild(new Label(Msg.getMsg(Env.getCtx(), "FilesOfType")));
 			hb.appendChild(div);
 			hb.appendChild(cboType);

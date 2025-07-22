@@ -233,7 +233,7 @@ public class ProcessPanel extends ProcessController implements SmallViewEditable
 			hBox.appendChild(fSavedName);
 
 			Panel confParaPanel = new Panel();
-//			confParaPanel.setAlign("right");
+			confParaPanel.setStyle("text-align: right;");
 			//	BR [ 300 ]
 			try{
 				//	Set Ok

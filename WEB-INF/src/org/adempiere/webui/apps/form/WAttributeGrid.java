@@ -123,7 +123,7 @@ public class WAttributeGrid extends ADForm implements EventListener
 		rows.appendChild(row);
 //		row.setSpans("1, 2");
 		Div div = new Div();
-//		div.setAlign("right");
+		div.setStyle("text-align: right;");
 		div.appendChild(attributeLabel1);
 		row.appendChild(div);
 		row.appendChild(attributeCombo1);
@@ -133,7 +133,7 @@ public class WAttributeGrid extends ADForm implements EventListener
 		rows.appendChild(row);
 //		row.setSpans("1, 2");
 		div = new Div();
-//		div.setAlign("right");
+		div.setStyle("text-align: right;");
 		div.appendChild(attributeLabel2);
 		row.appendChild(div);
 		row.appendChild(attributeCombo2);
@@ -143,7 +143,7 @@ public class WAttributeGrid extends ADForm implements EventListener
 		rows.appendChild(row);
 //		row.setSpans("1, 2");
 		div = new Div();
-//		div.setAlign("right");
+		div.setStyle("text-align: right;");
 		div.appendChild(labelPriceList);
 		row.appendChild(div);
 		row.appendChild(pickPriceList);
@@ -153,7 +153,7 @@ public class WAttributeGrid extends ADForm implements EventListener
 		rows.appendChild(row);
 //		row.setSpans("1, 2");
 		div = new Div();
-//		div.setAlign("right");
+		div.setStyle("text-align: right;");
 		div.appendChild(labelWarehouse);
 		row.appendChild(div);
 		row.appendChild(pickWarehouse);
@@ -454,7 +454,7 @@ public class WAttributeGrid extends ADForm implements EventListener
 					if (xValues != null)
 					{
 						Div div = new Div();
-//						div.setAlign("right");
+						div.setStyle("text-align: right;");
 						div.appendChild(new Label(m_attributes[indexAttr1].getName()));
 						descr.appendChild(div);
 					}
@@ -468,7 +468,7 @@ public class WAttributeGrid extends ADForm implements EventListener
 					if (xValue != null)
 					{
 						Div div = new Div();
-//						div.setAlign("center");
+						div.setStyle("text-align: center;");
 						div.appendChild(new Label(xValue.getName()));
 						row.appendChild(div);
 					}

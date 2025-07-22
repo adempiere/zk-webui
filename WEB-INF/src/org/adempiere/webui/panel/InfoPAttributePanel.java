@@ -196,7 +196,7 @@ public class InfoPAttributePanel extends Window implements EventListener<Event>
 			row	= new Row();
 			rows.appendChild(row);
 			div = new Div();
-//			div.setAlign("right");
+			div.setStyle("text-align: right;");
 			div.appendChild(serNoLabel);
 			row.appendChild(div);
 			row.appendChild(serNoField.getComponent());
@@ -208,7 +208,7 @@ public class InfoPAttributePanel extends Window implements EventListener<Event>
 			row = new Row();
 			rows.appendChild(row);
 			div = new Div();
-//			div.setAlign("right");
+			div.setStyle("text-align: right;");
 			div.appendChild(lotLabel);
 			row.appendChild(div);
 			row.appendChild(lotField.getComponent());
@@ -218,7 +218,7 @@ public class InfoPAttributePanel extends Window implements EventListener<Event>
 			row = new Row();
 			rows.appendChild(row);
 			div = new Div();
-//			div.setAlign("right");
+			div.setStyle("text-align: right;");
 			div.appendChild(lotLabel2);
 			row.appendChild(div);
 			row.appendChild(lotSelection);
@@ -228,7 +228,7 @@ public class InfoPAttributePanel extends Window implements EventListener<Event>
 			row = new Row();
 			rows.appendChild(row);
 			div = new Div();
-//			div.setAlign("right");
+			div.setStyle("text-align: right;");
 			div.appendChild(guaranteeDateSelection);
 			row.appendChild(div);
 			row.appendChild(guaranteeDateField);
@@ -319,7 +319,7 @@ public class InfoPAttributePanel extends Window implements EventListener<Event>
 					label.setTooltiptext(description);
 				
 				Div div = new Div();
-//				div.setAlign("right");
+				div.setStyle("text-align: right;");
 				div.appendChild(label);
 				row.appendChild(div);
 				
@@ -364,7 +364,7 @@ public class InfoPAttributePanel extends Window implements EventListener<Event>
 					row = new Row();
 					rows.appendChild(row);
 					div = new Div();
-//					div.setAlign("right");
+					div.setStyle("text-align: right;");
 					div.appendChild(new Label("-"));
 					row.appendChild(div);
 					row.appendChild(fieldTo);
