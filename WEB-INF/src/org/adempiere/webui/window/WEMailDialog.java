@@ -203,7 +203,7 @@ public class WEMailDialog extends Window implements EventListener, ValueChangeLi
 		Row row = new Row();
 		rows.appendChild(row);
 		Div div = new Div();
-		div.setAlign("right");
+		div.setStyle("text-align: right;");
 		div.appendChild(lFrom);
 		row.appendChild(div);
 		row.appendChild(fFrom);
@@ -212,7 +212,7 @@ public class WEMailDialog extends Window implements EventListener, ValueChangeLi
 		row = new Row();
 		rows.appendChild(row);
 		div = new Div();
-		div.setAlign("right");
+		div.setStyle("text-align: right;");
 		div.appendChild(lTo);
 		row.appendChild(div);
 		row.appendChild(fUser.getComponent());
@@ -227,7 +227,7 @@ public class WEMailDialog extends Window implements EventListener, ValueChangeLi
 		row = new Row();
 		rows.appendChild(row);
 		div = new Div();
-		div.setAlign("right");
+		div.setStyle("text-align: right;");
 		div.appendChild(lCc);
 		row.appendChild(div);
 		row.appendChild(fCcUser.getComponent());
@@ -241,13 +241,13 @@ public class WEMailDialog extends Window implements EventListener, ValueChangeLi
 		
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("2");
+//		row.setSpans("2");
 		row.appendChild(new Separator());
 		
 		row = new Row();
 		rows.appendChild(row);
 		div = new Div();
-		div.setAlign("right");
+		div.setStyle("text-align: right;");
 		div.appendChild(lSubject);
 		row.appendChild(div);
 		row.appendChild(fSubject);
@@ -255,13 +255,13 @@ public class WEMailDialog extends Window implements EventListener, ValueChangeLi
 		
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("2");
+//		row.setSpans("2");
 		row.appendChild(new Separator());
 		
 		row = new Row();
 		rows.appendChild(row);
 		div = new Div();
-		div.setAlign("right");
+		div.setStyle("text-align: right;");
 		div.appendChild(lAttachment);
 		row.appendChild(div);
 		row.appendChild(fAttachment);
@@ -269,14 +269,14 @@ public class WEMailDialog extends Window implements EventListener, ValueChangeLi
 		
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("2");
+//		row.setSpans("2");
 		row.appendChild(fMessage);
 		ZKUpdateUtil.setHflex(fMessage, "1");
 		ZKUpdateUtil.setVflex(fMessage, "1");
 		
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("2");
+//		row.setSpans("2");
 		row.appendChild(confirmPanel);
 		confirmPanel.addActionListener(this);
 		

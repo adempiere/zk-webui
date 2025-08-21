@@ -1,0 +1,189 @@
+plugins {
+    id 'eclipse'
+    id 'eclipse-wtp'
+    id 'war'
+	id 'java'
+	id 'maven-publish'
+	id 'signing'
+	id 'org.gretty' version '4.1.6'
+	id 'org.springframework.boot' version '3.5.3'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+import java.util.regex.Pattern
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+	maven {
+    	url = "https://mavensync.zkoss.org/maven2"
+	}
+}
+
+allprojects {
+	tasks.withType(Javadoc) {
+    	options.addStringOption('Xdoclint:none', '-quiet')
+    }
+}
+
+sourceCompatibility = 1.17
+sourceCompatibility = 1.17
+
+def envFile = file('webapp-tomcat/.env')
+def templateFile = file('webapp-tomcat/server-template.xml')
+def outputFile = file('webapp-tomcat/server.xml')
+def adempiereEnvTemplateFile = file('webapp-tomcat/AdempiereEnvTemplate.properties')
+def adempiereEnvOutputFile = file('webapp-tomcat/AdempiereEnv.properties')
+
+//Dependencies
+dependencies {
+   	//	External Library
+   	implementation fileTree(
+        dir: 'WEB-INF/lib',
+        include: [
+            '*.jar'
+        ]
+    )
+    
+    implementation 'io.github.adempiere:tools:v3.9.4.001'
+    implementation 'io.github.adempiere:base:v3.9.4.001'
+    implementation 'io.github.adempiere:swing:v3.9.4.001'
+    implementation 'io.github.adempiere:project:v3.9.4.001'
+    implementation 'io.github.adempiere:request:v3.9.4.001'
+    implementation 'io.github.adempiere:extend:v3.9.4.001'
+    implementation 'io.github.adempiere:jasperreports:v3.9.4.001'
+    
+    
+    //SpringBoot dependences
+	implementation 'org.springframework.boot:spring-boot-starter'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    
+    // https://mvnrepository.com/artifact/net.bytebuddy/byte-buddy
+	implementation 'net.bytebuddy:byte-buddy:1.17.5'
+	// https://mvnrepository.com/artifact/org.apache.poi/poi
+	implementation 'org.apache.poi:poi:5.4.1'
+    implementation 'io.konik:harness:1.0.0'
+    
+    implementation 'io.konik:itext-carriage:0.8.0'
+    implementation 'com.zaxxer:HikariCP:5.1.0' // o mínimo 4.0.0
+    
+	//ZK Dependencies
+	implementation 'org.zkoss.zkspringboot:zkspringboot-starter:3.2.7'
+	implementation 'org.zkoss.theme:breeze:10.0.0'
+	implementation 'org.zkoss.theme:atlantic:10.0.0'
+	implementation 'org.zkoss.theme:zktheme:9.6.0.2'
+	implementation 'org.zkoss.zkforge:fckez:2.6.1_1'
+	implementation 'org.zkoss.zkforge:timelinez:2.3.1_50'
+	
+	
+}
+
+//Source Set
+sourceSets {
+    main {
+         java {
+            srcDirs  = ['WEB-INF/src']
+         }
+    }
+    
+}
+
+
+//Test 
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+//Springboot war Main Class (do not work)
+bootWar {
+    mainClass = 'org.adempiere.webui.AdempiereWebUI'
+}
+
+
+//War Build
+war {
+    archiveFileName = 'webui.war'
+    from ('.'){
+    	include 'theme/'
+    	include 'js/'
+    	include 'css/'
+    	include 'images/'
+    	include 'zul/'
+    	include '**.zul'
+    	include '**.zs'
+    }
+    webInf { from ('WEB-INF/'){
+    			include '**.xml'
+    			include 'xsd/'
+    			include 'tld/'
+    		} 
+    	} 
+}
+
+//Gretty Setting
+gretty {
+    contextPath = '/webui'
+    servletContainer = 'tomcat10'
+    httpPort = 8080
+    serverConfigFile = 'webapp-tomcat/server.xml'
+    contextConfigFile = 'webapp-tomcat/context.xml'
+    
+    jvmArgs = [
+        '--add-opens=java.base/java.lang=ALL-UNNAMED ',
+        '-DPropertyFile=/opt/Development/workspace-java-jdk-17/zk-webui/webapp-tomcat/AdempiereEnv.properties',
+        '-Djava.awt.headless=true ',
+        '-Dorg.adempiere.server.embedded=true '
+    ]
+}
+
+//Prepare Server Settings
+task prepareServerSetting {
+    doLast {
+        if (!envFile.exists()) {
+            throw new GradleException(".env file not found.")
+        }
+        if (!templateFile.exists()) {
+            throw new GradleException("Template file not found: $templateFile")
+        }
+        if (!adempiereEnvTemplateFile.exists()) {
+            throw new GradleException("Adempiere Template file not found: $adempiereEnvTemplateFile")
+        }
+
+        // Read Variables .env
+        def envVars = [:]
+        envFile.eachLine { line ->
+            if (line && line.contains('=')) {
+                def (key, value) = line.split('=', 2)
+                envVars[key.trim()] = value.trim()
+            }
+        }
+
+        // Read Server Template
+        def content = templateFile.text
+
+        // Replace placeholders type {{VAR_NAME}} in server template
+        envVars.each { key, value ->
+            content = content.replaceAll(Pattern.quote("{{${key}}}"), value)
+        }
+
+        // Write result
+        outputFile.text = content
+
+        println "✅ server.xml is generated"
+        
+		// Read Adempiere Env Template Template
+        content = adempiereEnvTemplateFile.text
+
+        // Replace placeholders type {{VAR_NAME}} in server template
+        envVars.each { key, value ->
+            content = content.replaceAll(Pattern.quote("{{${key}}}"), value)
+        }
+
+        // Write result
+        adempiereEnvOutputFile.text = content
+
+        println "✅ AdempiereEnv.properties is generated"
+        
+    }
+}

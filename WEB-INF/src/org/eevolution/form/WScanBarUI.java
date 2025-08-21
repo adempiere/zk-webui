@@ -220,7 +220,7 @@ public class WScanBarUI extends ScanBar implements IFormController, EventListene
 		south.setBorder("none");
 		borderlayout.appendChild(south);
 		Panel southPanel = new Panel();
-		southPanel.setAlign("right");
+//		southPanel.setAlign("right");
 		south.appendChild(southPanel);
         return;
     }
@@ -276,7 +276,7 @@ public class WScanBarUI extends ScanBar implements IFormController, EventListene
 
         Row row = new Row();
         rows.appendChild(row);
-        row.setSpans("3");
+//        row.setSpans("3");
         row.appendChild(new Separator());
         
         row = new Row();
@@ -292,7 +292,7 @@ public class WScanBarUI extends ScanBar implements IFormController, EventListene
         
         row = new Row();
         rows.appendChild(row);
-        row.setSpans("3");
+//        row.setSpans("3");
         row.appendChild(new Separator());
         
     	row = new Row();
@@ -304,7 +304,7 @@ public class WScanBarUI extends ScanBar implements IFormController, EventListene
         
         row = new Row();
         rows.appendChild(row);
-        row.setSpans("3");
+//        row.setSpans("3");
         row.appendChild(new Separator());
         
         row = new Row();
@@ -314,7 +314,7 @@ public class WScanBarUI extends ScanBar implements IFormController, EventListene
         
         row = new Row();
         rows.appendChild(row);
-        row.setSpans("3");
+//        row.setSpans("3");
         row.appendChild(new Separator());
         
         row = new Row();
@@ -324,7 +324,7 @@ public class WScanBarUI extends ScanBar implements IFormController, EventListene
 
         row = new Row();
         rows.appendChild(row);
-        row.setSpans("3");
+//        row.setSpans("3");
         row.appendChild(new Separator());
         
         //Product Info
@@ -344,17 +344,17 @@ public class WScanBarUI extends ScanBar implements IFormController, EventListene
         
         row = new Row();
         rows.appendChild(row);
-        row.setSpans("3");
+//        row.setSpans("3");
         row.appendChild(new Separator());
 
         row = new Row();
         rows.appendChild(row);
-        row.setSpans("3");
+//        row.setSpans("3");
         row.appendChild(new Separator());
         
         row = new Row();
         rows.appendChild(row);
-        row.setSpans("3");
+//        row.setSpans("3");
         row.appendChild(new Separator());
         upcField.setVisible(false);
         qtyCountField.setVisible(false);

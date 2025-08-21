@@ -114,10 +114,10 @@ public class WTreeMaintenance extends TreeMaintenance implements IFormController
 	 */
 	private void jbInit () throws Exception
 	{
-		bAddAll.setSrc("images/FastBack16.png");
-		bAdd.setSrc("images/StepBack16.png");
-		bDelete.setSrc("images/StepForward16.png");
-		bDeleteAll.setSrc("images/FastForward16.png");
+//		bAddAll.setSrc("images/FastBack16.png");
+//		bAdd.setSrc("images/StepBack16.png");
+//		bDelete.setSrc("images/StepForward16.png");
+//		bDeleteAll.setSrc("images/FastForward16.png");
 
 		ZKUpdateUtil.setWidth(form, "99%");
 		ZKUpdateUtil.setHeight(form, "100%");

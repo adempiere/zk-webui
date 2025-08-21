@@ -250,7 +250,7 @@ public class WBPartner extends Window implements EventListener, ValueChangeListe
 	{
 		Hbox hbox = new Hbox();
 		ZKUpdateUtil.setWidth(hbox, "100%");
-		hbox.setWidths("30%, 70%");
+//		hbox.setWidths("30%, 70%");
 		
 		Label label = new Label(Msg.translate(Env.getCtx(), title));
 		hbox.appendChild(label);

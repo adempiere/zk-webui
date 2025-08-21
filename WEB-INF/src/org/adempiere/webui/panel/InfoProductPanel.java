@@ -396,7 +396,7 @@ public class InfoProductPanel extends InfoPanel implements EventListener<Event>,
 		Rows rows = new Rows();
 		Row row = new Row();
 		rows.appendChild(row);
-		row.setSpans("1, 1, 1, 1, 1, 1");
+//		row.setSpans("1, 1, 1, 1, 1, 1");
 		row.appendChild(lblValue.rightAlign());
 		row.appendChild(fieldValue);
 		row.appendChild(lblWarehouse.rightAlign());
@@ -406,7 +406,7 @@ public class InfoProductPanel extends InfoPanel implements EventListener<Event>,
 
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("1, 1, 1, 1, 1, 1");
+//		row.setSpans("1, 1, 1, 1, 1, 1");
 		row.appendChild(lblName.rightAlign());
 		row.appendChild(fieldName);
 		row.appendChild(lblPriceList.rightAlign());
@@ -417,7 +417,7 @@ public class InfoProductPanel extends InfoPanel implements EventListener<Event>,
 
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("1, 1, 1, 1, 1, 1");
+//		row.setSpans("1, 1, 1, 1, 1, 1");
 		row.appendChild(lblUPC.rightAlign());
 		row.appendChild(fieldUPC);
 		row.appendChild(lblProductCategory.rightAlign());
@@ -427,7 +427,7 @@ public class InfoProductPanel extends InfoPanel implements EventListener<Event>,
 		
 		row = new Row();
 		rows.appendChild(row);
-		row.setSpans("1, 1, 1, 1, 1, 1");
+//		row.setSpans("1, 1, 1, 1, 1, 1");
 		row.appendChild(lblSKU.rightAlign());
 		row.appendChild(fieldSKU);
 		row.appendChild(lblVendor.rightAlign());
@@ -2118,8 +2118,8 @@ public class InfoProductPanel extends InfoPanel implements EventListener<Event>,
 		return;
 	}
 
-	@Override
-	public String getSortDirection(Comparator comparator) {
-		return "natural";
-	}
+//	@Override
+//	public String getSortDirection(Comparator comparator) {
+//		return "natural";
+//	}
 }	//	InfoProduct

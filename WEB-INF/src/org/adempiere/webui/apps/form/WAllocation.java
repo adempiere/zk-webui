@@ -245,7 +245,7 @@ public class WAllocation extends Allocation
 		row.appendChild(aparPick.getComponent());
 		row.appendChild(new Space());
 		row.appendChild(new Space());
-		row.setSpans("1,1,2,1,1");
+//		row.setSpans("1,1,2,1,1");
 		
 		row = rows.newRow();
 		row.appendChild(new Space());

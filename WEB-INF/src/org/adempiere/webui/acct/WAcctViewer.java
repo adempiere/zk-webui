@@ -318,7 +318,7 @@ public class WAcctViewer extends Window implements EventListener
 
 		Hbox boxAcctSchema = new Hbox();
 		ZKUpdateUtil.setWidth(boxAcctSchema, "100%");
-		boxAcctSchema.setWidths("30%, 70%");
+//		boxAcctSchema.setWidths("30%, 70%");
 
 		lacctSchema.setValue(Msg.translate(Env.getCtx(), "C_AcctSchema_ID"));
 		lacctSchema.setAttribute("zk_component_ID", "Lookup_Criteria_Label_C_AcctSchema_ID");
@@ -332,7 +332,7 @@ public class WAcctViewer extends Window implements EventListener
 
 		Hbox boxSelDoc = new Hbox();
 		ZKUpdateUtil.setWidth(boxSelDoc, "100%");
-		boxSelDoc.setWidths("30%, 50%, 20%");
+//		boxSelDoc.setWidths("30%, 50%, 20%");
 
 		selDocument.setLabel(Msg.getMsg(Env.getCtx(), "SelectDocument"));
 		selDocument.setAttribute("zk_component_ID", "Lookup_Criteria_selDocument");
@@ -352,7 +352,7 @@ public class WAcctViewer extends Window implements EventListener
 
 		Hbox boxPostingType = new Hbox();
 		ZKUpdateUtil.setWidth(boxPostingType, "100%");
-		boxPostingType.setWidths("30%, 70%");
+//		boxPostingType.setWidths("30%, 70%");
 
 		lpostingType.setValue(Msg.translate(Env.getCtx(), "PostingType"));
 		selPostingType.setMold("select");
@@ -367,7 +367,7 @@ public class WAcctViewer extends Window implements EventListener
 
 		Hbox boxDate = new Hbox();
 		ZKUpdateUtil.setWidth(boxDate, "100%");
-		boxDate.setWidths("30%, 35%, 35%");
+//		boxDate.setWidths("30%, 35%, 35%");
 
 		lDate.setValue(Msg.translate(Env.getCtx(), "DateAcct"));
 		lDate.setAttribute("zk_component_ID", "Lookup_Criteria_Label_Date");
@@ -382,7 +382,7 @@ public class WAcctViewer extends Window implements EventListener
 
 		Hbox boxOrg = new Hbox();
 		ZKUpdateUtil.setWidth(boxOrg, "100%");
-		boxOrg.setWidths("30%, 70%");
+//		boxOrg.setWidths("30%, 70%");
 
 		lOrg.setValue(Msg.translate(Env.getCtx(), "AD_Org_ID"));
 		selOrg.setMold("select");
@@ -398,7 +398,7 @@ public class WAcctViewer extends Window implements EventListener
 
 		Hbox boxAcct = new Hbox();
 		ZKUpdateUtil.setWidth(boxAcct, "100%");
-		boxAcct.setWidths("30%, 70%");
+//		boxAcct.setWidths("30%, 70%");
 
 		lAcct.setValue(Msg.translate(Env.getCtx(), "Account_ID"));
 		lAcct.setAttribute("zk_component_ID", "Lookup_Criteria_Label_Acct");
@@ -409,63 +409,63 @@ public class WAcctViewer extends Window implements EventListener
 
 		Hbox boxSel1 = new Hbox();
 		ZKUpdateUtil.setWidth(boxSel1, "100%");
-		boxSel1.setWidths("30%, 70%");
+//		boxSel1.setWidths("30%, 70%");
 
 		boxSel1.appendChild(lsel1);
 		boxSel1.appendChild(sel1);
 
 		Hbox boxSel2 = new Hbox();
 		ZKUpdateUtil.setWidth(boxSel2, "100%");
-		boxSel2.setWidths("30%, 70%");
+//		boxSel2.setWidths("30%, 70%");
 
 		boxSel2.appendChild(lsel2);
 		boxSel2.appendChild(sel2);
 
 		Hbox boxSel3 = new Hbox();
 		ZKUpdateUtil.setWidth(boxSel3, "100%");
-		boxSel3.setWidths("30%, 70%");
+//		boxSel3.setWidths("30%, 70%");
 
 		boxSel3.appendChild(lsel3);
 		boxSel3.appendChild(sel3);
 
 		Hbox boxSel4 = new Hbox();
 		ZKUpdateUtil.setWidth(boxSel4, "100%");
-		boxSel4.setWidths("30%, 70%");
+//		boxSel4.setWidths("30%, 70%");
 
 		boxSel4.appendChild(lsel4);
 		boxSel4.appendChild(sel4);
 
 		Hbox boxSel5 = new Hbox();
 		ZKUpdateUtil.setWidth(boxSel5, "100%");
-		boxSel5.setWidths("30%, 70%");
+//		boxSel5.setWidths("30%, 70%");
 
 		boxSel5.appendChild(lsel5);
 		boxSel5.appendChild(sel5);
 
 		Hbox boxSel6 = new Hbox();
 		ZKUpdateUtil.setWidth(boxSel6, "100%");
-		boxSel6.setWidths("30%, 70%");
+//		boxSel6.setWidths("30%, 70%");
 
 		boxSel6.appendChild(lsel6);
 		boxSel6.appendChild(sel6);
 
 		Hbox boxSel7 = new Hbox();
 		ZKUpdateUtil.setWidth(boxSel7, "100%");
-		boxSel7.setWidths("30%, 70%");
+//		boxSel7.setWidths("30%, 70%");
 
 		boxSel7.appendChild(lsel7);
 		boxSel7.appendChild(sel7);
 
 		Hbox boxSel8 = new Hbox();
 		ZKUpdateUtil.setWidth(boxSel8, "100%");
-		boxSel8.setWidths("30%, 70%");
+//		boxSel8.setWidths("30%, 70%");
 
 		boxSel8.appendChild(lsel8);
 		boxSel8.appendChild(sel8);
 
 		Hbox boxSel9 = new Hbox();
 		ZKUpdateUtil.setWidth(boxSel9, "100%");
-		boxSel9.setWidths("30%, 70%");
+//		boxSel9.setWidths("30%, 70%");
 
 		boxSel9.appendChild(lsel9);
 		boxSel9.appendChild(sel9);
@@ -474,7 +474,7 @@ public class WAcctViewer extends Window implements EventListener
 
 		Hbox boxSel10 = new Hbox();
 		ZKUpdateUtil.setWidth(boxSel10, "100%");
-		boxSel10.setWidths("30%, 70%");
+//		boxSel10.setWidths("30%, 70%");
 
 		boxSel10.appendChild(lsel10);
 		boxSel10.appendChild(sel10);
@@ -482,7 +482,7 @@ public class WAcctViewer extends Window implements EventListener
 
 		Hbox boxSel11 = new Hbox();
 		ZKUpdateUtil.setWidth(boxSel11, "100%");
-		boxSel11.setWidths("30%, 70%");
+//		boxSel11.setWidths("30%, 70%");
 
 		boxSel11.appendChild(lsel11);
 		boxSel11.appendChild(sel11);
@@ -490,14 +490,14 @@ public class WAcctViewer extends Window implements EventListener
 
 		Hbox boxSel12 = new Hbox();
 		ZKUpdateUtil.setWidth(boxSel12, "100%");
-		boxSel12.setWidths("30%, 70%");
+//		boxSel12.setWidths("30%, 70%");
 
 		boxSel12.appendChild(lsel12);
 		boxSel12.appendChild(sel12);
 
 		Hbox boxSel13 = new Hbox();
 		ZKUpdateUtil.setWidth(boxSel13, "100%");
-		boxSel13.setWidths("30%, 70%");
+//		boxSel13.setWidths("30%, 70%");
 
 		boxSel13.appendChild(lsel13);
 		boxSel13.appendChild(sel13);
@@ -542,7 +542,7 @@ public class WAcctViewer extends Window implements EventListener
 
 		Hbox boxSortDisplay = new Hbox();
 		ZKUpdateUtil.setWidth(boxSortDisplay, "100%");
-		boxSortDisplay.setWidths("70%, 30%");
+//		boxSortDisplay.setWidths("70%, 30%");
 
 		lSort.setValue(Util.cleanAmp(Msg.getMsg(Env.getCtx(), "SortBy")));
 		lGroup.setValue(Util.cleanAmp(Msg.getMsg(Env.getCtx(), "GroupBy")));
@@ -552,7 +552,7 @@ public class WAcctViewer extends Window implements EventListener
 
 		Hbox boxSort1 = new Hbox();
 		ZKUpdateUtil.setWidth(boxSort1, "100%");
-		boxSort1.setWidths("70%, 30%");
+//		boxSort1.setWidths("70%, 30%");
 
 		sortBy1.setMold("select");
 		sortBy1.setRows(1);
@@ -562,7 +562,7 @@ public class WAcctViewer extends Window implements EventListener
 
 		Hbox boxSort2 = new Hbox();
 		ZKUpdateUtil.setWidth(boxSort2, "100%");
-		boxSort2.setWidths("70%, 30%");
+//		boxSort2.setWidths("70%, 30%");
 
 		sortBy2.setMold("select");
 		sortBy2.setRows(1);
@@ -572,7 +572,7 @@ public class WAcctViewer extends Window implements EventListener
 
 		Hbox boxSort3 = new Hbox();
 		ZKUpdateUtil.setWidth(boxSort3, "100%");
-		boxSort3.setWidths("70%, 30%");
+//		boxSort3.setWidths("70%, 30%");
 
 		sortBy3.setMold("select");
 		sortBy3.setRows(1);
@@ -582,7 +582,7 @@ public class WAcctViewer extends Window implements EventListener
 
 		Hbox boxSort4 = new Hbox();
 		ZKUpdateUtil.setWidth(boxSort4, "100%");
-		boxSort4.setWidths("70%, 30%");
+//		boxSort4.setWidths("70%, 30%");
 
 		sortBy4.setMold("select");
 		sortBy4.setRows(1);
@@ -614,7 +614,7 @@ public class WAcctViewer extends Window implements EventListener
 
 		Hbox boxQueryPanel = new Hbox();
 		ZKUpdateUtil.setWidth(boxQueryPanel, "98%");
-		boxQueryPanel.setWidths("63%,1%,36%");
+//		boxQueryPanel.setWidths("63%,1%,36%");
 
 		boxQueryPanel.appendChild(groupSelection);
 		Separator separator = new Separator();
@@ -651,7 +651,7 @@ public class WAcctViewer extends Window implements EventListener
 		bPrint.addEventListener(Events.ON_CLICK, this);
 
 		ZKUpdateUtil.setWidth(southPanel, "100%");
-		southPanel.setWidths("2%, 12%, 82%, 2% , 2%, 2%");
+//		southPanel.setWidths("2%, 12%, 82%, 2% , 2%, 2%");
 		southPanel.appendChild(bRePost);
 		southPanel.appendChild(forcePost);
 		southPanel.appendChild(statusLine);

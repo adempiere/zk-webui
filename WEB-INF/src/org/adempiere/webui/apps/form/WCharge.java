@@ -271,7 +271,7 @@ public class WCharge extends Charge implements IFormController, EventListener
 		south.setBorder("none");
 		borderlayout.appendChild(south);
 		Panel southPanel = new Panel();
-		southPanel.setAlign("right");
+		southPanel.setStyle("text-align: right;");
 		south.appendChild(southPanel);
 		m_btnAccount.setLabel(Msg.getMsg(Env.getCtx(), AD_MESSAGE_CREATE) + " " + Msg.getMsg(Env.getCtx(), "From") + " " + Msg.getElement(Env.getCtx(), "Account_ID"));
         m_btnAccount.addEventListener(Events.ON_CLICK, this);
@@ -308,7 +308,7 @@ public class WCharge extends Charge implements IFormController, EventListener
 
     	Row row = new Row();
         rows.appendChild(row);
-        row.setSpans("3");
+//        row.setSpans("3");
         Label label = new Label(Msg.getMsg(Env.getCtx(), "ChargeNewAccount"));
         label.setStyle("font-weight: bold;");
         row.appendChild(label);
@@ -327,7 +327,7 @@ public class WCharge extends Charge implements IFormController, EventListener
 
         row = new Row();
         rows.appendChild(row);
-        row.setSpans("3");
+//        row.setSpans("3");
         row.appendChild(new Separator());
 
         return;

@@ -170,7 +170,7 @@ public class WAssignmentDialog extends Window implements EventListener<Event>
 		rows.appendChild(row);
 		
 		row = new Row();
-		row.setSpans("1, 2");
+//		row.setSpans("1, 2");
 		row.appendChild(LayoutUtils.makeRightAlign(lDate));
 		Div div = new Div();
 		div.appendChild(fDateFrom);
@@ -186,14 +186,14 @@ public class WAssignmentDialog extends Window implements EventListener<Event>
 		rows.appendChild(row);
 		
 		row = new Row();
-		row.setSpans("1, 2");
+//		row.setSpans("1, 2");
 		row.appendChild(LayoutUtils.makeRightAlign(lName));
 		row.appendChild(fName);
 		fName.setStyle("width: 100%");
 		rows.appendChild(row);
 		
 		row = new Row();
-		row.setSpans("1, 2");
+//		row.setSpans("1, 2");
 		row.appendChild(LayoutUtils.makeRightAlign(lDescription));
 		row.appendChild(fDescription);
 		fDescription.setMultiline(true);
@@ -202,12 +202,12 @@ public class WAssignmentDialog extends Window implements EventListener<Event>
 		rows.appendChild(row);
 		
 		row = new Row();
-		row.setSpans("3");
+//		row.setSpans("3");
 		row.appendChild(new Label(" "));
 		rows.appendChild(row);
 
 		row = new Row();
-		row.setSpans("3");
+//		row.setSpans("3");
 		row.appendChild(confirmPanel);
 		rows.appendChild(row);
 		//

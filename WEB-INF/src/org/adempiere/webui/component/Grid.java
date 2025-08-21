@@ -21,7 +21,6 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.IdSpace;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zk.ui.event.Express;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -90,12 +89,12 @@ public class Grid extends org.zkoss.zul.Grid implements IdSpace
 	}
 	public boolean addEventListener(String evtnm, EventListener listener)
 	{
-		return addEventListener((listener instanceof Express) ? 1000 : 0, evtnm, listener);
+		return addEventListener(0, evtnm, listener);
 	}
 	
-	public boolean addEventListener(int priority, String evtnm, EventListener<? extends Event> listener)
+	public boolean addEventListener(int priority, String evtnm, EventListener listener)
 	{
-		boolean b = super.addEventListener(priority , evtnm, listener);
+		boolean b = super.addEventListener(0, evtnm, listener);
 		if (b)
 		{
 			final EventListenerInfo listenerInfo = new EventListenerInfo(priority, listener);

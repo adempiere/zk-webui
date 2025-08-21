@@ -708,8 +708,8 @@ public class InfoCashLinePanel extends InfoPanel implements ValueChangeListener,
 		cbAbsolute.setChecked(false);
 	}
 
-	@Override
-	public String getSortDirection(Comparator comparator) {
-		return "natural";
-	}
+//	@Override
+//	public String getSortDirection(Comparator comparator) {
+//		return "natural";
+//	}
 }

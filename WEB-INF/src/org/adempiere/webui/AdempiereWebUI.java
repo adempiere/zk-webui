@@ -55,14 +55,15 @@ import org.zkoss.zk.ui.sys.SessionCtrl;
 import org.zkoss.zk.ui.sys.Visualizer;
 import org.zkoss.zul.Window;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.TimeZone;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -167,6 +168,10 @@ public class AdempiereWebUI extends Window implements EventListener<Event>, IWeb
     {
         Properties ctx = Env.getCtx();
         String langLogin = Env.getContext(ctx, Env.LANGUAGE);
+
+		String remoteAddr = Executions.getCurrent().getRemoteAddr();
+		String remoteHost = Executions.getCurrent().getRemoteHost();
+		
         if (langLogin == null || langLogin.length() <= 0)
         {
         	langLogin = langSession;
@@ -202,8 +207,8 @@ public class AdempiereWebUI extends Window implements EventListener<Event>, IWeb
 			httpSession.setMaxInactiveInterval(maxInactiveInterval);
 		});
 
-		MSession adempiereSession = MSession.get (ctx, currentSession.getRemoteAddr(),
-				currentSession.getRemoteHost(), httpSession.getId() );
+		MSession adempiereSession = MSession.get (ctx, remoteAddr,
+				remoteHost, httpSession.getId() );
 
 		//enable full interface, relook into this when doing preference
 		Env.setContext(ctx, "#ShowTrl", true);
@@ -381,7 +386,7 @@ public class AdempiereWebUI extends Window implements EventListener<Event>, IWeb
 			clientInfo.desktopWidth = c.getDesktopWidth();
 			clientInfo.desktopXOffset = c.getDesktopXOffset();
 			clientInfo.desktopYOffset = c.getDesktopYOffset();
-			clientInfo.timeZone = c.getTimeZone();
+			clientInfo.timeZone = TimeZone.getTimeZone(c.getZoneId());
 			if (applicationDesktop != null)
 				applicationDesktop.setClientInfo(clientInfo);
 		}

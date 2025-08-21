@@ -118,7 +118,7 @@ public class SimpleFavoriteTreeModel extends DefaultTreeModel<Object> implements
 		tree.setPageSize(-1);
 		try
 		{
-			tree.setTreeitemRenderer(treeModel);
+			tree.setItemRenderer(treeModel);
 			tree.setModel(treeModel);
 			//TODO : Might be need to code here for default expand collapse
 		}
@@ -339,7 +339,7 @@ public class SimpleFavoriteTreeModel extends DefaultTreeModel<Object> implements
 			{
 				parentNode = (DefaultTreeNode<Object>) getChild(parentNode, path[i]);
 			}
-			fireEvent(parentNode, path[index], path[index], TreeDataEvent.CONTENTS_CHANGED);
+//			fireEvent(parentNode, path[index], path[index], TreeDataEvent.CONTENTS_CHANGED);
 		}
 
 		
@@ -358,7 +358,7 @@ public class SimpleFavoriteTreeModel extends DefaultTreeModel<Object> implements
 				parentNode = (DefaultTreeNode<Object>)  getChild(parentNode, path[i]);
 			}
 			parentNode.getChildren().remove(path[index]);
-			fireEvent(parentNode, path[index], path[index], TreeDataEvent.INTERVAL_REMOVED);
+//			fireEvent(parentNode, path[index], path[index], TreeDataEvent.INTERVAL_REMOVED);
 		}
 	}
 
@@ -367,14 +367,14 @@ public class SimpleFavoriteTreeModel extends DefaultTreeModel<Object> implements
 	{
 		DefaultTreeNode<Object> root = getRoot();
 		root.getChildren().add(newNode);
-		fireEvent(root, root.getChildCount() - 1, root.getChildCount() - 1, TreeDataEvent.INTERVAL_ADDED);
+//		fireEvent(root, root.getChildCount() - 1, root.getChildCount() - 1, TreeDataEvent.INTERVAL_ADDED);
 	}
 
 	@SuppressWarnings("unchecked")
 	public void addNode(DefaultTreeNode<Object> newParent, DefaultTreeNode<Object> newNode, int index)
 	{
 		newParent.getChildren().add(index, newNode);
-		fireEvent(newParent, index, index, TreeDataEvent.INTERVAL_ADDED);
+//		fireEvent(newParent, index, index, TreeDataEvent.INTERVAL_ADDED);
 	}
 
 	public void addOnDropEventListener(EventListener<Event>  listener)

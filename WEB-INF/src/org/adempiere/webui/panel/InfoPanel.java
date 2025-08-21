@@ -65,7 +65,7 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Borderlayout;
 import org.zkoss.zul.Center;
 import org.zkoss.zul.Div;
-import org.zkoss.zul.ListModelExt;
+//import org.zkoss.zul.ListModelExt;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.North;
 import org.zkoss.zul.Paging;
@@ -100,8 +100,7 @@ import java.util.logging.Level;
  * @author Michael McKay, ADEMPIERE-72 VLookup and Info Window improvements
  * 	<li>https://adempiere.atlassian.net/browse/ADEMPIERE-72
  */
-public abstract class InfoPanel extends Window implements EventListener<Event>, WTableModelListener, ListModelExt
-{
+public abstract class InfoPanel extends Window implements EventListener<Event>, WTableModelListener { //, ListModelExt{
 	
 	/**
 	 * generated serial version ID
@@ -858,7 +857,7 @@ public abstract class InfoPanel extends Window implements EventListener<Event>, 
         		}
     			List<Object> subList = readLine(0, PAGE_SIZE);
     			model = new ListModelTable(subList);
-    			model.setSorter(this);
+//    			model.setSorter(this);
 	            model.addTableModelListener(this);
 	            p_table.setData(model, null);
 	            
@@ -873,7 +872,7 @@ public abstract class InfoPanel extends Window implements EventListener<Event>, 
         			pageNo = 0;
         		}
 	            model = new ListModelTable(readLine(0, -1));
-	            model.setSorter(this);
+//	            model.setSorter(this);
 	            model.addTableModelListener(this);
 	            p_table.setData(model, null);
         	}
@@ -985,11 +984,11 @@ public abstract class InfoPanel extends Window implements EventListener<Event>, 
 	}
 
     private void addDoubleClickListener() {
-		Iterator<?> i = p_table.getListenerIterator(Events.ON_DOUBLE_CLICK);
-		while (i.hasNext()) {
-			if (i.next() == this)
-				return;
-		}
+//		Iterator<?> i = p_table.getListenerIterator(Events.ON_DOUBLE_CLICK);
+//		while (i.hasNext()) {
+//			if (i.next() == this)
+//				return;
+//		}
 		p_table.addEventListener(Events.ON_DOUBLE_CLICK, this);
 	}
     
@@ -1624,7 +1623,7 @@ public abstract class InfoPanel extends Window implements EventListener<Event>, 
 	            		int end = start + PAGE_SIZE;
 	            		List<Object> subList = readLine(start, end);
 	        			model = new ListModelTable(subList);
-	        			model.setSorter(this);
+//	        			model.setSorter(this);
 	    	            model.addTableModelListener(this);
 	    	            p_table.setData(model, null);
 

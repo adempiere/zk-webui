@@ -861,7 +861,7 @@ public class InfoBPartnerPanel extends InfoPanel implements EventListener<Event>
 		checkAND.setSelected(true); 		//  Use AND
 	}
 
-	@Override
+//	@Override
 	public String getSortDirection(Comparator comparator) {
 		return "natural";
 	}

@@ -231,11 +231,11 @@ public class InfoAssignmentPanel extends InfoPanel implements EventListener<org.
 		row.appendChild(fieldResourceType.getComponent());
 		row.appendChild(fieldResource.getComponent());
 		Div div = new Div();
-		div.setAlign("right");
+		div.setStyle("text-align: right;");
 		div.appendChild(fieldFrom);
 		row.appendChild(div);
 		div = new Div();
-		div.setAlign("right");
+		div.setStyle("text-align: right;");
 		div.appendChild(fieldTo);
 		row.appendChild(div);
 		row.appendChild(bNew);
@@ -413,7 +413,7 @@ public class InfoAssignmentPanel extends InfoPanel implements EventListener<org.
 		return;
 	}
 
-	@Override
+//	@Override
 	public String getSortDirection(Comparator comparator) {
 		return "natural";
 	}

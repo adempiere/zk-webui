@@ -237,7 +237,7 @@ public class WMatch extends Match
 		row.appendChild(new Space());
 		
 		row = rows.newRow();
-		row.setSpans("1,1,3");
+//		row.setSpans("1,1,3");
 		row.appendChild(matchModeLabel.rightAlign());
 		row.appendChild(matchMode);
 		row.appendChild(new Space());

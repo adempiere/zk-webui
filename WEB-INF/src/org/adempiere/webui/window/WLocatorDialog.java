@@ -147,7 +147,7 @@ public class WLocatorDialog extends Window implements EventListener
 		
 		Hbox boxLocator = new Hbox();
 		ZKUpdateUtil.setWidth(boxLocator, "100%");
-		boxLocator.setWidths("30%, 70%");
+//		boxLocator.setWidths("30%, 70%");
 
 		ZKUpdateUtil.setWidth(lstLocator, "150px");
 		lstLocator.setMold("select");
@@ -158,7 +158,7 @@ public class WLocatorDialog extends Window implements EventListener
 		
 		Hbox boxCheckbox = new Hbox();
 		ZKUpdateUtil.setWidth(boxCheckbox, "100%");
-		boxCheckbox.setWidths("30%, 70%");
+//		boxCheckbox.setWidths("30%, 70%");
 		boxCheckbox.setStyle("text-align:left");
 		
 		chkCreateNew.setLabel(Msg.getMsg(Env.getCtx(), "CreateNew"));
@@ -168,7 +168,7 @@ public class WLocatorDialog extends Window implements EventListener
 		
 		Hbox boxWarehouse = new Hbox();
 		ZKUpdateUtil.setWidth(boxWarehouse, "100%");
-		boxWarehouse.setWidths("30%, 70%");
+//		boxWarehouse.setWidths("30%, 70%");
 
 		ZKUpdateUtil.setWidth(lstWarehouse, "100px");
 		lstWarehouse.setMold("select");
@@ -180,35 +180,35 @@ public class WLocatorDialog extends Window implements EventListener
 		
 		Hbox boxAisle = new Hbox();
 		ZKUpdateUtil.setWidth(boxAisle, "100%");
-		boxAisle.setWidths("30%, 70%");
+//		boxAisle.setWidths("30%, 70%");
 		
 		boxAisle.appendChild(lblAisleX);
 		boxAisle.appendChild(txtAisleX);
 		
 		Hbox boxBin = new Hbox();
 		ZKUpdateUtil.setWidth(boxBin, "100%");
-		boxBin.setWidths("30%, 70%");
+//		boxBin.setWidths("30%, 70%");
 
 		boxBin.appendChild(lblBinY);
 		boxBin.appendChild(txtBinY);
 		
 		Hbox boxLevel = new Hbox();
 		ZKUpdateUtil.setWidth(boxLevel, "100%");
-		boxLevel.setWidths("30%, 70%");
+//		boxLevel.setWidths("30%, 70%");
 
 		boxLevel.appendChild(lblLevelZ);
 		boxLevel.appendChild(txtLevelZ);
 		
 		Hbox boxKey = new Hbox();
 		ZKUpdateUtil.setWidth(boxKey, "100%");
-		boxKey.setWidths("30%, 70%");
+//		boxKey.setWidths("30%, 70%");
 		
 		boxKey.appendChild(lblKey);
 		boxKey.appendChild(txtKey);
 		
 		Hbox boxButtons = new Hbox();
 		ZKUpdateUtil.setWidth(boxButtons, "100%");
-		boxButtons.setWidths("80%, 10%, 10%");
+//		boxButtons.setWidths("80%, 10%, 10%");
 		boxButtons.setStyle("text-align:right");
 		
 		btnCancel.setImage("/images/Cancel16.png");

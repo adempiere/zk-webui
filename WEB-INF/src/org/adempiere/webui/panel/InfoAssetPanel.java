@@ -364,7 +364,7 @@ public class InfoAssetPanel extends InfoPanel implements ValueChangeListener, Ev
 		return true;
 	} // hasZoom
 
-	@Override
+//	@Override
 	public String getSortDirection(Comparator comparator) {
 		return "natural";
 	}
